@@ -12,7 +12,7 @@
 ### Ответы на все вопросы первым делом искать тут:  
 https://github.com/newsviz/newsviz/wiki
 
-Тут документация по основному коду https://github.com/ods-ai-ml4sg/proj_news_viz/wiki/Pipeline-инструкция-по-применению
+Тут документация по основному коду https://github.com/newsviz/newsviz/wiki/Инструкция-по-запуску
 
 ## Структура репозитория  
 
