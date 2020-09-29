@@ -4,6 +4,7 @@
 
 ## Что здесь происходит
 Мы делаем инструмент для исследования развития со временем [тем в текстах](www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование). Основной целевой набор текстов -- русскоязычные новости, но методика и сам инструмент подходят для произвольного набора текстов.  
+(Проект переехал [отсюда](https://github.com/ods-ai-ml4sg/proj_news_viz))  
   
 Концепт такой:  
 ![Preview2](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
@@ -16,7 +17,30 @@ https://github.com/newsviz/newsviz/wiki
 ## Структура репозитория  
 
 ```bash
-[UNDER CONSTRUCTION]
+.
+├── config/config.ini -- директория для конфигов
+├── data/ -- на гитхабе только пустые папки будут, а так датка локально будет здесь во время запуска
+│    ├── raw -- сырые данные
+│    ├── processed -- токенизировано и лемматизировано
+│    ├── classified -- после классификации
+│    ├── topic_modelleded -- после ТМ
+│    └── ready2viz -- бери и вставляй в визуалайзер
+├── newsviz -- собственно основной код
+│    ├── run.sh -- one ring to rule them all
+│    ├── pipeline.py -- основной скрипт со всеми luigi тасками
+│    ├── preprocessing_tools.py -- скрипты препроцессинга
+│    ├── topic_model.py -- обёртка для тематической модели
+│    └── vizualizer -- здесь будет лежать стандартный визуализатор
+│        ├── app.py
+│        └── utils.py
+├── models -- папка для моделей по умолчанию
+│    └── classifier
+│        ├── clf.bin
+│        └── feature_extractor.bin
+├── topic_model
+│        ├── model.bin
+│        └── dictionary{classname}.txt
+└──tests
 ```
 
 
@@ -25,13 +49,13 @@ https://github.com/newsviz/newsviz/wiki
 
 Python 3.6+
 
-## Contributing
+## Contributing (Как участвовать в проекте)
 см. [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.md)
 
 ## Чем вы можете помочь
 1. Посмотрите issues -- там должны быть расписаны актуальные задачи
 2. Помогите нам дополнить документацию и помочь другим разобраться в проекте
-2. Если ничего не понятно -- задайте вопросы, это приветствуется
+3. Если ничего не понятно -- задайте вопросы, это приветствуется
 
 ## Родственные проекты
 [Big Data Indicators](http://bigdata-indicators.com/)  
