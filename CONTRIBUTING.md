@@ -1,4 +1,4 @@
-[english version](#english-version)
+[english version](###english-version)
 ### Порядок работы:
 1. Находим [ISSUE](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) с описанием проблемы и пути решения, либо создаём свой и описываем проблему.
 2. [Делаем форк](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo).
@@ -59,7 +59,7 @@ Keep it simple stupid! Все отдельные элементы должны �
 ```
 Разумеется имя и фамилию меняем на свои, если вы там уже есть, то добавляем год (через тире или запятую, в зависимости от того, непрерывный это промежуток времени или нет), если вас там ещё нет, то добавляем новую строчку.
 
-# English version
+### English version
 
 ### Contributing procedure:
 1. Find [ISSUE] (https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) with a description of the problem and the way solutions, or create our own and describe the problem.
