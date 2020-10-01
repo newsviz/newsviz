@@ -66,7 +66,7 @@ Keep it simple stupid! Все отдельные элементы должны �
 2. [Fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo).
 3. Make your changes.
 4. Create a [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to the `stage` branch.
-5. Link the appropriate ISSUE to the generated PR ([how to do it](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting -syntax # referencing-issues-and-pull-requests)).
+5. Link the appropriate ISSUE to the generated PR ([how to do it](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests)).
 
 ### CODESTYLE:
 Just use [black](https://github.com/psf/black) and read [pep-8](https://www.python.org/dev/peps/pep-0008/).
