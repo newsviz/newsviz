@@ -70,7 +70,7 @@ We are making a tool for researching the development over time [topics in the te
 (The project has moved [from here](https://github.com/ods-ai-ml4sg/proj_news_viz))
   
 The concept is this:
-![Preview2](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697e)
+![Preview2](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
 
 ### Look for answers to all questions here:  
 https://github.com/newsviz/newsviz/wiki
