@@ -72,7 +72,7 @@ Keep it simple stupid! Все отдельные элементы должны �
 Just use [black] (https://github.com/psf/black) and read [pep-8] (https://www.python.org/dev/peps/pep-0008/).
 
 ### Specify attribution:
-It is very difficult to pull automatically, and it should not depend on the assessment of the project manager or maintainer. Made a change, accepted PR - that's it, you should be on the list of contributors. See section "About GPLv3"
+It is very difficult to pull automatically, and it should not depend on the assessment of the project manager or maintainer. Made a change, accepted PR - that's it, you should be on the list of contributors. [See section "About GPLv3"](#About-GPLv3)
 
 ### Lower the entry threshold for other members:
 1. Write very simple and atomic code.
