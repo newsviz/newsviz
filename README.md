@@ -82,7 +82,7 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 
 ```bash
 .
-├── config/config.ini -- directory for configs
+├── config/config.ini -- directory 'for' configs
 ├── data/ -- on github this folder will be empty, but during the launch data will be here locally
 │    ├── raw -- raw data
 │    ├── processed -- tokenized and lemmatized
