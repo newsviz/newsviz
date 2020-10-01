@@ -83,21 +83,21 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 ```bash
 .
 ├── config/config.ini -- directory for configs
-├── data/ -- на гитхабе только пустые папки будут, а так датка локально будет здесь во время запуска
-│    ├── raw -- сырые данные
-│    ├── processed -- токенизировано и лемматизировано
-│    ├── classified -- после классификации
-│    ├── topic_modelleded -- после ТМ
-│    └── ready2viz -- бери и вставляй в визуалайзер
-├── newsviz -- собственно основной код
+├── data/ -- on github this folder will be empty, but during the launch data will be here locally
+│    ├── raw -- raw data
+│    ├── processed -- tokenized and lemmatized
+│    ├── classified -- after classification
+│    ├── topic_modelleded -- after TM
+│    └── ready2viz -- take and insert into the visualizer
+├── newsviz -- the actual main code
 │    ├── run.sh -- one ring to rule them all
-│    ├── pipeline.py -- основной скрипт со всеми luigi тасками
-│    ├── preprocessing_tools.py -- скрипты препроцессинга
-│    ├── topic_model.py -- обёртка для тематической модели
-│    └── vizualizer -- здесь будет лежать стандартный визуализатор
+│    ├── pipeline.py -- main script with all luigi tasks
+│    ├── preprocessing_tools.py -- preprocessing scripts
+│    ├── topic_model.py -- wrapper for topic model
+│    └── vizualizer -- the standard visualizer will be here
 │        ├── app.py
 │        └── utils.py
-├── models -- папка для моделей по умолчанию
+├── models -- folder for default models
 │    └── classifier
 │        ├── clf.bin
 │        └── feature_extractor.bin
@@ -107,35 +107,6 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 └──tests
 ```
 
-
-
-
-`` bash
-...
-├── config / config.ini - directory for configs
-├── data / - on github this folder will be empty, but during the launch data will be here locally 
-│ ├── raw - raw data
-│ ├── processed - tokenized and lemmatized
-│ ├── classified - after classification
-│ ├── topic_modelleded - after TM
-│ └── ready2viz - take and insert into the visualizer
-├── newsviz - the actual main code
-│ ├── run.sh - one ring to rule them all
-│ ├── pipeline.py - main script with all luigi tasks
-│ ├── preprocessing_tools.py - preprocessing scripts
-│ ├── topic_model.py - wrapper for topic model
-│ └── vizualizer - the standard visualizer will be here
-│ ├── app.py
-│ └── utils.py
-├── models - default folder for models
-│ └── classifier
-│ ├── clf.bin
-│ └── feature_extractor.bin
-├── topic_model
-│ ├── model.bin
-│ └── dictionary {classname} .txt
-└──tests
-``,
 
 
 
