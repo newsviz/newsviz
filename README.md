@@ -66,7 +66,7 @@ Python 3.6+
 ## English version
 
 ## What's going on here
-We are making a tool for researching the development over time [topics in the texts](www.machinelearning.ru/wiki/index.php?title=Thematic_modeling). The main target set of texts is Russian-language news, but the methodology and the tool itself are suitable for an arbitrary set of texts.
+We are making a tool for researching the development of [topics in the texts](www.machinelearning.ru/wiki/index.php?title=Thematic_modeling) over the time. The main target set of texts is Russian-language news, but the methodology and the tool itself are suitable for an arbitrary set of texts.
 (The project has moved [from here](https://github.com/ods-ai-ml4sg/proj_news_viz))
   
 The concept is this:
