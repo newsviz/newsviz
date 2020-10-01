@@ -52,7 +52,7 @@ https://github.com/newsviz/newsviz/wiki
 Python 3.6+
 
 ## Contributing (Как участвовать в проекте)
-см. [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.md)
+См. [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.md)
 
 ## Чем вы можете помочь
 1. Посмотрите issues -- там должны быть расписаны актуальные задачи.
@@ -113,7 +113,7 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 Python 3.6+
 
 ## Contributing (How to participate in the project)
-see [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.md)
+See [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.md)
 
 ## How can you help
 1. Look at the issues - actual tasks should be scheduled there.
