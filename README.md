@@ -80,6 +80,36 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 
 ## Repository structure
 
+```bash
+.
+├── config/config.ini -- directory for configs
+├── data/ -- на гитхабе только пустые папки будут, а так датка локально будет здесь во время запуска
+│    ├── raw -- сырые данные
+│    ├── processed -- токенизировано и лемматизировано
+│    ├── classified -- после классификации
+│    ├── topic_modelleded -- после ТМ
+│    └── ready2viz -- бери и вставляй в визуалайзер
+├── newsviz -- собственно основной код
+│    ├── run.sh -- one ring to rule them all
+│    ├── pipeline.py -- основной скрипт со всеми luigi тасками
+│    ├── preprocessing_tools.py -- скрипты препроцессинга
+│    ├── topic_model.py -- обёртка для тематической модели
+│    └── vizualizer -- здесь будет лежать стандартный визуализатор
+│        ├── app.py
+│        └── utils.py
+├── models -- папка для моделей по умолчанию
+│    └── classifier
+│        ├── clf.bin
+│        └── feature_extractor.bin
+├── topic_model
+│        ├── model.bin
+│        └── dictionary{classname}.txt
+└──tests
+```
+
+
+
+
 `` bash
 ...
 ├── config / config.ini - directory for configs
