@@ -65,11 +65,11 @@ Keep it simple stupid! Все отдельные элементы должны �
 1. Find [ISSUE] (https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) with a description of the problem and the way solutions, or create our own and describe the problem.
 2. [Fork] (https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo).
 3. Make your changes.
-4. Create a [Pull Request] (https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to the `stage` branch
+4. Create a [Pull Request] (https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to the `stage` branch.
 5. Link the appropriate ISSUE to the generated PR ([how to do it] (https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting -syntax # referencing-issues-and-pull-requests)).
 
 ### CODESTYLE:
-Just use [black] (https://github.com/psf/black) and read [pep-8] (https://www.python.org/dev/peps/pep-0008/)
+Just use [black] (https://github.com/psf/black) and read [pep-8] (https://www.python.org/dev/peps/pep-0008/).
 
 ### Specify attribution:
 It is very difficult to pull automatically, and it should not depend on the assessment of the project manager or maintainer. Made a change, accepted PR - that's it, you should be on the list of contributors. See section "About GPLv3"
