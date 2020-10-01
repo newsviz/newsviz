@@ -46,7 +46,6 @@ https://github.com/newsviz/newsviz/wiki
 ```
 
 
-
 ## Requirements
 
 Python 3.6+
