@@ -11,6 +11,15 @@ from preprocessing_tools import clean_text
 from preprocessing_tools import lemmatize
 
 
+def get_fnames(path):
+    fnames = []
+    for item in os.listdir(path):
+        if os.path.isdir(item) or not item.endswith(".csv.gz"):
+            continue
+        fnames.append(item)
+    return fnames
+
+
 class PreprocessorTask(luigi.Task):
     """ expects directory with csv files in it
     files must contain columns: text, topics, date
@@ -24,8 +33,8 @@ class PreprocessorTask(luigi.Task):
         self.config.read(self.conf)
         self.input_path = self.config["common"]["raw_path"]
         self.output_path = self.config["preprocessor"]["output_path"]
-        # TODO: check if is file
-        self.fnames = os.listdir(self.input_path)
+
+        self.fnames = get_fnames(self.input_path)
 
     def run(self):
         for fname in self.fnames:
@@ -63,8 +72,7 @@ class RubricClassifierTask(luigi.Task):
         self.classifier_path = self.config["classifier"]["classifier_path"]
         self.ftransformer_path = self.config["classifier"]["ftransformer_path"]
 
-        # TODO: check if is file
-        self.fnames = os.listdir(self.input_path)
+        self.fnames = get_fnames(self.input_path)
 
     def requires(self):
         return PreprocessorTask(conf=self.conf)
@@ -112,8 +120,8 @@ class TopicPredictorTask(luigi.Task):
         # TODO: move model params to the model wrapper script
         self.dict_path = self.config["topic"]["dict_path"]
 
-        # TODO: check if is file
-        self.fnames = os.listdir(self.input_path_c)
+
+        self.fnames = get_fnames(self.input_path_c)
 
     def requires(self):
         return RubricClassifierTask(conf=self.conf)
