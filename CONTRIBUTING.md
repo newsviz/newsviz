@@ -2,7 +2,7 @@
 1. Находим [ISSUE](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) с описанием проблемы и пути решения, либо создаём свой и описываем пролему.
 2. [Делаем форк](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo)
 3. Вносим свои изменения
-4. Создаём [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request)
+4. Создаём [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) в ветку `stage`
 5. Прилинкуйте соответствующий ISSUE к созданному PR ([как это сделать](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests))
 
 ### CODESTYLE:
