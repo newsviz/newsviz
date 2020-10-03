@@ -108,6 +108,7 @@ class TopicPredictorTask(luigi.Task):
         self.input_path_c = self.config["classifier"]["output_path"]
         self.input_path_l = self.config["preprocessor"]["output_path"]
         self.output_path = self.config["topic"]["output_path"]
+        self.output_path_tw = os.path.join(self.output_path, "topwords")
         self.model_path = self.config["topic"]["model_path"]
         # TODO: move model params to the model wrapper script
         self.dict_path = self.config["topic"]["dict_path"]
@@ -119,6 +120,8 @@ class TopicPredictorTask(luigi.Task):
         return RubricClassifierTask(conf=self.conf)
 
     def run(self):
+        if not os.path.exists(self.output_path_tw):
+            os.mkdir(self.output_path_tw)
         for fname in self.fnames:
             readpath_c = os.path.join(self.input_path_c, fname)
             readpath_l = os.path.join(self.input_path_l, fname)
@@ -141,7 +144,7 @@ class TopicPredictorTask(luigi.Task):
                     left_index=True,
                     right_index=True,
                 )
-
+                tm.save_top_words(os.path.join(self.output_path_tw, f"tw_{cl}.json"))
                 result.to_csv(writepath, compression="gzip", index=False)
 
     def output(self):
