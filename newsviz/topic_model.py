@@ -1,4 +1,5 @@
 import os
+import json
 
 import artm
 import numpy as np
@@ -142,10 +143,10 @@ class TopicModelWrapperARTM:
         """
         phi = self.get_phi()
         top_words_dict = dict()
-        for topic in phi.columns:
+        for topic in phi.columns.drop('word'):
             top_words = (phi.sort_values(
                 by=topic,
-                ascending=False)["word"].apply(lambda x: x[1]).values[:top])
+                ascending=False)["word"].values[:top])
             top_words_dict[topic] = list(top_words)
 
         json.dump(top_words_dict, open(path, "w"))
