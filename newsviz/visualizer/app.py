@@ -40,78 +40,84 @@ server = app.server
 
 # Panel with menu on the left of the page
 left_panel = html.Div(
-    style={
-        "width": "200px",
-        "float": "left"
-    },
+    style={"width": "200px", "float": "left"},
     children=[
         # Source choice
-        html.Div([
-            dcc.Markdown(
-                d("""
+        html.Div(
+            [
+                dcc.Markdown(
+                    d(
+                        """
                     **Источник**
-                """)),
-            dcc.Dropdown(
-                id="source",
-                options=[{
-                    "label": s,
-                    "value": s
-                } for s in container.keys()],
-                value=list(container.keys())[0],
-            ),
-        ]),
+                """
+                    )
+                ),
+                dcc.Dropdown(
+                    id="source",
+                    options=[{"label": s, "value": s} for s in container.keys()],
+                    value=list(container.keys())[0],
+                ),
+            ]
+        ),
         # Chart type choice
-        html.Div([
-            dcc.Markdown(
-                d("""
+        html.Div(
+            [
+                dcc.Markdown(
+                    d(
+                        """
                     **Тип графика**
-                """)),
-            dcc.Dropdown(
-                id="type_chart",
-                options=[
-                    {
-                        "label": "Ridge plot",
-                        "value": "ridge"
-                    },
-                    {
-                        "label": "Bump chart",
-                        "value": "bump"
-                    },
-                ],
-                value="ridge",
-            ),
-        ]),
+                """
+                    )
+                ),
+                dcc.Dropdown(
+                    id="type_chart",
+                    options=[
+                        {"label": "Ridge plot", "value": "ridge"},
+                        {"label": "Bump chart", "value": "bump"},
+                    ],
+                    value="ridge",
+                ),
+            ]
+        ),
         # Rubric choice
-        html.Div([
-            dcc.Markdown(
-                d("""
+        html.Div(
+            [
+                dcc.Markdown(
+                    d(
+                        """
                     **Рубрики**
-                """)),
-            dcc.Dropdown(
-                id="rubric",
-                value=list(container[source0].keys())[0],
-                options=[{
-                    "label": s,
-                    "value": s
-                } for s in container[source0].keys()],
-            ),
-        ]),
+                """
+                    )
+                ),
+                dcc.Dropdown(
+                    id="rubric",
+                    value=list(container[source0].keys())[0],
+                    options=[
+                        {"label": s, "value": s} for s in container[source0].keys()
+                    ],
+                ),
+            ]
+        ),
         # Topic list choice
-        html.Div([
-            dcc.Markdown(
-                d("""
+        html.Div(
+            [
+                dcc.Markdown(
+                    d(
+                        """
                     **Темы**
-                """)),
-            dcc.Dropdown(
-                id="topics",
-                multi=True,
-                value=["topic_0", "topic_1"],
-                options=[{
-                    "label": s,
-                    "value": s
-                } for s in container[source0][rubric0][1]],
-            ),
-        ]),
+                """
+                    )
+                ),
+                dcc.Dropdown(
+                    id="topics",
+                    multi=True,
+                    value=["topic_0", "topic_1"],
+                    options=[
+                        {"label": s, "value": s} for s in container[source0][rubric0][1]
+                    ],
+                ),
+            ]
+        ),
     ],
     className="three columns",
 )
@@ -129,12 +135,16 @@ app.layout = html.Div(
         # Page heading
         html.H1(children="Visualization"),
         # left panel and main plot
-        html.Div(children=[left_panel, fig_div]),
+        html.Div(
+            children=[
+                html.Div([left_panel,
+                fig_div], className='twelve columns'),
+                html.Div(
+                    [html.H2(children="Топ слов по темам"), html.Div(id="top_words",)]
+                ),
+            ]
+        ),
         # Table with top words for chosen topics
-        html.Div([
-            html.H2(children="Топ слов по темам"),
-            html.Div(id="top_words", )
-        ]),
     ],
     className="twelve columns",
 )
@@ -144,19 +154,18 @@ app.layout = html.Div(
 # All callbacks ===========
 @app.callback(Output("rubric", "options"), [Input("source", "value")])
 def update_rubric(source):
-    """For given source outputs
+    """For given source outputs 
         list of available rubrics
         """
-    options = [{
-        "label": rubric,
-        "value": rubric
-    } for rubric in container[source].keys()]
+    options = [
+        {"label": rubric, "value": rubric} for rubric in container[source].keys()
+    ]
     return options
 
 
-@app.callback(Output("topics", "options"),
-              [Input("source", "value"),
-               Input("rubric", "value")])
+@app.callback(
+    Output("topics", "options"), [Input("source", "value"), Input("rubric", "value")]
+)
 def update_topics(source, rubric):
     """For given source and rubric
     outputs list of available topics
@@ -168,14 +177,10 @@ def update_topics(source, rubric):
 
 @app.callback(
     Output("top_words", "children"),
-    [
-        Input("source", "value"),
-        Input("rubric", "value"),
-        Input("topics", "value")
-    ],
+    [Input("source", "value"), Input("rubric", "value"), Input("topics", "value")],
 )
 def update_top_words(source, rubric, topics):
-    """returns table with top words
+    """returns table with top words 
         for every selected topic
     """
     result = []
