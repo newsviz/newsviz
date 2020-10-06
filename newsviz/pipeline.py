@@ -11,6 +11,15 @@ from preprocessing_tools import clean_text
 from preprocessing_tools import lemmatize
 
 
+def get_fnames(path):
+    fnames = []
+    for item in os.listdir(path):
+        if os.path.isdir(item) or not item.endswith(".csv.gz"):
+            continue
+        fnames.append(item)
+    return fnames
+
+
 class PreprocessorTask(luigi.Task):
     """ expects directory with csv files in it
     files must contain columns: text, topics, date
@@ -24,8 +33,8 @@ class PreprocessorTask(luigi.Task):
         self.config.read(self.conf)
         self.input_path = self.config["common"]["raw_path"]
         self.output_path = self.config["preprocessor"]["output_path"]
-        # TODO: check if is file
-        self.fnames = os.listdir(self.input_path)
+
+        self.fnames = get_fnames(self.input_path)
 
     def run(self):
         for fname in self.fnames:
@@ -63,8 +72,7 @@ class RubricClassifierTask(luigi.Task):
         self.classifier_path = self.config["classifier"]["classifier_path"]
         self.ftransformer_path = self.config["classifier"]["ftransformer_path"]
 
-        # TODO: check if is file
-        self.fnames = os.listdir(self.input_path)
+        self.fnames = get_fnames(self.input_path)
 
     def requires(self):
         return PreprocessorTask(conf=self.conf)
@@ -112,13 +120,14 @@ class TopicPredictorTask(luigi.Task):
         # TODO: move model params to the model wrapper script
         self.dict_path = self.config["topic"]["dict_path"]
 
-        # TODO: check if is file
-        self.fnames = os.listdir(self.input_path_c)
+
+        self.fnames = get_fnames(self.input_path_c)
 
     def requires(self):
         return RubricClassifierTask(conf=self.conf)
 
     def run(self):
+        os.makedirs(os.path.join(self.output_path, "topwords"), exist_ok=True)
         for fname in self.fnames:
             readpath_c = os.path.join(self.input_path_c, fname)
             readpath_l = os.path.join(self.input_path_l, fname)
@@ -141,7 +150,9 @@ class TopicPredictorTask(luigi.Task):
                     left_index=True,
                     right_index=True,
                 )
-
+                tm.save_top_words(
+                    os.path.join(self.output_path, "topwords", f"tw_{cl}.json")
+                )
                 result.to_csv(writepath, compression="gzip", index=False)
 
     def output(self):
