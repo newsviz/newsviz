@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import artm
 import numpy as np
@@ -54,23 +55,23 @@ class TopicModelWrapperARTM:
     def init_model(self, dictionary_path=None):
         """ dictionary_path: optional, used with pretrained model
         """
-        dictionary = artm.Dictionary()
+        self.dictionary = artm.Dictionary()
         if dictionary_path is None:
-            dictionary.gather(data_path=self.batches_path)
-            dictionary.filter(min_tf=10, max_df_rate=0.1)
-            dictionary.save_text(
+            self.dictionary.gather(data_path=self.batches_path)
+            self.dictionary.filter(min_tf=10, max_df_rate=0.1)
+            self.dictionary.save_text(
                 f"{self.dir_path}/dicts/dict_{self.name_dataset}.txt")
         else:
-            dictionary.load_text(dictionary_path)
+            self.dictionary.load_text(dictionary_path)
 
         self.model = artm.ARTM(num_topics=self.n_topics,
-                               dictionary=dictionary,
+                               dictionary=self.dictionary,
                                show_progress_bars=True)
 
         # scores
         self.model.scores.add(
             artm.PerplexityScore(name="PerplexityScore",
-                                 dictionary=dictionary))
+                                 dictionary=self.dictionary))
         self.model.scores.add(
             artm.SparsityThetaScore(name="SparsityThetaScore"))
         self.model.scores.add(artm.SparsityPhiScore(name="SparsityPhiScore"))
@@ -116,7 +117,9 @@ class TopicModelWrapperARTM:
 
     def save_model(self, path):
         """ path: path to save model"""
-        # TODO: save dictionary near model
+        model_path = Path(path)
+        dict_path = model_path.parent / f"dictionary_{model_path.stem}.txt"
+        self.dictionary.save_text(str(dict_path))
         self.model.save(path)
 
     def load_model(self, path, dictionary_path):
