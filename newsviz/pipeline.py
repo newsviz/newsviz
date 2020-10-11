@@ -127,6 +127,7 @@ class TopicPredictorTask(luigi.Task):
         return RubricClassifierTask(conf=self.conf)
 
     def run(self):
+        os.makedirs(os.path.join(self.output_path, "topwords"), exist_ok=True)
         for fname in self.fnames:
             readpath_c = os.path.join(self.input_path_c, fname)
             readpath_l = os.path.join(self.input_path_l, fname)
@@ -149,7 +150,9 @@ class TopicPredictorTask(luigi.Task):
                     left_index=True,
                     right_index=True,
                 )
-
+                tm.save_top_words(
+                    os.path.join(self.output_path, "topwords", f"tw_{cl}.json")
+                )
                 result.to_csv(writepath, compression="gzip", index=False)
 
     def output(self):

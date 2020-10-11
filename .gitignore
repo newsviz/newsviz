@@ -137,6 +137,11 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# VSCode
+.vscode
+
+# Data files
+data
 # data
 *.csv.gz
 *.bin
