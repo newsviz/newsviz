@@ -59,12 +59,14 @@ def preprocess_data(df):
     return df, topics
 
 
-def load_top_words(container):
+def load_top_words(container, path):
     top_words = dict()
     # pic first source, assuming all sources have same rubric list
     source = list(container.keys())[0]
     for rubric in container[source].keys():
-        top_words[rubric] = json.load(open("./data/tw_{}.json".format(rubric)))
+        path_json = os.path.join(path, f"tw_{rubric}.json")
+        with open(path_json, "r") as f:
+            top_words[rubric] = json.load(f)
     return top_words
 
 
