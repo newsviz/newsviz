@@ -70,6 +70,28 @@ def load_top_words(container, path):
     return top_words
 
 
+def aggregate_by_date(df, level="month"):
+    """
+    df: pandas DataFrame with columns date (type: datetime)
+        and columns listed in parameter topics (list of str),
+        each topic column of numerical type, float or int
+    level: str of level of aggregation (hour, day, week, month or year),
+    """
+    level_to_freq = {
+        "hour": "1H",
+        "day": "1D",
+        "week": "1W",
+        "month": "1MS",  # month start
+        "year": "1YS"  # year start
+    }
+    freq = level_to_freq.get(level)
+    if freq is None:
+        raise ValueError(f"'level' must be one of {list(level_to_freq.keys())}")
+    grouper = pd.Grouper(key="date", freq=level_to_freq[level])
+    dfgb = df.groupby(grouper).sum().reset_index()
+    return dfgb
+
+
 def compute_figure_height(count_of_plots):
     # values are selected empirically
     MIN_HEIGHT = 300
