@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # from pathlib import PurePosixPath, Path
 import collections
+import configparser
 import json
 from textwrap import dedent as d
 
@@ -15,12 +16,16 @@ from dash.dependencies import Input
 from dash.dependencies import Output
 from dash.dependencies import State
 from plotly import tools
-from utils import *
+import utils
 
 # TODO: Add top words
 
-data_path = "./data"
-container = load_data(data_path)
+PATH_CONFIG = "../../config/config.ini"
+config = configparser.ConfigParser()
+config.read(PATH_CONFIG)
+data_path = config["visualizer"]["data_path"]
+
+container = utils.load_data(data_path)
 # source -> rubrics -> topics
 # source is defined by directory name
 # rubrics are defined by filenames in dir
@@ -30,7 +35,7 @@ rubric0 = list(container[source0].keys())[0]  # FE 'sport'
 # container = {'ria': {'sport: (pd.DataFrame(), [topic_1, topic_2]), ...}, ...}
 # template: {source: {rubric: (df with topic values, list of topic_names)
 
-top_words = load_top_words(container)
+top_words = utils.load_top_words(container, data_path)
 
 # here is page template ==========================
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
@@ -205,10 +210,10 @@ def update_graph(source, type_chart, rubric, selected_topics):
     df, topics = container[source][rubric]
 
     if type_chart == "ridge":
-        figure = ridge_plot(df, selected_topics)
+        figure = utils.ridge_plot(df, selected_topics)
     elif type_chart == "bump":
         # TODO: implement bump_chart
-        figure = bump_chart(df, selected_topics)
+        figure = utils.bump_chart(df, selected_topics)
     # TODO: implement heatmap
 
     figure["layout"]["xaxis"].update()
