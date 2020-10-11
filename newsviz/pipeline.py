@@ -78,7 +78,6 @@ class RubricClassifierTask(luigi.Task):
         return PreprocessorTask(conf=self.conf)
 
     def run(self):
-        # TODO: add class to classname mapping
         model = joblib.load(self.classifier_path)
         feats_trnsfr = joblib.load(self.ftransformer_path)
 
@@ -86,6 +85,7 @@ class RubricClassifierTask(luigi.Task):
             readpath = os.path.join(self.input_path, fname)
             writepath = os.path.join(self.output_path, fname)
             data = pd.read_csv(readpath, compression="gzip")
+            data.dropna(inplace=True, subset=['lemmatized'])
             feats = feats_trnsfr.transform(data["lemmatized"].values)
             preds = model.predict(feats)
             data["rubric_preds"] = preds
@@ -117,6 +117,7 @@ class TopicPredictorTask(luigi.Task):
         self.input_path_l = self.config["preprocessor"]["output_path"]
         self.output_path = self.config["topic"]["output_path"]
         self.model_path = self.config["topic"]["model_path"]
+        # TODO: add class to classname mapping
         # TODO: move model params to the model wrapper script
         self.dict_path = self.config["topic"]["dict_path"]
 
@@ -138,6 +139,7 @@ class TopicPredictorTask(luigi.Task):
                 tm = topic_model.TopicModelWrapperARTM(self.output_path,
                                                        source_name)
                 mask = data_c["rubric_preds"] == cl
+                # TODO: add option to replace class label by class name
                 writepath = os.path.join(self.output_path,
                                          source_name + str(cl) + ".csv.gz")
                 tm.load_model(self.model_path + str(cl) + ".bin",
