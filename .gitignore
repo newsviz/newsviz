@@ -142,3 +142,6 @@ cython_debug/
 
 # Data files
 data
+# data
+*.csv.gz
+*.bin
