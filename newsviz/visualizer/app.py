@@ -208,7 +208,7 @@ def update_top_words(source, rubric, topics):
 def update_graph(source, type_chart, rubric, selected_topics):
     """creates a figure for given params"""
     df, topics = container[source][rubric]
-
+    df = utils.aggregate_by_date(df, level="month")
     if type_chart == "ridge":
         figure = utils.ridge_plot(df, selected_topics)
     elif type_chart == "bump":
