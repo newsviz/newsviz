@@ -70,6 +70,30 @@ def load_top_words(container, path):
     return top_words
 
 
+def aggregate_by_date(df, level="month"):
+    """
+    df: pandas DataFrame with columns date (type: datetime)
+        and columns listed in parameter topics (list of str),
+        each topic column of numerical type, float or int
+    level: str of level of aggregation (hour, day, week, month or year),
+    """
+    #  remove after fix preprocess_data()
+    df["date"] = pd.to_datetime(df["date"])
+    level_to_freq = {
+        "hour": "1H",
+        "day": "1D",
+        "week": "1W",
+        "month": "1MS",  # month start
+        "year": "1YS"  # year start
+    }
+    freq = level_to_freq.get(level)
+    if freq is None:
+        raise ValueError(f"'level' must be one of {list(level_to_freq.keys())}")
+    grouper = pd.Grouper(key="date", freq=level_to_freq[level])
+    dfgb = df.groupby(grouper).sum().reset_index()
+    return dfgb
+
+
 def compute_figure_height(count_of_plots):
     # values are selected empirically
     MIN_HEIGHT = 300
@@ -90,7 +114,7 @@ def bump_chart(df, topics):
     df_plot["date"] = df["date"]
     for idx, topic in enumerate(topics):
         trace = go.Scatter(
-            x=df_plot["date"].values,
+            x=df_plot["date"],
             y=df_plot[topic].values,
             mode="lines + markers",
             line=dict(shape="spline", smoothing=1.0, width=3),
@@ -130,11 +154,11 @@ def ridge_plot(df, topics, offset=100, add_offset=10):
     # data that will be passed to plotly
     data = list()
     for idx, topic in enumerate(topics):
-        offset = idx * offset + add_offset
+        y_offset = idx * offset + add_offset
         # filling under line
         tracex = go.Scatter(
-            x=df.date.values,
-            y=np.full(len(df[topic].values), offset),
+            x=df["date"],
+            y=np.full(len(df[topic].values), y_offset),
             mode=None,
             visible=True,
             legendgroup=str(idx),
@@ -146,8 +170,8 @@ def ridge_plot(df, topics, offset=100, add_offset=10):
         )
         # line
         trace = go.Scatter(
-            x=df.date.values,
-            y=df[topic].values + offset,
+            x=df["date"],
+            y=df[topic].values + y_offset,
             fill="tonexty",
             mode=None,
             legendgroup=str(idx),
