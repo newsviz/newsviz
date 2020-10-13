@@ -15,4 +15,3 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "dpndbt-actions"
-

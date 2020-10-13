@@ -22,4 +22,3 @@ jobs:
 
       - name: pre-commit-action
         uses: pre-commit/action@v2.0.0
-
