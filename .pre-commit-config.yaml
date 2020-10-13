@@ -10,10 +10,10 @@ repos:
       - id: black
         args: ["--line-length=119"]
 
-  - repo: https://github.com/necaris/pre-commit-pyright
-    rev: 1.1.53
-    hooks:
-      - id: pyright
+  # - repo: https://github.com/necaris/pre-commit-pyright
+  #   rev: 1.1.53
+  #   hooks:
+  #     - id: pyright
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
