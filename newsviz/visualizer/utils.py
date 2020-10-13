@@ -34,8 +34,7 @@ def load_data(path):
         rubric_files = os.listdir(os.path.join(path, source))
         for fname in rubric_files:
             print(os.path.join(path, source, fname))
-            data = pd.read_csv(os.path.join(path, source, fname),
-                               compression="gzip")
+            data = pd.read_csv(os.path.join(path, source, fname), compression="gzip")
             data, topics = preprocess_data(data)
             container[source][fname.split(".")[0]] = (data, topics)
 
@@ -47,9 +46,7 @@ def preprocess_data(df):
     scales data by it's std and magic constant 50
     (scaled to offset in ridgeline plot)
     """
-    df["date"] = [
-        "{}-{:02d}-01".format(a, b) for a, b in df[["year", "month"]].values
-    ]
+    df["date"] = ["{}-{:02d}-01".format(a, b) for a, b in df[["year", "month"]].values]
     df = df.drop(columns=["year", "month"])
     topics = list(df.columns)
     topics.remove("date")
@@ -84,7 +81,7 @@ def aggregate_by_date(df, level="month"):
         "day": "1D",
         "week": "1W",
         "month": "1MS",  # month start
-        "year": "1YS"  # year start
+        "year": "1YS",  # year start
     }
     freq = level_to_freq.get(level)
     if freq is None:
@@ -136,7 +133,7 @@ def bump_chart(df, topics):
             showticklabels=False,
         ),
         legend=dict(),
-        hovermode="x"
+        hovermode="x",
     )
     figure = go.Figure(data=data, layout=layout)
     return figure
@@ -189,8 +186,7 @@ def ridge_plot(df, topics, offset=100, add_offset=10):
     layout = go.Layout(
         height=height,
         xaxis=dict(
-            rangeslider=dict(range=[df["date"].min(), df["date"].max()],
-                             visible=True),
+            rangeslider=dict(range=[df["date"].min(), df["date"].max()], visible=True),
             type="date",
         ),
         yaxis=dict(
@@ -201,7 +197,7 @@ def ridge_plot(df, topics, offset=100, add_offset=10):
             showticklabels=False,
         ),
         legend=dict(),
-        hovermode="x"
+        hovermode="x",
     )
     figure = go.Figure(data=data, layout=layout)
     return figure
