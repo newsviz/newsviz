@@ -81,7 +81,7 @@ def aggregate_by_date(df, level="month"):
         "day": "1D",
         "week": "1W",
         "month": "1MS",  # month start
-        "year": "1YS"  # year start
+        "year": "1YS",  # year start
     }
     freq = level_to_freq.get(level)
     if freq is None:
@@ -133,7 +133,7 @@ def bump_chart(df, topics):
             showticklabels=False,
         ),
         legend=dict(),
-        hovermode="x"
+        hovermode="x",
     )
     figure = go.Figure(data=data, layout=layout)
     return figure
@@ -197,7 +197,7 @@ def ridge_plot(df, topics, offset=100, add_offset=10):
             showticklabels=False,
         ),
         legend=dict(),
-        hovermode="x"
+        hovermode="x",
     )
     figure = go.Figure(data=data, layout=layout)
     return figure

@@ -1,6 +1,6 @@
+import json
 import os
 from pathlib import Path
-import json
 
 import artm
 import numpy as np

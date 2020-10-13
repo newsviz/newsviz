@@ -88,7 +88,6 @@ class RubricClassifierTask(luigi.Task):
             data["rubric_preds"] = preds
             data[["date", "rubric_preds"]].to_csv(writepath, index=False, compression="gzip")
 
-
     def output(self):
         outputs = []
         for fname in self.fnames:
@@ -144,9 +143,7 @@ class TopicPredictorTask(luigi.Task):
                     left_index=True,
                     right_index=True,
                 )
-                tm.save_top_words(
-                    os.path.join(self.output_path, "topwords", f"tw_{cl}.json")
-                )
+                tm.save_top_words(os.path.join(self.output_path, "topwords", f"tw_{cl}.json"))
                 result.to_csv(writepath, compression="gzip", index=False)
 
     def output(self):
