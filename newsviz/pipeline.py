@@ -7,12 +7,11 @@ import joblib
 import luigi
 import pandas as pd
 import topic_model
-from preprocessing_tools import clean_text
-from preprocessing_tools import lemmatize
+from preprocessing_tools import clean_text, lemmatize
 
 
 class PreprocessorTask(luigi.Task):
-    """ expects directory with csv files in it
+    """expects directory with csv files in it
     files must contain columns: text, topics, date
     """
 
@@ -34,9 +33,7 @@ class PreprocessorTask(luigi.Task):
             data = pd.read_csv(readpath, compression="gzip")
             data["cleaned_text"] = data["text"].apply(clean_text)
             data["lemmatized"] = data["cleaned_text"].apply(lemmatize)
-            data[["date", "topics", "lemmatized"]].to_csv(writepath,
-                                                          index=False,
-                                                          compression="gzip")
+            data[["date", "topics", "lemmatized"]].to_csv(writepath, index=False, compression="gzip")
 
     def output(self):
         outputs = []
@@ -47,9 +44,9 @@ class PreprocessorTask(luigi.Task):
 
 
 class RubricClassifierTask(luigi.Task):
-    """ depends on previous step
-        and requires pretrained classifier with method predict()
-        and features extractor with method transform()
+    """depends on previous step
+    and requires pretrained classifier with method predict()
+    and features extractor with method transform()
     """
 
     conf = luigi.Parameter()
@@ -81,9 +78,7 @@ class RubricClassifierTask(luigi.Task):
             feats = feats_trnsfr.transform(data["lemmatized"].values)
             preds = model.predict(feats)
             data["rubric_preds"] = preds
-            data[["date", "rubric_preds"]].to_csv(writepath,
-                                                  index=False,
-                                                  compression="gzip")
+            data[["date", "rubric_preds"]].to_csv(writepath, index=False, compression="gzip")
 
     def output(self):
         outputs = []
@@ -94,8 +89,8 @@ class RubricClassifierTask(luigi.Task):
 
 
 class TopicPredictorTask(luigi.Task):
-    """ depends on previous step
-        requires pretrained topic models for each class
+    """depends on previous step
+    requires pretrained topic models for each class
     """
 
     # TODO: save top words
@@ -127,13 +122,10 @@ class TopicPredictorTask(luigi.Task):
             classes = data_c["rubric_preds"].unique()
             source_name = fname.split(".")[0]
             for cl in classes:
-                tm = topic_model.TopicModelWrapperARTM(self.output_path,
-                                                       source_name)
+                tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name)
                 mask = data_c["rubric_preds"] == cl
-                writepath = os.path.join(self.output_path,
-                                         source_name + str(cl) + ".csv.gz")
-                tm.load_model(self.model_path + str(cl) + ".bin",
-                              self.dict_path)
+                writepath = os.path.join(self.output_path, source_name + str(cl) + ".csv.gz")
+                tm.load_model(self.model_path + str(cl) + ".bin", self.dict_path)
                 tm.prepare_data(data_l[mask]["lemmatized"].values)
                 theta = tm.transform()
                 result = theta.merge(
@@ -152,7 +144,6 @@ class TopicPredictorTask(luigi.Task):
             classes = data_c["rubric_preds"].unique()
             for cl in classes:
                 source_name = fname.split(".")[0]
-                writepath = os.path.join(self.output_path,
-                                         source_name + str(cl) + ".csv.gz")
+                writepath = os.path.join(self.output_path, source_name + str(cl) + ".csv.gz")
                 outputs.append(luigi.LocalTarget(writepath))
         return outputs

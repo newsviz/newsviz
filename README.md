@@ -5,7 +5,7 @@
 ## Что здесь происходит
 Мы делаем инструмент для исследования развития со временем [тем в текстах](www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование). Основной целевой набор текстов -- русскоязычные новости, но методика и сам инструмент подходят для произвольного набора текстов.  
 (Проект переехал [отсюда](https://github.com/ods-ai-ml4sg/proj_news_viz))  
-  
+
 Концепт такой:  
 ![Preview2](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
 
@@ -84,5 +84,5 @@ Python 3.6+
  - [@orech](https://github.com/orech)
  - [@p-kachalov](https://github.com/p-kachalov)
  - [@vtrokhymenko](https://github.com/vtrokhymenko)
- 
+
 Здесь могло быть ваше имя.
