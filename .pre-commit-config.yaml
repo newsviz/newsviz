@@ -4,12 +4,6 @@ repos:
     hooks:
       - id: isort
 
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.4
-    hooks:
-      - id: flake8
-        args: ["--ignore=E501,W292", "--max-line-length=119"]
-
   - repo: https://github.com/psf/black
     rev: 20.8b1
     hooks:
