@@ -1,0 +1,10 @@
+numpy==1.16.2
+pymorphy2==0.8
+colorlover==0.3.0
+dash==1.16.2
+dash_core_components==1.12.1
+dash_html_components==1.1.1
+joblib==0.16.0
+luigi==3.0.2
+pandas==1.1.2
+plotly==4.11.0

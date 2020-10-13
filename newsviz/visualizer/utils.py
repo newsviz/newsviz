@@ -56,51 +56,87 @@ def preprocess_data(df):
     return df, topics
 
 
-def load_top_words(container):
+def load_top_words(container, path):
     top_words = dict()
     # pic first source, assuming all sources have same rubric list
     source = list(container.keys())[0]
     for rubric in container[source].keys():
-        top_words[rubric] = json.load(open("./data/tw_{}.json".format(rubric)))
+        path_json = os.path.join(path, f"tw_{rubric}.json")
+        with open(path_json, "r") as f:
+            top_words[rubric] = json.load(f)
     return top_words
 
 
+def aggregate_by_date(df, level="month"):
+    """
+    df: pandas DataFrame with columns date (type: datetime)
+        and columns listed in parameter topics (list of str),
+        each topic column of numerical type, float or int
+    level: str of level of aggregation (hour, day, week, month or year),
+    """
+    #  remove after fix preprocess_data()
+    df["date"] = pd.to_datetime(df["date"])
+    level_to_freq = {
+        "hour": "1H",
+        "day": "1D",
+        "week": "1W",
+        "month": "1MS",  # month start
+        "year": "1YS"  # year start
+    }
+    freq = level_to_freq.get(level)
+    if freq is None:
+        raise ValueError(f"'level' must be one of {list(level_to_freq.keys())}")
+    grouper = pd.Grouper(key="date", freq=level_to_freq[level])
+    dfgb = df.groupby(grouper).sum().reset_index()
+    return dfgb
+
+
+def compute_figure_height(count_of_plots):
+    # values are selected empirically
+    MIN_HEIGHT = 300
+    MAX_HEIGHT = 900
+    PLOT_HEIGHT = 50
+    return min(MIN_HEIGHT + (count_of_plots * PLOT_HEIGHT), MAX_HEIGHT)
+
+
 def bump_chart(df, topics):
-    pass
-
-
-# TODO: rewrite this
-#     data = list()
-
-#     df1 = df.unstack(level=-1)["mentions"][topics_numbers].rank(axis=1)
-#     for topic in topics_numbers:
-#         trace = go.Scatter(
-#             x=df1.index,
-#             y=df1[topic],
-#             mode="lines + markers",
-#             line=dict(shape="spline", smoothing=1.0, width=5),
-#             marker=dict(symbol="circle-open-dot", line=dict(width=7)),
-#             hoverinfo="text + x + name",
-#             hovertext=df.xs(topic, level=1)["mentions"].values,
-#             name=topics_dict[heading][topic],
-#         )
-#         data.append(trace)
-
-#     height = min(300 + (len(data) * 50), 900)
-#     layout = go.Layout(
-#         height=height,
-#         xaxis=dict(rangeslider=dict(visible=True), type="date"),
-#         yaxis=dict(
-#             showgrid=False,
-#             zeroline=False,
-#             showline=False,
-#             ticks="",
-#             showticklabels=False,
-#         ),
-#         legend=dict(),
-#     )
-#     figure = go.Figure(data=data, layout=layout)
-#     return figure
+    """
+    df: pandas DataFrame with columns date (type: datetime)
+        and columns listed in parameter topics (list of str),
+        each topic column of numerical type, float or int
+    topics: list of column names to draw
+    """
+    data = list()
+    df_plot = df.loc[:, topics].rank(axis=1, method="max").astype(int)
+    df_plot["date"] = df["date"]
+    for idx, topic in enumerate(topics):
+        trace = go.Scatter(
+            x=df_plot["date"],
+            y=df_plot[topic].values,
+            mode="lines + markers",
+            line=dict(shape="spline", smoothing=1.0, width=3),
+            marker=dict(symbol="circle-open-dot", line=dict(width=7)),
+            hoverinfo="name",
+            name=topic,
+        )
+        data.append(trace)
+    count_of_plots = len(data)
+    height = compute_figure_height(count_of_plots)
+    layout = go.Layout(
+        height=height,
+        xaxis=dict(rangeslider=dict(visible=True), type="date"),
+        yaxis=dict(
+            showgrid=False,
+            zeroline=False,
+            showline=False,
+            ticks="",
+            showticklabels=False,
+        ),
+        legend=dict(),
+        hovermode="x"
+    )
+    figure = go.Figure(data=data, layout=layout)
+    return figure
 
 
 def ridge_plot(df, topics, offset=100, add_offset=10):
@@ -115,11 +151,11 @@ def ridge_plot(df, topics, offset=100, add_offset=10):
     # data that will be passed to plotly
     data = list()
     for idx, topic in enumerate(topics):
-        offset = idx * offset + add_offset
+        y_offset = idx * offset + add_offset
         # filling under line
         tracex = go.Scatter(
-            x=df.date.values,
-            y=np.full(len(df[topic].values), offset),
+            x=df["date"],
+            y=np.full(len(df[topic].values), y_offset),
             mode=None,
             visible=True,
             legendgroup=str(idx),
@@ -131,8 +167,8 @@ def ridge_plot(df, topics, offset=100, add_offset=10):
         )
         # line
         trace = go.Scatter(
-            x=df.date.values,
-            y=df[topic].values + offset,
+            x=df["date"],
+            y=df[topic].values + y_offset,
             fill="tonexty",
             mode=None,
             legendgroup=str(idx),
@@ -144,9 +180,9 @@ def ridge_plot(df, topics, offset=100, add_offset=10):
         data.append(tracex)
         data.append(trace)
 
-    count_of_plots = len(data)
-    # Please someone describe how this computed
-    height = min(300 + (count_of_plots // 2 * 50), 900)
+    # div by 2 -- each plot is formed by two traces
+    count_of_plots = len(data) // 2
+    height = compute_figure_height(count_of_plots)
     layout = go.Layout(
         height=height,
         xaxis=dict(
@@ -161,6 +197,7 @@ def ridge_plot(df, topics, offset=100, add_offset=10):
             showticklabels=False,
         ),
         legend=dict(),
+        hovermode="x"
     )
     figure = go.Figure(data=data, layout=layout)
     return figure
