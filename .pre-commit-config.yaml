@@ -14,7 +14,6 @@ repos:
     rev: 1.1.53
     hooks:
       - id: pyright
-        pass_filenames: false
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
