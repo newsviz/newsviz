@@ -117,6 +117,38 @@ left_panel = html.Div(
                 } for s in container[source0][rubric0][1]],
             ),
         ]),
+        html.Div([
+            dcc.Markdown(
+                d("""
+                    **Уровень агрегации**
+                """)),
+            dcc.Dropdown(
+                id="agg_level",
+                value='month',
+                options=[
+                    {
+                        "label": "Hour",
+                        "value": "hour"
+                    },
+                    {
+                        "label": "Day",
+                        "value": "day"
+                    },
+                    {
+                        "label": "Week",
+                        "value": "week"
+                    },
+                    {
+                        "label": "Month",
+                        "value": "month"
+                    },
+                    {
+                        "label": "Year",
+                        "value": "year"
+                    }
+                ],
+            ),
+        ]),
     ],
     className="three columns",
 )
@@ -203,12 +235,13 @@ def update_top_words(source, rubric, topics):
         Input("type_chart", "value"),
         Input("rubric", "value"),
         Input("topics", "value"),
+        Input("agg_level", "value")
     ],
 )
-def update_graph(source, type_chart, rubric, selected_topics):
+def update_graph(source, type_chart, rubric, selected_topics, agg_level):
     """creates a figure for given params"""
     df, topics = container[source][rubric]
-    df = utils.aggregate_by_date(df, level="month")
+    df = utils.aggregate_by_date(df, level=agg_level)
     if type_chart == "ridge":
         figure = utils.ridge_plot(df, selected_topics)
     elif type_chart == "bump":

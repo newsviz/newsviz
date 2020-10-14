@@ -145,3 +145,5 @@ data
 # data
 *.csv.gz
 *.bin
+# tm dicts
+models/**/*.txt
