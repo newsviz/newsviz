@@ -1,4 +1,3 @@
-# import json
 from pathlib import Path
 
 import pandas as pd
@@ -18,8 +17,9 @@ data = data.merge(classified[['row_id', 'rubric_preds']], on='row_id', how='inne
 classes = data["rubric_preds"].unique()
 
 for cl in classes:
-    mask = classified["rubric_preds"] == cl
-    tm = TopicModelWrapperARTM(PATH, DATASET_NAME + "_" + str(cl))
+    print('Processing class {}'.format(cl))
+    mask = data["rubric_preds"] == cl
+    tm = TopicModelWrapperARTM(PATH, DATASET_NAME + "_" + str(cl), n_topics=20)
     tm.prepare_data(data[mask]["lemmatized"].values)
     tm.init_model()
     tm.fit()
