@@ -136,13 +136,16 @@ class TopicPredictorTask(luigi.Task):
             classes = data_c["rubric_preds"].unique()
             source_name = fname.split(".")[0]
             for cl in classes:
-                tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name)
+                tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))
                 mask = data_c["rubric_preds"] == cl
                 # TODO: add option to replace class label by class name
                 writepath = os.path.join(
                     self.output_path, source_name + str(cl) + ".csv.gz"
                 )
-                tm.load_model(self.model_path + str(cl) + ".bin", self.dict_path)
+                tm.load_model(
+                    os.path.join(self.model_path, f"tm_{source_name}_{cl}.bin"),
+                    os.path.join(self.dict_path, f"dictionary_tm_{source_name}_{cl}.txt")
+                )
                 tm.prepare_data(data_l[mask]["lemmatized"].values)
                 theta = tm.transform()
                 result = theta.merge(
@@ -151,7 +154,7 @@ class TopicPredictorTask(luigi.Task):
                     right_index=True,
                 )
                 tm.save_top_words(
-                    os.path.join(self.output_path, "topwords", f"tw_{cl}.json")
+                    os.path.join(self.output_path, "topwords", f"tw_{source_name}_{cl}.json")
                 )
                 result.to_csv(writepath, compression="gzip", index=False)
 
