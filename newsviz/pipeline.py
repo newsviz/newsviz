@@ -145,8 +145,8 @@ class TopicPredictorTask(luigi.Task):
                     self.output_path, source_name + str(cl) + ".csv.gz"
                 )
                 tm.load_model(
-                    os.path.join(self.model_path, f"tm_{source_name}_{cl}.bin"),
-                    os.path.join(self.dict_path, f"dictionary_tm_{source_name}_{cl}.txt")
+                    os.path.join(self.model_path.format(cl)),
+                    os.path.join(self.dict_path.format(cl))
                 )
                 tm.prepare_data(data[mask]["lemmatized"].values)
                 theta = tm.transform()

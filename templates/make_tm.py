@@ -20,7 +20,7 @@ for cl in classes:
     print('Processing class {}'.format(cl))
     mask = data["rubric_preds"] == cl
     tm = TopicModelWrapperARTM(PATH, DATASET_NAME + "_" + str(cl), n_topics=20)
-    tm.prepare_data(data[mask]["lemmatized"].values)
+    tm.prepare_data(data[mask]["lemmatized"].apply(lambda x: str(x)[:20000]).values)
     tm.init_model()
     tm.fit()
     tm.save_model(str(MODEL_PATH / f"tm_{DATASET_NAME}_{cl}.bin"))
