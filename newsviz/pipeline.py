@@ -2,6 +2,7 @@ import configparser
 import logging
 import os
 import sys
+import json
 
 import joblib
 import luigi
@@ -118,14 +119,27 @@ class TopicPredictorTask(luigi.Task):
         self.input_path_l = self.config["preprocessor"]["output_path"]
         self.output_path = self.config["topic"]["output_path"]
         self.model_path = self.config["topic"]["model_path"]
+        self.viz_path = self.config['visualizer']['data_path']
+        clf_path = self.config['classifier']['classifier_path']
         # TODO: add class to classname mapping
         # TODO: move model params to the model wrapper script
         self.dict_path = self.config["topic"]["dict_path"]
 
         self.fnames = get_fnames(self.input_path_c)
+        self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path),
+             'classnames.json'), 'r'))
+
 
     def requires(self):
         return RubricClassifierTask(conf=self.conf)
+
+    def make_writepath(self, source_name, cl):
+        fname = '{}.csv.gz'.format(self.class_renamer[str(cl)])
+        dst = os.path.join(self.viz_path, source_name)
+        # print(dst)
+        if not os.path.exists(dst):
+            os.makedirs(dst)
+        return os.path.join(dst, fname)
 
     def run(self):
         os.makedirs(os.path.join(self.output_path, "topwords"), exist_ok=True)
@@ -141,9 +155,7 @@ class TopicPredictorTask(luigi.Task):
                 tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))
                 mask = data["rubric_preds"] == cl
                 # TODO: add option to replace class label by class name
-                writepath = os.path.join(
-                    self.output_path, source_name + str(cl) + ".csv.gz"
-                )
+                writepath = self.make_writepath(source_name, cl)
                 tm.load_model(
                     os.path.join(self.model_path.format(cl)),
                     os.path.join(self.dict_path.format(cl))
@@ -156,7 +168,7 @@ class TopicPredictorTask(luigi.Task):
                     right_index=True,
                 )
                 tm.save_top_words(
-                    os.path.join(self.output_path, "topwords", f"tw_{source_name}_{cl}.json")
+                    os.path.join(self.viz_path, f"tw_{self.class_renamer[str(cl)]}.json")
                 )
                 result.to_csv(writepath, compression="gzip", index=False)
 
@@ -168,8 +180,6 @@ class TopicPredictorTask(luigi.Task):
             classes = data_c["rubric_preds"].unique()
             for cl in classes:
                 source_name = fname.split(".")[0]
-                writepath = os.path.join(
-                    self.output_path, source_name + str(cl) + ".csv.gz"
-                )
+                writepath = self.make_writepath(source_name, cl)
                 outputs.append(luigi.LocalTarget(writepath))
         return outputs
