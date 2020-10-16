@@ -20,7 +20,7 @@ import utils
 
 # TODO: Add top words
 
-PATH_CONFIG = "../../config/config.ini"
+PATH_CONFIG = "../config/config.ini"
 config = configparser.ConfigParser()
 config.read(PATH_CONFIG)
 data_path = config["visualizer"]["data_path"]
@@ -164,14 +164,15 @@ fig_div = html.Div(
 app.layout = html.Div(
     children=[
         # Page heading
-        html.H1(children="Visualization"),
+        html.H1(children="NewsViz Project"),
         # left panel and main plot
         html.Div(children=[left_panel, fig_div]),
         # Table with top words for chosen topics
         html.Div([
             html.H2(children="Топ слов по темам"),
             html.Div(id="top_words", )
-        ]),
+        ],
+    className="twelve columns",),
     ],
     className="twelve columns",
 )

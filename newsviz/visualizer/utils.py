@@ -36,6 +36,7 @@ def load_data(path):
             print(os.path.join(path, source, fname))
             data = pd.read_csv(os.path.join(path, source, fname),
                                compression="gzip")
+            # print(data.head())
             data, topics = preprocess_data(data)
             container[source][fname.split(".")[0]] = (data, topics)
 
@@ -47,15 +48,11 @@ def preprocess_data(df):
     scales data by it's std and magic constant 50
     (scaled to offset in ridgeline plot)
     """
-    df["date"] = [
-        "{}-{:02d}-01".format(a, b) for a, b in df[["year", "month"]].values
-    ]
-    df = df.drop(columns=["year", "month"])
     topics = list(df.columns)
     topics.remove("date")
     # scale columns
     maxes = df[topics].max().values
-    df[topics] = 50 * df[topics] / np.std(maxes)
+    df[topics] = df[topics] / np.std(maxes)
     return df, topics
 
 
@@ -116,7 +113,7 @@ def bump_chart(df, topics):
         trace = go.Scatter(
             x=df_plot["date"],
             y=df_plot[topic].values,
-            mode="lines + markers",
+            mode="lines",
             line=dict(shape="spline", smoothing=1.0, width=3),
             marker=dict(symbol="circle-open-dot", line=dict(width=7)),
             hoverinfo="name",
@@ -142,7 +139,11 @@ def bump_chart(df, topics):
     return figure
 
 
-def ridge_plot(df, topics, offset=100, add_offset=10):
+def compute_offset(df, topics):
+    return np.max(df[topics].max()) * 0.85
+
+
+def ridge_plot(df, topics, offset=100, add_offset=100):
     """
     df: pandas DataFrame with columns date (type: datetime)
         and columns listed in parameter topics (list of str),
@@ -151,6 +152,7 @@ def ridge_plot(df, topics, offset=100, add_offset=10):
     offset: shift between every single plot (multiplicative)
     add_offset: additive shift
     """
+    offset = compute_offset(df, topics)
     # data that will be passed to plotly
     data = list()
     for idx, topic in enumerate(topics):
