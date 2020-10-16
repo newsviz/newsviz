@@ -57,7 +57,7 @@ def preprocess_data(df):
 
 def load_top_words(container, path):
     top_words = dict()
-    # pic first source, assuming all sources have same rubric list
+    # pick first source, assuming all sources have same rubric list
     source = list(container.keys())[0]
     for rubric in container[source].keys():
         path_json = os.path.join(path, f"tw_{rubric}.json")
@@ -142,7 +142,7 @@ def compute_offset(df, topics):
     return np.max(df[topics].max()) * 0.85
 
 
-def ridge_plot(df, topics, offset=100, add_offset=100):
+def ridge_plot(df, topics, add_offset=100):
     """
     df: pandas DataFrame with columns date (type: datetime)
         and columns listed in parameter topics (list of str),
