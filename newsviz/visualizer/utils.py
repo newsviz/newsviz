@@ -34,8 +34,7 @@ def load_data(path):
         rubric_files = os.listdir(os.path.join(path, source))
         for fname in rubric_files:
             print(os.path.join(path, source, fname))
-            data = pd.read_csv(os.path.join(path, source, fname),
-                               compression="gzip")
+            data = pd.read_csv(os.path.join(path, source, fname), compression="gzip")
             # print(data.head())
             data, topics = preprocess_data(data)
             container[source][fname.split(".")[0]] = (data, topics)
@@ -81,7 +80,7 @@ def aggregate_by_date(df, level="month"):
         "day": "1D",
         "week": "1W",
         "month": "1MS",  # month start
-        "year": "1YS"  # year start
+        "year": "1YS",  # year start
     }
     freq = level_to_freq.get(level)
     if freq is None:
@@ -133,7 +132,7 @@ def bump_chart(df, topics):
             showticklabels=False,
         ),
         legend=dict(),
-        hovermode="x"
+        hovermode="x",
     )
     figure = go.Figure(data=data, layout=layout)
     return figure
@@ -191,8 +190,7 @@ def ridge_plot(df, topics, offset=100, add_offset=100):
     layout = go.Layout(
         height=height,
         xaxis=dict(
-            rangeslider=dict(range=[df["date"].min(), df["date"].max()],
-                             visible=True),
+            rangeslider=dict(range=[df["date"].min(), df["date"].max()], visible=True),
             type="date",
         ),
         yaxis=dict(
@@ -203,7 +201,7 @@ def ridge_plot(df, topics, offset=100, add_offset=100):
             showticklabels=False,
         ),
         legend=dict(),
-        hovermode="x"
+        hovermode="x",
     )
     figure = go.Figure(data=data, layout=layout)
     return figure
