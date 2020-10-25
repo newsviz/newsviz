@@ -5,7 +5,7 @@
 3. Вносим свои изменения.
 4. Запустить [pre-commit](https://github.com/pre-commit/pre-commit)
 
-    4.1 `$ pip install pre-commit black flake8`
+    4.1 `$ pip install pre-commit black isort`
 
     4.2 `$ pre-commit run -a`
 
@@ -73,7 +73,7 @@ Keep it simple stupid! Все отдельные элементы должны �
 3. Make your changes.
 4. Make [pre-commit](https://github.com/pre-commit/pre-commit)
 
-    4.1 `$ pip install pre-commit black flake8`
+    4.1 `$ pip install pre-commit black isort`
 
     4.2 `$ pre-commit run -a`
 
