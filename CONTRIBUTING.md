@@ -95,9 +95,9 @@ It is very difficult to pull automatically, and it should not depend on the asse
 It sometimes makes us all feel stupid, but nothing better has been invented yet. If something doesn't work, just ask (no one will laugh) or read a couple more out of a million tutorials (just google it).
 
 ### Other agreements:
-1. KISS: 
+1. KISS:
 Keep it simple stupid! All individual elements should be very simple and read at once. We keep the functionality as minimal as possible. Minimum external dependencies. Problem solutions should also be minimal. If the changes are too great, they will not be accepted, since no one has the time and energy to understand and evaluate them.
-2. Docs: 
+2. Docs:
 The main task is for someone to continue your work. It is better to write very little code, but describe it well. If the documentation cannot be entered asleep until the morning cup of coffee, then this is bad documentation.
 3. Never commit directly to the master branch.
 4. The maintainer does not accept his own patch (a moratorium on the rule until the project is operational).

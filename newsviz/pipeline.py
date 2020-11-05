@@ -16,18 +16,17 @@
 #    along with NewsViz Project.  If not, see <https://www.gnu.org/licenses/>.
 
 import configparser
+import json
 import logging
 import os
 import sys
-import json
 
 import joblib
 import luigi
-import pandas as pd
 import numpy as np
+import pandas as pd
 import topic_model
-from preprocessing_tools import clean_text
-from preprocessing_tools import lemmatize
+from preprocessing_tools import clean_text, lemmatize
 
 
 def get_fnames(path):
@@ -40,7 +39,7 @@ def get_fnames(path):
 
 
 class PreprocessorTask(luigi.Task):
-    """ expects directory with csv files in it
+    """expects directory with csv files in it
     files must contain columns: text, topics, date
     """
 
@@ -63,9 +62,7 @@ class PreprocessorTask(luigi.Task):
             data["cleaned_text"] = data["text"].apply(clean_text)
             data["lemmatized"] = data["cleaned_text"].apply(lemmatize)
             data["row_id"] = np.arange(data.shape[0])
-            data[["row_id", "date", "topics", "lemmatized"]].to_csv(
-                writepath, index=False, compression="gzip"
-            )
+            data[["row_id", "date", "topics", "lemmatized"]].to_csv(writepath, index=False, compression="gzip")
 
     def output(self):
         outputs = []
@@ -76,9 +73,9 @@ class PreprocessorTask(luigi.Task):
 
 
 class RubricClassifierTask(luigi.Task):
-    """ depends on previous step
-        and requires pretrained classifier with method predict()
-        and features extractor with method transform()
+    """depends on previous step
+    and requires pretrained classifier with method predict()
+    and features extractor with method transform()
     """
 
     conf = luigi.Parameter()
@@ -109,9 +106,7 @@ class RubricClassifierTask(luigi.Task):
             feats = feats_trnsfr.transform(data["lemmatized"].values)
             preds = model.predict(feats)
             data["rubric_preds"] = preds
-            data[["row_id", "date", "rubric_preds"]].to_csv(
-                writepath, index=False, compression="gzip"
-            )
+            data[["row_id", "date", "rubric_preds"]].to_csv(writepath, index=False, compression="gzip")
 
     def output(self):
         outputs = []
@@ -122,8 +117,8 @@ class RubricClassifierTask(luigi.Task):
 
 
 class TopicPredictorTask(luigi.Task):
-    """ depends on previous step
-        requires pretrained topic models for each class
+    """depends on previous step
+    requires pretrained topic models for each class
     """
 
     # TODO: save top words
@@ -137,22 +132,20 @@ class TopicPredictorTask(luigi.Task):
         self.input_path_l = self.config["preprocessor"]["output_path"]
         self.output_path = self.config["topic"]["output_path"]
         self.model_path = self.config["topic"]["model_path"]
-        self.viz_path = self.config['visualizer']['data_path']
-        clf_path = self.config['classifier']['classifier_path']
+        self.viz_path = self.config["visualizer"]["data_path"]
+        clf_path = self.config["classifier"]["classifier_path"]
         # TODO: add class to classname mapping
         # TODO: move model params to the model wrapper script
         self.dict_path = self.config["topic"]["dict_path"]
 
         self.fnames = get_fnames(self.input_path_c)
-        self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path),
-             'classnames.json'), 'r'))
-
+        self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path), "classnames.json"), "r"))
 
     def requires(self):
         return RubricClassifierTask(conf=self.conf)
 
     def make_writepath(self, source_name, cl):
-        fname = '{}.csv.gz'.format(self.class_renamer[str(cl)])
+        fname = "{}.csv.gz".format(self.class_renamer[str(cl)])
         dst = os.path.join(self.viz_path, source_name)
         # print(dst)
         if not os.path.exists(dst):
@@ -166,7 +159,7 @@ class TopicPredictorTask(luigi.Task):
             readpath_l = os.path.join(self.input_path_l, fname)
             data_c = pd.read_csv(readpath_c, compression="gzip")
             data_l = pd.read_csv(readpath_l, compression="gzip")
-            data = data_l.merge(data_c[['row_id', 'rubric_preds']], on='row_id', how='inner')
+            data = data_l.merge(data_c[["row_id", "rubric_preds"]], on="row_id", how="inner")
             classes = data["rubric_preds"].unique()
             source_name = fname.split(".")[0]
             for cl in classes:
@@ -174,10 +167,7 @@ class TopicPredictorTask(luigi.Task):
                 mask = data["rubric_preds"] == cl
                 # TODO: add option to replace class label by class name
                 writepath = self.make_writepath(source_name, cl)
-                tm.load_model(
-                    os.path.join(self.model_path.format(cl)),
-                    os.path.join(self.dict_path.format(cl))
-                )
+                tm.load_model(os.path.join(self.model_path.format(cl)), os.path.join(self.dict_path.format(cl)))
                 tm.prepare_data(data[mask]["lemmatized"].values)
                 theta = tm.transform()
                 result = theta.merge(
@@ -185,9 +175,7 @@ class TopicPredictorTask(luigi.Task):
                     left_index=True,
                     right_index=True,
                 )
-                tm.save_top_words(
-                    os.path.join(self.viz_path, f"tw_{self.class_renamer[str(cl)]}.json")
-                )
+                tm.save_top_words(os.path.join(self.viz_path, f"tw_{self.class_renamer[str(cl)]}.json"))
                 result.to_csv(writepath, compression="gzip", index=False)
 
     def output(self):
