@@ -146,5 +146,6 @@ See [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.m
  - [@orech](https://github.com/orech)
  - [@p-kachalov](https://github.com/p-kachalov)
  - [@vtrokhymenko](https://github.com/vtrokhymenko)
+ - [@tu-artem](https://github.com/tu-artem)
  
 Здесь могло быть ваше имя (your name could be here).
