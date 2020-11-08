@@ -1,5 +1,6 @@
 # Copyright © 2020 Viktor Trokhymenko. All rights reserved.
 # Copyright © 2020 Sviatoslav Kovalev. All rights reserved.
+# Copyright © 2020 Artem Tuisuzov. All rights reserved.
 
 #    This file is part of NewsViz Project.
 #
