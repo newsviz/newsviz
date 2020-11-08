@@ -7,7 +7,7 @@
 ## Что здесь происходит
 Мы делаем инструмент для исследования развития со временем [тем в текстах](www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование). Основной целевой набор текстов - русскоязычные новости, но методика и сам инструмент подходят для произвольного набора текстов.  
 (Проект переехал [отсюда](https://github.com/ods-ai-ml4sg/proj_news_viz))  
-  
+
 Концепт такой:  
 ![Preview2](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
 
@@ -68,7 +68,7 @@ Python 3.6+
 ## What's going on here
 We are making a tool for researching the development of [topics in the texts](www.machinelearning.ru/wiki/index.php?title=Thematic_modeling) over the time. The main target set of texts is Russian language news, but the methodology and the tool itself are suitable for an arbitrary set of texts.
 (The project has moved [from here](https://github.com/ods-ai-ml4sg/proj_news_viz))
-  
+
 The concept is this:
 
 ![Preview2](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
@@ -147,5 +147,5 @@ See [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.m
  - [@Teoretic6](https://github.com/Teoretic6)
  - [@tu-artem](https://github.com/tu-artem)
  - [@vtrokhymenko](https://github.com/vtrokhymenko)
- 
+
 Здесь могло быть ваше имя (your name could be here).

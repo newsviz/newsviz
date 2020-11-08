@@ -148,4 +148,3 @@ data
 # tm dicts
 models/**/*.txt
 bigartm.*
-

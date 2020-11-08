@@ -9,7 +9,7 @@ on:
 
 jobs:
   codeql-build:
-    
+
     runs-on: ubuntu-latest
 
     steps:

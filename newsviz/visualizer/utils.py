@@ -51,7 +51,7 @@ def preprocess_data(df):
     topics.remove("date")
     # scale columns
     maxes = df[topics].max().values
-    df[topics] = df[topics] / np.std(maxes)
+    df[topics] = df[topics].astype(np.float32) / np.std(maxes)
     return df, topics
 
 
