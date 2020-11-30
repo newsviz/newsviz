@@ -39,6 +39,7 @@ Keep it simple stupid! Все отдельные элементы должны �
 8. Время жизни ISSUE – полгода. Если за полгода никто не создал соответствующий патч, значит не сильно оно надо.
 9. Используем форки вместо веток – снижаем сложность проекта. Ветки создают хаос.
 10. Ничего не требуйте от пользователя: Если чтобы воспользоваться вашим решением пользователь должен сначала сделать несколько шагов, то решение скорее всего не будет использоваться. Реализуйте сами то, что пользователь должен бы был делать перед запуском.
+<img src="https://raw.githubusercontent.com/newsviz/newsviz.github.io/master/pics/progress_not_perfection.jpg" width=300>
 
 ### Про GPLv3
 Лицензия была выбрана для удобства контирбьюторов. Без согласия всех участников (независимо от величины вклада) невозможно продат или передать проект, либо изменить лицензию. Все внешние изменения, форки, надстройки будут иметь ту же лицензию -- это значит, что если кто-то переделает или дополнит ваш код, вы сможете использовать или дополнить его снова.
@@ -107,6 +108,7 @@ The main task is for someone to continue your work. It is better to write very l
 8. ISSUE lifetime is six months. If no one has created the corresponding patch in six months, then it is not very necessary.
 9. Using forks instead of branches - reducing the complexity of the project. Branches create chaos.
 10. Don't demand anything from the user: If a user has to take several steps first to use your solution, the solution will most likely not be used. Implement yourself what the user should have done before launching.
+<img src="https://raw.githubusercontent.com/newsviz/newsviz.github.io/master/pics/progress_not_perfection.jpg" width=300>
 
 ### About GPLv3
 The license has been chosen for the convenience of counterparties. Without the consent of all participants (regardless of the size of the contribution), it is impossible to sell or transfer the project, or change the license. All external changes, forks, add-ons will have the same license - this means that if someone changes or supplements your code, you can use or supplement it again.
