@@ -1,3 +1,5 @@
-notebook
+black
 matplotlib
+notebook
+pre-commit
 scikit-learn
