@@ -25,15 +25,13 @@ import sys
 
 import joblib
 import luigi
-import tqdm
 import numpy as np
 import pandas as pd
-
 import topic_model
+import tqdm
 from preprocessing_tools import clean_text, lemmatize
 
-
-logger = logging.getLogger('luigi-interface')
+logger = logging.getLogger("luigi-interface")
 
 
 def get_fnames(path):
@@ -43,6 +41,7 @@ def get_fnames(path):
             continue
         fnames.append(item)
     return fnames
+
 
 MULTIPROCESSING = True
 CPU_COUNT = max(mp.cpu_count() - 4, 1)
@@ -77,25 +76,25 @@ class PreprocessorTask(luigi.Task):
         self.fnames = get_fnames(self.input_path)
 
     def run(self):
-        logger = logging.getLogger('luigi-interface')
+        logger = logging.getLogger("luigi-interface")
         for fname in self.fnames:
-            logger.info('process %s', fname)
+            logger.info("process %s", fname)
             readpath = os.path.join(self.input_path, fname)
             writepath = os.path.join(self.output_path, fname)
             data = pd.read_csv(readpath, compression="gzip")
 
-            logger.info('process %s, clean text', fname)
-            data['cleaned_text'] = apply_function_mp(clean_text, data['text'])
+            logger.info("process %s, clean text", fname)
+            data["cleaned_text"] = apply_function_mp(clean_text, data["text"])
 
-            logger.info('process %s, lemmatize', fname)
+            logger.info("process %s, lemmatize", fname)
             data["lemmatized"] = apply_function_mp(
                 lemmatize,
                 data["cleaned_text"],
             )
 
-            logger.info('process %s, create ids', fname)
+            logger.info("process %s, create ids", fname)
             data["row_id"] = np.arange(data.shape[0])
-            logger.info('write to %s', writepath)
+            logger.info("write to %s", writepath)
             data[["row_id", "date", "topics", "lemmatized"]].to_csv(writepath, index=False, compression="gzip")
 
     def output(self):
@@ -129,13 +128,13 @@ class RubricClassifierTask(luigi.Task):
         return PreprocessorTask(conf=self.conf)
 
     def run(self):
-        logger.info('start %s task', self.__class__.__name__)
+        logger.info("start %s task", self.__class__.__name__)
 
         model = joblib.load(self.classifier_path)
         feats_trnsfr = joblib.load(self.ftransformer_path)
 
         for fname in self.fnames:
-            logger.info('process %s', fname)
+            logger.info("process %s", fname)
             readpath = os.path.join(self.input_path, fname)
             writepath = os.path.join(self.output_path, fname)
             data = pd.read_csv(readpath, compression="gzip")
@@ -176,7 +175,7 @@ class TopicPredictorTask(luigi.Task):
         self.dict_path = self.config["topic"]["dict_path"]
 
         self.fnames = get_fnames(self.input_path_c)
-        self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path), 'classnames.json'), 'r'))
+        self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path), "classnames.json"), "r"))
 
     def requires(self):
         return RubricClassifierTask(conf=self.conf)
@@ -204,7 +203,10 @@ class TopicPredictorTask(luigi.Task):
                 mask = data["rubric_preds"] == cl
                 # TODO: add option to replace class label by class name
                 writepath = self.make_writepath(source_name, cl)
-                tm.load_model(os.path.join(self.model_path.format(cl)), os.path.join(self.dict_path.format(cl)))
+                tm.load_model(
+                    os.path.join(self.model_path.format(cl)),
+                    os.path.join(self.dict_path.format(cl)),
+                )
                 tm.prepare_data(data[mask]["lemmatized"].values)
                 theta = tm.transform()
                 result = theta.merge(

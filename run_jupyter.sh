@@ -16,4 +16,3 @@ then
     cp models/gazeta.bin models/classifier/gazeta.bin
     cp models/gazeta_tfidf.bin models/classifier/gazeta_tfidf.bin
 fi
-

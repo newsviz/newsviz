@@ -115,7 +115,7 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 └──tests
 ```
 
-## Запуск с помощью docker
+## Run with docker
 
 Launch project starting from data download to running visualization:
 1. run_download_data.sh to download raw data
