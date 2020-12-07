@@ -149,3 +149,5 @@ data
 models/**/*.txt
 bigartm.*
 
+# IDE project
+.idea

@@ -10,6 +10,7 @@ import pandas as pd
 import topic_model
 from preprocessing_tools import clean_text
 from preprocessing_tools import lemmatize
+import numpy as np
 
 
 def get_fnames(path):
@@ -45,6 +46,7 @@ class PreprocessorTask(luigi.Task):
             data["cleaned_text"] = data["text"].apply(clean_text)
             data["lemmatized"] = data["cleaned_text"].apply(lemmatize)
             data["row_id"] = np.arange(data.shape[0])
+            data["topics"] = data["topics"].str.lower()
             data[["row_id", "date", "topics", "lemmatized"]].to_csv(
                 writepath, index=False, compression="gzip"
             )
