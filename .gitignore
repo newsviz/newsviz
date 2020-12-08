@@ -141,7 +141,11 @@ cython_debug/
 .vscode
 
 # Data files
-data
+data/classified
+data/processed
+data/raw
+data/ready2viz
+data/topic_model_ed
 # data
 *.csv.gz
 *.bin
@@ -151,3 +155,5 @@ bigartm.*
 
 # IDE project
 .idea
+
+.ipynb_checkpoints
