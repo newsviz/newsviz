@@ -76,17 +76,20 @@ class DBTransfer(luigi.Task):
         self.config = configparser.ConfigParser()
         self.config.read(self.conf)
         self.input_path = self.config["database"]["input_path"]
+        print('='*100)
+        print(self.input_path)
+        print('=' * 100)
         self.database = self.config["database"]["database"]
-        self.fnames = get_fnames(self.input_path)
         self.engine = create_engine(f'sqlite:///{self.database}', echo=True)
 
     def run(self):
+        fnames = get_fnames(self.input_path)
         Session = sessionmaker()
         Session.configure(bind=self.engine)
         # Открыли сессию для записи
         session = Session()
-        print(self.fnames)
-        for fname in self.fnames:
+        print(fnames)
+        for fname in fnames:
             read_path = os.path.join(self.input_path, fname)
             data = pd.read_csv(read_path, compression="gzip")
             for key, value in data.iterrows():
