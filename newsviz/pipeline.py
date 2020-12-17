@@ -3,6 +3,7 @@ import logging
 import os
 import sys
 import json
+import numpy as np
 
 import joblib
 import luigi
@@ -10,6 +11,15 @@ import pandas as pd
 import topic_model
 from preprocessing_tools import clean_text
 from preprocessing_tools import lemmatize
+from luigi.contrib import sqla
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+import datetime
+
+sys.path.append('../database')
+from models import News
+import uuid
 
 
 def get_fnames(path):
@@ -56,6 +66,47 @@ class PreprocessorTask(luigi.Task):
             outputs.append(luigi.LocalTarget(writepath))
         return outputs
 
+
+class DBTransfer(luigi.Task):
+
+    conf = luigi.Parameter()
+
+    def __init__(self, *args, **kwargs):
+        super(DBTransfer, self).__init__(*args, **kwargs)
+        self.config = configparser.ConfigParser()
+        self.config.read(self.conf)
+        self.input_path = self.config["database"]["input_path"]
+        self.database = self.config["database"]["database"]
+        self.fnames = get_fnames(self.input_path)
+        self.engine = create_engine(f'sqlite:///{self.database}', echo=True)
+
+    def run(self):
+        Session = sessionmaker()
+        Session.configure(bind=self.engine)
+        # Открыли сессию для записи
+        session = Session()
+        print(self.fnames)
+        for fname in self.fnames:
+            read_path = os.path.join(self.input_path, fname)
+            data = pd.read_csv(read_path, compression="gzip")
+            for key, value in data.iterrows():
+                date = value[1]
+                topic = value[2]
+                text = value[3]
+                session.add(News(id=str(uuid.uuid4()), date=date, topic=topic, text=text,
+                                 created_at=datetime.date.today(), updated_at=datetime.date.today()))
+
+            session.commit()
+
+        # вывод данных из базы. Использовал для тест-проверки
+        #for instance in session.query(News).order_by(News.id):
+        #    print(instance.id, instance.date, instance.topic, instance.text)
+
+    def requires(self):
+        return PreprocessorTask(conf=self.conf)
+
+    def output(self):
+        pass
 
 class RubricClassifierTask(luigi.Task):
     """ depends on previous step

@@ -156,3 +156,9 @@ bigartm.*
 
 #ide
 .idea
+
+#database
+newsviz.sqlite
+
+#stopword
+stopwords_ru.txt
