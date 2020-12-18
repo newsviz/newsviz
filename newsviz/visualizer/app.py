@@ -12,11 +12,9 @@ import numpy as np
 import pandas as pd
 import plotly.figure_factory as ff
 import plotly.graph_objs as go
-from dash.dependencies import Input
-from dash.dependencies import Output
-from dash.dependencies import State
+from dash.dependencies import Input, Output, State
 from plotly import tools
-import utils
+from visualizer import utils
 
 # TODO: Add top words
 
@@ -97,9 +95,7 @@ left_panel = html.Div(
                 dcc.Dropdown(
                     id="rubric",
                     value=list(container[source0].keys())[0],
-                    options=[
-                        {"label": s, "value": s} for s in container[source0].keys()
-                    ],
+                    options=[{"label": s, "value": s} for s in container[source0].keys()],
                 ),
             ]
         ),
@@ -117,9 +113,7 @@ left_panel = html.Div(
                     id="topics",
                     multi=True,
                     value=["topic_0", "topic_1"],
-                    options=[
-                        {"label": s, "value": s} for s in container[source0][rubric0][1]
-                    ],
+                    options=[{"label": s, "value": s} for s in container[source0][rubric0][1]],
                 ),
             ]
         ),
@@ -161,11 +155,18 @@ app.layout = html.Div(
     children=[
         # Page heading
         html.H1(children="NewsViz Project"),
+        html.Div([html.A("О проекте", href="https://newsviz.github.io/", target="_blank")]),
+        html.H2(children="Темы в текстах"),
         # left panel and main plot
         html.Div(children=[left_panel, fig_div]),
         # Table with top words for chosen topics
         html.Div(
-            [html.H2(children="Топ слов по темам"), html.Div(id="top_words",)],
+            [
+                html.H2(children="Топ слов по темам"),
+                html.Div(
+                    id="top_words",
+                ),
+            ],
             className="twelve columns",
         ),
     ],
@@ -178,17 +179,13 @@ app.layout = html.Div(
 @app.callback(Output("rubric", "options"), [Input("source", "value")])
 def update_rubric(source):
     """For given source outputs
-        list of available rubrics
-        """
-    options = [
-        {"label": rubric, "value": rubric} for rubric in container[source].keys()
-    ]
+    list of available rubrics
+    """
+    options = [{"label": rubric, "value": rubric} for rubric in container[source].keys()]
     return options
 
 
-@app.callback(
-    Output("topics", "options"), [Input("source", "value"), Input("rubric", "value")]
-)
+@app.callback(Output("topics", "options"), [Input("source", "value"), Input("rubric", "value")])
 def update_topics(source, rubric):
     """For given source and rubric
     outputs list of available topics
@@ -204,7 +201,7 @@ def update_topics(source, rubric):
 )
 def update_top_words(source, rubric, topics):
     """returns table with top words
-        for every selected topic
+    for every selected topic
     """
     result = []
     for topic in topics:
