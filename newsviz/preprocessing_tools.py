@@ -1,5 +1,6 @@
 # Copyright © 2020 Viktor Trokhymenko. All rights reserved.
 # Copyright © 2020 Sviatoslav Kovalev. All rights reserved.
+# Copyright © 2020 Artem Tuisuzov. All rights reserved.
 
 #    This file is part of NewsViz Project.
 #
@@ -55,7 +56,11 @@ def clean_text(text: str = None) -> str:
     text = re.sub(r"https?:\/\/.*[\r\n]*", "", text)  # remove urls
     text = re.sub(r"\S+@\S+", "", text)  # remove emails
     text = re.sub(r"ё", "е", text)
-    text = re.sub(r"\!|\"|\:|\;|\.|\,|[<>]|\?|\@|\[|\]|\^|\_|\`|[{}]|\~|[—–-]|[«»]|[()]", " ", text)  # remove punctuation
+    text = re.sub(
+        r"\!|\"|\:|\;|\.|\,|[<>]|\?|\@|\[|\]|\^|\_|\`|[{}]|\~|[—–-]|[«»]|[()]|[\$\#=']|[%\&\*\+/\\\|]",
+        " ",
+        text,
+    )  # remove punctuation
     text = re.sub(r"\s+", " ", text)  # remove the long blanks
 
     text = text.strip()
@@ -98,10 +103,7 @@ def lemmatize(text: str = None, char4split: str = " ") -> str:
     # in this case it's normal approach because we hard cleaned text
     list_tokens = text.split(char4split)
 
-    words_lem = [
-        get_morph4token(token) for token in list_tokens
-        if token not in stopwords
-    ]
+    words_lem = [get_morph4token(token) for token in list_tokens if token not in stopwords]
 
     if len(words_lem) < 3:
         return ""

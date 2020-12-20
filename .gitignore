@@ -139,6 +139,7 @@ cython_debug/
 
 # VSCode
 .vscode
+.devcontainer
 
 # Data files
 data
@@ -147,5 +148,7 @@ data
 *.bin
 # tm dicts
 models/**/*.txt
+models/**/*.json
+models/*.json
 bigartm.*
-
+newsviz/stopwords_ru.txt
