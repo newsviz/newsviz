@@ -142,13 +142,22 @@ cython_debug/
 .devcontainer
 
 # Data files
-data
+data/classified
+data/processed
+data/raw
+data/ready2viz
+data/topic_model_ed
+
 # data
 *.csv.gz
 *.bin
+# newsviz/stopwords_ru.txt
+
 # tm dicts
 models/**/*.txt
 models/**/*.json
 models/*.json
 bigartm.*
-newsviz/stopwords_ru.txt
+
+#ide
+.idea
