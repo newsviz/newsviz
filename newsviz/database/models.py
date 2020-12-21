@@ -18,12 +18,7 @@ class BaseModel(Base):
     __abstract__ = True
 
     created_at = Column(TIMESTAMP, nullable=False, server_default=FetchedValue())
-    updated_at = Column(
-        TIMESTAMP,
-        nullable=False,
-        server_default=FetchedValue(),
-        server_onupdate=FetchedValue(),
-    )
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=FetchedValue(), server_onupdate=FetchedValue())
 
     def __repr__(self):
         return "<{0.__class__.__name__}(id={0.id!r})>".format(self)
@@ -38,8 +33,4 @@ class News(BaseModel):
     text = Column(String)
 
     def __repr__(self):
-        return "<News(date='%s', topic='%s', text='%s')>" % (
-            self.date,
-            self.topic,
-            self.text,
-        )
+        return "<News(date='%s', topic='%s', text='%s')>" % (self.date, self.topic, self.text)
