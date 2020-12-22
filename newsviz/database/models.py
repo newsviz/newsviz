@@ -2,7 +2,7 @@
 В данном файле описывается структура БД проекта, в данном файле
 должно находится описание всех таблиц базы данных.
 """
-from sqlalchemy import TIMESTAMP, Column, String, DateTime, Text
+from sqlalchemy import TIMESTAMP, Column, DateTime, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.schema import FetchedValue
 
