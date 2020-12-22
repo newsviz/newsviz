@@ -2,7 +2,7 @@
 В данном файле описывается структура БД проекта, в данном файле
 должно находится описание всех таблиц базы данных.
 """
-from sqlalchemy import TIMESTAMP, Column, String
+from sqlalchemy import TIMESTAMP, Column, DateTime, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.schema import FetchedValue
 
@@ -28,9 +28,9 @@ class BaseModel(Base):
 class News(BaseModel):
     __tablename__ = "news"
     id = Column(String, primary_key=True)
-    date = Column(String)
+    date = Column(DateTime)
     topic = Column(String)
-    text = Column(String)
+    text = Column(Text)
 
     def __repr__(self):
         return "<News(date='%s', topic='%s', text='%s')>" % (self.date, self.topic, self.text)
