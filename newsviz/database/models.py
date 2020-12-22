@@ -33,4 +33,5 @@ class News(BaseModel):
     text = Column(String)
 
     def __repr__(self):
-        return "<News(date='%s', topic='%s', text='%s')>" % (self.date, self.topic, self.text)
+        text = f"{self.text[:100]}..." if len(self.text) > 100 else self.text
+        return "<News(date='%s', topic='%s', text='%s')>" % (self.date, self.topic, text)
