@@ -32,9 +32,9 @@ classified = pd.read_csv(f"data/classified/{DATASET_NAME}.csv.gz", compression="
 data = data.merge(classified[["row_id", "rubric_preds"]], on="row_id", how="inner")
 
 classes = data["rubric_preds"].unique()
-
-for cl in classes:
-    print("Processing class {}".format(cl))
+classes_total = len(classes)
+for idx, cl in enumerate(classes):
+    print("Processing class {} ({} of {})".format(cl, idx + 1, classes_total))
     mask = data["rubric_preds"] == cl
     tm = TopicModelWrapperARTM(PATH, DATASET_NAME + "_" + str(cl), n_topics=20)
     tm.prepare_data(data[mask]["lemmatized"].apply(lambda x: str(x)[:20000]).values)

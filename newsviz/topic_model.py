@@ -81,7 +81,11 @@ class TopicModelWrapperARTM:
         else:
             self.dictionary.load_text(dictionary_path)
 
-        self.model = artm.ARTM(num_topics=self.n_topics, dictionary=self.dictionary, show_progress_bars=True)
+        self.model = artm.ARTM(
+            num_topics=self.n_topics,
+            dictionary=self.dictionary,
+            show_progress_bars=True,
+        )
 
         # scores
         self.model.scores.add(artm.PerplexityScore(name="PerplexityScore", dictionary=self.dictionary))

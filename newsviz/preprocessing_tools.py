@@ -57,7 +57,9 @@ def clean_text(text: str = None) -> str:
     text = re.sub(r"\S+@\S+", "", text)  # remove emails
     text = re.sub(r"ё", "е", text)
     text = re.sub(
-        r"\!|\"|\:|\;|\.|\,|[<>]|\?|\@|\[|\]|\^|\_|\`|[{}]|\~|[—–-]|[«»]|[()]|[\$\#=']|[%\&\*\+/\\\|]", " ", text
+        r"\!|\"|\:|\;|\.|\,|[<>]|\?|\@|\[|\]|\^|\_|\`|[{}]|\~|[—–-]|[«»]|[()]|[\$\#=']|[%\&\*\+/\\\|]",
+        " ",
+        text,
     )  # remove punctuation
     text = re.sub(r"\s+", " ", text)  # remove the long blanks
 
