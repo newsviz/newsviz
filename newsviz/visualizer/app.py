@@ -12,9 +12,9 @@ import numpy as np
 import pandas as pd
 import plotly.figure_factory as ff
 import plotly.graph_objs as go
-import utils
 from dash.dependencies import Input, Output, State
 from plotly import tools
+from visualizer import utils
 
 # TODO: Add top words
 
@@ -155,6 +155,8 @@ app.layout = html.Div(
     children=[
         # Page heading
         html.H1(children="NewsViz Project"),
+        html.Div([html.A("О проекте", href="https://newsviz.github.io/", target="_blank")]),
+        html.H2(children="Темы в текстах"),
         # left panel and main plot
         html.Div(children=[left_panel, fig_div]),
         # Table with top words for chosen topics
