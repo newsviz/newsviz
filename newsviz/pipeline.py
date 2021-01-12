@@ -17,6 +17,7 @@
 #    along with NewsViz Project.  If not, see <https://www.gnu.org/licenses/>.
 
 import configparser
+import datetime
 import json
 import logging
 import multiprocessing as mp
@@ -29,7 +30,15 @@ import numpy as np
 import pandas as pd
 import topic_model
 import tqdm
+from luigi.contrib import sqla
 from preprocessing_tools import clean_text, lemmatize
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+sys.path.append("./database")
+import uuid
+
+from models import News
 
 logger = logging.getLogger("luigi-interface")
 
@@ -103,6 +112,58 @@ class PreprocessorTask(luigi.Task):
             writepath = os.path.join(self.output_path, fname)
             outputs.append(luigi.LocalTarget(writepath))
         return outputs
+
+
+class DBTransfer(luigi.Task):
+
+    conf = luigi.Parameter()
+
+    def __init__(self, *args, **kwargs):
+        super(DBTransfer, self).__init__(*args, **kwargs)
+        self.config = configparser.ConfigParser()
+        self.config.read(self.conf)
+        self.input_path = self.config["database"]["input_path"]
+        print("=" * 100)
+        print(self.input_path)
+        print("=" * 100)
+        self.database = self.config["database"]["database"]
+        self.engine = create_engine(f"sqlite:///{self.database}", echo=True)
+
+    def run(self):
+        fnames = get_fnames(self.input_path)
+        Session = sessionmaker()
+        Session.configure(bind=self.engine)
+        # Открыли сессию для записи
+        session = Session()
+        for fname in fnames:
+            read_path = os.path.join(self.input_path, fname)
+            data = pd.read_csv(read_path, compression="gzip")
+            for key, value in data.iterrows():
+                date = datetime.datetime.strptime(value[1], "%Y-%m-%d %H:%M:%S")
+                topic = value[2]
+                text = value[3]
+                session.add(
+                    News(
+                        id=str(uuid.uuid4()),
+                        date=date,
+                        topic=topic,
+                        text=text,
+                        created_at=datetime.date.today(),
+                        updated_at=datetime.date.today(),
+                    )
+                )
+
+            session.commit()
+
+        # вывод данных из базы. Использовал для тест-проверки
+        # for instance in session.query(News).order_by(News.id):
+        #    print(instance.id, instance.date, instance.topic, instance.text)
+
+    def requires(self):
+        return PreprocessorTask(conf=self.conf)
+
+    def output(self):
+        pass
 
 
 class RubricClassifierTask(luigi.Task):
