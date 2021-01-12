@@ -151,7 +151,8 @@ data/topic_model_ed
 # data
 *.csv.gz
 *.bin
-# newsviz/stopwords_ru.txt
+newsviz/stopwords_ru.txt
+*.sqlite
 
 # tm dicts
 models/**/*.txt
