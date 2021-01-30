@@ -35,14 +35,15 @@ except FileNotFoundError:
     print("can't load {}".format(stopwords_path))
     stopwords = []
 
-
-def clean_text(text: str = None) -> str:
+def clean_text(text: str = None, language: str = "ru") -> str:
     """
     clean text, leaving only tokens for clustering
     parameters
     ----------
         text : string
             input text
+        language : string (default = "ru")
+            article (text) language
     returns
     -------
         cleaned string text without lower case
@@ -70,7 +71,6 @@ def clean_text(text: str = None) -> str:
     else:
         return text
 
-
 @lru_cache()
 def get_morph4token(token: str = None) -> str:
     """
@@ -80,13 +80,16 @@ def get_morph4token(token: str = None) -> str:
     return morph.parse(token)[0].normal_form
 
 
-def lemmatize(text: str = None, char4split: str = " ") -> str:
+
+def lemmatize(text: str = None, language: str = "ru", char4split: str = " ") -> str:
     """
     lemmatize text with cache
     parameters
     ----------
     input_text : string
         cleaned text
+    language : string (default = "ru")
+        article (text) language
     char4split : string (default = " ")
         char-symbol how to split text
     returns
@@ -102,6 +105,8 @@ def lemmatize(text: str = None, char4split: str = " ") -> str:
     # get tokens from input text
     # in this case it's normal approach because we hard cleaned text
     list_tokens = text.split(char4split)
+    if language != "ru":
+        pass
 
     words_lem = [get_morph4token(token) for token in list_tokens if token not in stopwords]
 
