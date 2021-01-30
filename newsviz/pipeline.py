@@ -23,8 +23,8 @@ import logging
 import multiprocessing as mp
 import os
 import sys
-
 from itertools import product
+
 import joblib
 import luigi
 import numpy as np
@@ -98,11 +98,7 @@ class PreprocessorTask(luigi.Task):
             data["cleaned_text"] = apply_function_mp(clean_text, data["text"], self.language)
 
             logger.info("process %s, lemmatize", fname)
-            data["lemmatized"] = apply_function_mp(
-                lemmatize,
-                data["cleaned_text"],
-                self.language
-            )
+            data["lemmatized"] = apply_function_mp(lemmatize, data["cleaned_text"], self.language)
 
             logger.info("process %s, create ids", fname)
             data["row_id"] = np.arange(data.shape[0])

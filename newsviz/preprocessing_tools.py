@@ -35,6 +35,7 @@ except FileNotFoundError:
     print("can't load {}".format(stopwords_path))
     stopwords = []
 
+
 def clean_text(text: str = None, language: str = "ru") -> str:
     """
     clean text, leaving only tokens for clustering
@@ -71,6 +72,7 @@ def clean_text(text: str = None, language: str = "ru") -> str:
     else:
         return text
 
+
 @lru_cache()
 def get_morph4token(token: str = None) -> str:
     """
@@ -78,7 +80,6 @@ def get_morph4token(token: str = None) -> str:
     """
 
     return morph.parse(token)[0].normal_form
-
 
 
 def lemmatize(text: str = None, language: str = "ru", char4split: str = " ") -> str:
