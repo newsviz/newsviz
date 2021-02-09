@@ -23,10 +23,10 @@ from sklearn.neighbors import NearestNeighbors
 class Ranker:
     def __init__(self, embs, meta, metric="cosine"):
         """
-      embs: numpy array of vectors for each document
-      meta: list of arbitrary metainformation with same 
-      indexing (used for output) == sample
-      """
+        embs: numpy array of vectors for each document
+        meta: list of arbitrary metainformation with same
+        indexing (used for output) == sample
+        """
         self.embs = embs
         self.meta = meta
 
@@ -46,7 +46,7 @@ class Ranker:
 
     def get_attributes(self, ixs):
         """
-        Outputs metainformation for vectors 
+        Outputs metainformation for vectors
         which of indexes  == `ixs`(from get_nearest)
         """
         attrs = [self.meta[i] for i in ixs]
