@@ -136,3 +136,29 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# VSCode
+.vscode
+.devcontainer
+
+# Data files
+data/classified
+data/processed
+data/raw
+data/ready2viz
+data/topic_model_ed
+
+# data
+*.csv.gz
+*.bin
+newsviz/stopwords_ru.txt
+*.sqlite
+
+# tm dicts
+models/**/*.txt
+models/**/*.json
+models/*.json
+bigartm.*
+
+#ide
+.idea

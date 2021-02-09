@@ -1,22 +1,23 @@
-<img src="https://raw.githubusercontent.com/iggisv9t/temp/master/news_viz_logo_eye.svg" alt="LOGO" width="300"/>  
+<img src="https://raw.githubusercontent.com/newsviz/newsviz.github.io/master/pics/news_viz_logo_eye.svg" alt="LOGO" width="300"/>  
+
 
 Часть инициативы <img src="https://ods.ai/ods/logo/ml4sg.svg" width="30"> ML4SG от [ods.ai](https://ods.ai)
 
 [english version](#english-version)
 
 ## Что здесь происходит
-Мы делаем инструмент для исследования развития со временем [тем в текстах](www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование). Основной целевой набор текстов - русскоязычные новости, но методика и сам инструмент подходят для произвольного набора текстов.  
-(Проект переехал [отсюда](https://github.com/ods-ai-ml4sg/proj_news_viz))  
-  
-Концепт такой:  
+Мы делаем инструмент для исследования развития со временем [тем в текстах](www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование). Основной целевой набор текстов - русскоязычные новости, но методика и сам инструмент подходят для произвольного набора текстов.
+(Проект переехал [отсюда](https://github.com/ods-ai-ml4sg/proj_news_viz))
+
+Концепт такой:
 ![Preview2](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
 
-### Ответы на все вопросы первым делом искать тут:  
+### Ответы на все вопросы первым делом искать тут:
 https://github.com/newsviz/newsviz/wiki
 
 Тут документация по основному коду https://github.com/newsviz/newsviz/wiki/Инструкция-по-запуску
 
-## Структура репозитория  
+## Структура репозитория
 
 ```bash
 .
@@ -46,6 +47,15 @@ https://github.com/newsviz/newsviz/wiki
 ```
 
 
+## Запуск с помощью docker
+
+Шаги по запуску проекта с нуля - от скачивания данных до визуализации:
+1. run_download_data.sh для скачивания исходных непроцессированных данных
+2. run_build.sh для сборки контейнера
+3. run_pipeline.sh для препроцессинга данных, обучения моделей и подготовки данных для визуализации
+4. run_viz.sh для запуска контейнера с визуализацией, доступ по ссылке http://0.0.0.0:8080
+5. run_clear.sh для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся.
+
 
 ## Requirements
 
@@ -60,7 +70,7 @@ Python 3.6+
 3. Если ничего не понятно -- задайте вопросы, это приветствуется.
 
 ## Родственные проекты
-[Big Data Indicators](http://bigdata-indicators.com/)  
+[Big Data Indicators](http://bigdata-indicators.com/)
 [Семантические сдвиги в русских новостях](https://shiftry.rusvectores.org/ru/)
 
 ## English version
@@ -68,12 +78,12 @@ Python 3.6+
 ## What's going on here
 We are making a tool for researching the development of [topics in the texts](www.machinelearning.ru/wiki/index.php?title=Thematic_modeling) over the time. The main target set of texts is Russian language news, but the methodology and the tool itself are suitable for an arbitrary set of texts.
 (The project has moved [from here](https://github.com/ods-ai-ml4sg/proj_news_viz))
-  
+
 The concept is this:
 
 ![Preview2](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
 
-### Look for answers to all questions here:  
+### Look for answers to all questions here:
 https://github.com/newsviz/newsviz/wiki
 
 Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкция-по-запуску
@@ -106,6 +116,16 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 └──tests
 ```
 
+## Run with docker
+
+Launch project starting from data download to running visualization:
+1. run_download_data.sh to download raw data
+2. run_build.sh to build docker container
+3. run_pipeline.sh to preprocess data, train model and prepare data for visualization
+4. run_viz.sh to run docker container with visualization, access via http://0.0.0.0:8080
+5. run_clear.sh to delete all intermediate data, models and other artifacts. Raw data will percist.
+
+
 
 ## Requirements
 
@@ -120,31 +140,33 @@ See [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.m
 3. If nothing is clear - ask questions, this is encouraged.
 
 ## Related projects
-[Big Data Indicators](http://bigdata-indicators.com/)  
+[Big Data Indicators](http://bigdata-indicators.com/)
 [Semantic shifts in russian news](https://shiftry.rusvectores.org/ru/)
 
 ## Contributions
 В алфавитном порядке (in alphabet order).
 
  - [@Alf162](https://github.com/Alf162)
+ - [@andreymalakhov](https://github.com/andreymalakhov)
+ - [@aprotopopov](https://github.com/aprotopopov)
  - [@Avenon](https://github.com/Avenon)
  - [@BoardGamer44](https://github.com/BoardGamer44)
+ - [@buriy](https://github.com/buriy)
+ - [@darkzenon](https://github.com/darkzenon)
  - [@Erlemar](https://github.com/Erlemar)
+ - [@iggisv9t](https://github.com/iggisv9t)
  - [@IlyaGusev](https://github.com/IlyaGusev)
  - [@iwooloowi](https://github.com/iwooloowi)
  - [@LanSaid](https://github.com/LanSaid)
- - [@Midzay](https://github.com/Midzay)
- - [@Teoretic6](https://github.com/Teoretic6)
- - [@andreymalakhov](https://github.com/andreymalakhov)
- - [@aprotopopov](https://github.com/aprotopopov)
- - [@buriy](https://github.com/buriy)
- - [@darkzenon](https://github.com/darkzenon)
- - [@iggisv9t](https://github.com/iggisv9t)
  - [@m12sl](https://github.com/m12sl)
  - [@marishadorosh](https://github.com/marishadorosh)
+ - [@Midzay](https://github.com/Midzay)
  - [@monuvio](https://github.com/monuvio)
  - [@orech](https://github.com/orech)
  - [@p-kachalov](https://github.com/p-kachalov)
+ - [@stroykova](https://github.com/stroykova)
+ - [@Teoretic6](https://github.com/Teoretic6)
+ - [@tu-artem](https://github.com/tu-artem)
  - [@vtrokhymenko](https://github.com/vtrokhymenko)
- 
+
 Здесь могло быть ваше имя (your name could be here).

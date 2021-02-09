@@ -3,11 +3,23 @@
 1. Находим [ISSUE](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) с описанием проблемы и пути решения, либо создаём свой и описываем проблему.
 2. [Делаем форк](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo).
 3. Вносим свои изменения.
-4. Создаём [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) в ветку `stage`.
-5. Прилинкуйте соответствующий ISSUE к созданному PR ([как это сделать](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests)).
+4. Запустить [pre-commit](https://github.com/pre-commit/pre-commit)
+
+    4.1 `$ pip install pre-commit black isort`
+
+    4.2 `$ pre-commit run -a`
+
+5. Создаём [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) в ветку `stage`.
+6. Прилинкуйте соответствующий ISSUE к созданному PR ([как это сделать](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests)).
 
 ### CODESTYLE:
-Просто используйте [black](https://github.com/psf/black) и читайте [pep-8](https://www.python.org/dev/peps/pep-0008/).
+В проекте используются автоматические проверки [pre-commit](https://pre-commit.com/). Они запускаются в [github actions](https://github.com/newsviz/newsviz/actions/) при создании pull request.
+Список всех проверок можно посмотреть в файле .pre-commit-config.yaml в корне проекта. Для python используется [black](https://github.com/psf/black), в основном проверяются принципы [pep-8](https://www.python.org/dev/peps/pep-0008/).
+А так же запускаются проверки на общепринятое оформление исходного кода - одна пустая строка в конце файла, отсутствие завершающих пробелов и прочее.
+Чтобы запустить все проверки локально перед коммитом, можно вопрользоваться скриптом run_pre_commit.sh в корне проекта (перед этим собрать образ скриптом run_build.sh).
+Или выполнить команду `pre-commit run -a`, если все окружение настроено локально.
+
+Все проверки модифицируют файлы и исправляют найденные проблемы. Если в actions какой-либо этап завершился со статусом failed, нужно смотреть начало лога, где приведен список модифицированных файлов и запустить pre-commit локально для исправления проблем.
 
 ### Указывайте авторство:
 Это очень сложно вытягивать автоматически, и это не должно зависеть от оценки менеджера или мейнтейнера проекта. Сделал изменение, приняли PR – всё, вы должны быть в списке контрибьюторов. [См. раздел "Про GPLv3"](#Про-GPLv3)
@@ -33,6 +45,7 @@ Keep it simple stupid! Все отдельные элементы должны �
 8. Время жизни ISSUE – полгода. Если за полгода никто не создал соответствующий патч, значит не сильно оно надо.
 9. Используем форки вместо веток – снижаем сложность проекта. Ветки создают хаос.
 10. Ничего не требуйте от пользователя: Если чтобы воспользоваться вашим решением пользователь должен сначала сделать несколько шагов, то решение скорее всего не будет использоваться. Реализуйте сами то, что пользователь должен бы был делать перед запуском.
+<img src="https://raw.githubusercontent.com/newsviz/newsviz.github.io/master/pics/progress_not_perfection.jpg" width=300>
 
 ### Про GPLv3
 Лицензия была выбрана для удобства контирбьюторов. Без согласия всех участников (независимо от величины вклада) невозможно продат или передать проект, либо изменить лицензию. Все внешние изменения, форки, надстройки будут иметь ту же лицензию -- это значит, что если кто-то переделает или дополнит ваш код, вы сможете использовать или дополнить его снова.
@@ -65,8 +78,14 @@ Keep it simple stupid! Все отдельные элементы должны �
 1. Find [ISSUE](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) with a description of the problem and the solution path, or create our own and describe the problem.
 2. [Fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo).
 3. Make your changes.
-4. Create a [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to the `stage` branch.
-5. Link the appropriate ISSUE to the generated PR ([how to do it](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests)).
+4. Make [pre-commit](https://github.com/pre-commit/pre-commit)
+
+    4.1 `$ pip install pre-commit black isort`
+
+    4.2 `$ pre-commit run -a`
+
+5. Create a [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to the `stage` branch.
+6. Link the appropriate ISSUE to the generated PR ([how to do it](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests)).
 
 ### CODESTYLE:
 Just use [black](https://github.com/psf/black) and read [pep-8](https://www.python.org/dev/peps/pep-0008/).
@@ -83,9 +102,9 @@ It is very difficult to pull automatically, and it should not depend on the asse
 It sometimes makes us all feel stupid, but nothing better has been invented yet. If something doesn't work, just ask (no one will laugh) or read a couple more out of a million tutorials (just google it).
 
 ### Other agreements:
-1. KISS: 
+1. KISS:
 Keep it simple stupid! All individual elements should be very simple and read at once. We keep the functionality as minimal as possible. Minimum external dependencies. Problem solutions should also be minimal. If the changes are too great, they will not be accepted, since no one has the time and energy to understand and evaluate them.
-2. Docs: 
+2. Docs:
 The main task is for someone to continue your work. It is better to write very little code, but describe it well. If the documentation cannot be entered asleep until the morning cup of coffee, then this is bad documentation.
 3. Never commit directly to the master branch.
 4. The maintainer does not accept his own patch (a moratorium on the rule until the project is operational).
@@ -95,6 +114,7 @@ The main task is for someone to continue your work. It is better to write very l
 8. ISSUE lifetime is six months. If no one has created the corresponding patch in six months, then it is not very necessary.
 9. Using forks instead of branches - reducing the complexity of the project. Branches create chaos.
 10. Don't demand anything from the user: If a user has to take several steps first to use your solution, the solution will most likely not be used. Implement yourself what the user should have done before launching.
+<img src="https://raw.githubusercontent.com/newsviz/newsviz.github.io/master/pics/progress_not_perfection.jpg" width=300>
 
 ### About GPLv3
 The license has been chosen for the convenience of counterparties. Without the consent of all participants (regardless of the size of the contribution), it is impossible to sell or transfer the project, or change the license. All external changes, forks, add-ons will have the same license - this means that if someone changes or supplements your code, you can use or supplement it again.
