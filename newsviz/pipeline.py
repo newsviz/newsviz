@@ -23,6 +23,7 @@ import logging
 import multiprocessing as mp
 import os
 import sys
+from itertools import product
 
 import joblib
 import luigi
@@ -56,12 +57,12 @@ MULTIPROCESSING = True
 CPU_COUNT = max(mp.cpu_count() - 4, 1)
 
 
-def apply_function_mp(function, series):
+def apply_function_mp(function, series, language):
     if MULTIPROCESSING:
         with mp.Pool(CPU_COUNT) as pool:
             return list(
                 tqdm.tqdm(
-                    pool.imap(function, series),
+                    pool.starmap(function, product(series, [language])),
                     total=len(series),
                 )
             )
@@ -83,6 +84,7 @@ class PreprocessorTask(luigi.Task):
         self.input_path = self.config["common"]["raw_path"]
         self.output_path = self.config["preprocessor"]["output_path"]
         self.fnames = get_fnames(self.input_path)
+        self.language = self.config["preprocessor"]["language"]
 
     def run(self):
         logger = logging.getLogger("luigi-interface")
@@ -93,13 +95,10 @@ class PreprocessorTask(luigi.Task):
             data = pd.read_csv(readpath, compression="gzip")
 
             logger.info("process %s, clean text", fname)
-            data["cleaned_text"] = apply_function_mp(clean_text, data["text"])
+            data["cleaned_text"] = apply_function_mp(clean_text, data["text"], self.language)
 
             logger.info("process %s, lemmatize", fname)
-            data["lemmatized"] = apply_function_mp(
-                lemmatize,
-                data["cleaned_text"],
-            )
+            data["lemmatized"] = apply_function_mp(lemmatize, data["cleaned_text"], self.language)
 
             logger.info("process %s, create ids", fname)
             data["row_id"] = np.arange(data.shape[0])
