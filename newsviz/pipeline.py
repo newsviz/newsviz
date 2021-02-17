@@ -31,18 +31,17 @@ import numpy as np
 import pandas as pd
 import topic_model
 import tqdm
-from luigi.contrib import sqla
 from preprocessing_tools import clean_text, lemmatize
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-sys.path.append("./database")
-import uuid
-
-from models import News
 
 logger = logging.getLogger("luigi-interface")
 
+def get_dirs(path):
+    dirpaths = []
+    for item in os.listdir(path):
+        print(item)
+        if os.path.isdir(os.path.join(path, item)):
+            dirpaths.append(item)
+    return dirpaths
 
 def get_fnames(path):
     fnames = []
@@ -83,32 +82,37 @@ class PreprocessorTask(luigi.Task):
         self.config.read(self.conf)
         self.input_path = self.config["common"]["raw_path"]
         self.output_path = self.config["preprocessor"]["output_path"]
-        self.fnames = get_fnames(self.input_path)
+        self.path_pairs = []
+        for dirname in get_dirs(self.input_path):
+            for fname in get_fnames(os.path.join(self.input_path, dirname)):
+                readpath = os.path.join(self.input_path, dirname, fname)
+                writepath = os.path.join(self.output_path, dirname, fname)
+                self.path_pairs.append((readpath, writepath))
         self.language = self.config["preprocessor"]["language"]
 
     def run(self):
         logger = logging.getLogger("luigi-interface")
-        for fname in self.fnames:
-            logger.info("process %s", fname)
-            readpath = os.path.join(self.input_path, fname)
-            writepath = os.path.join(self.output_path, fname)
+        for readpath, writepath in self.path_pairs:
+            dname = os.path.dirname(writepath)
+            os.makedirs(dname, exist_ok=True)
+
+            logger.info("process %s", readpath)
             data = pd.read_csv(readpath, compression="gzip")
 
-            logger.info("process %s, clean text", fname)
+            logger.info("process %s, clean text", readpath)
             data["cleaned_text"] = apply_function_mp(clean_text, data["text"], self.language)
 
-            logger.info("process %s, lemmatize", fname)
+            logger.info("process %s, lemmatize", readpath)
             data["lemmatized"] = apply_function_mp(lemmatize, data["cleaned_text"], self.language)
 
-            logger.info("process %s, create ids", fname)
+            logger.info("process %s, create ids", readpath)
             data["row_id"] = np.arange(data.shape[0])
             logger.info("write to %s", writepath)
             data[["row_id", "date", "topics", "lemmatized"]].to_csv(writepath, index=False, compression="gzip")
 
     def output(self):
         outputs = []
-        for fname in self.fnames:
-            writepath = os.path.join(self.output_path, fname)
+        for readpath, writepath in self.path_pairs:
             outputs.append(luigi.LocalTarget(writepath))
         return outputs
 
