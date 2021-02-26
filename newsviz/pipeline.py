@@ -214,6 +214,41 @@ class TopicPredictorTask(luigi.Task):
             os.makedirs(dst)
         return os.path.join(dst, fname)
 
+    def run_model(self, source_name, cl, data):
+        # Init model
+        tm = topic_model.TopicModelWrapperARTM(
+            self.output_path, source_name + "_" + str(cl)
+        )
+        
+        # TODO: add option to replace class label by class name
+        writepath = self.make_writepath(source_name, cl)
+
+        # Load model with dictionary
+        tm.load_model(
+            os.path.join(self.model_path.format(cl)),
+            os.path.join(self.dict_path.format(cl)),
+        )
+
+        # Prepare data for transformation
+        tm.prepare_data(data["lemmatized"].values)
+
+        # Get predictions and join them to dates
+        # TODO: check if indexing is right after this crazy trick
+        theta = tm.transform()
+        result = theta.merge(
+            data[["date"]],
+            left_index=True,
+            right_index=True,
+        )
+
+        # save top words for visualizer
+        tm.save_top_words(
+            os.path.join(
+                self.viz_path, f"tw_{self.class_renamer[str(cl)]}.json"
+            )
+        )
+        result.to_csv(writepath, compression="gzip", index=False)
+
     def run(self):
         os.makedirs(os.path.join(self.output_path, "topwords"), exist_ok=True)
         for readpath_c, readpath_l in self.path_pairs:
@@ -223,41 +258,24 @@ class TopicPredictorTask(luigi.Task):
                 data_c[["row_id", "rubric_preds"]], on="row_id", how="inner"
             )
             classes = data["rubric_preds"].unique()
-            source_name = fname.split(".")[0]
+            source_name = os.path.dirname(readpath_c).split('/')[-1]
             for cl in classes:
+                mask = data["rubric_preds"] == cl
+                self.run_model(source_name, cl, data[mask].copy().reset_index())
+                # -----------
                 tm = topic_model.TopicModelWrapperARTM(
                     self.output_path, source_name + "_" + str(cl)
                 )
-                mask = data["rubric_preds"] == cl
-                # TODO: add option to replace class label by class name
-                writepath = self.make_writepath(source_name, cl)
-                tm.load_model(
-                    os.path.join(self.model_path.format(cl)),
-                    os.path.join(self.dict_path.format(cl)),
-                )
-                tm.prepare_data(data[mask]["lemmatized"].values)
-                theta = tm.transform()
-                result = theta.merge(
-                    data[mask].copy().reset_index()[["date"]],
-                    left_index=True,
-                    right_index=True,
-                )
-                tm.save_top_words(
-                    os.path.join(
-                        self.viz_path, f"tw_{self.class_renamer[str(cl)]}.json"
-                    )
-                )
-                result.to_csv(writepath, compression="gzip", index=False)
+                
 
     def output(self):
         # TODO: add comments with example
         outputs = []
-        for fname in self.fnames:
-            readpath_c = os.path.join(self.input_path_c, fname)
+        for readpath_c, readpath_l in self.path_pairs:
             data_c = pd.read_csv(readpath_c, compression="gzip")
             classes = data_c["rubric_preds"].unique()
             for cl in classes:
-                source_name = fname.split(".")[0]
+                source_name = os.path.dirname(readpath_c).split('/')[-1]
                 writepath = self.make_writepath(source_name, cl)
                 outputs.append(luigi.LocalTarget(writepath))
         return outputs
