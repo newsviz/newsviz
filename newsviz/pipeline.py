@@ -1,4 +1,4 @@
-# Copyright © 2020 Sviatoslav Kovalev. All rights reserved.
+# Copyright © 2020, 2021 Sviatoslav Kovalev. All rights reserved.
 # Copyright © 2020 Artem Tuisuzov. All rights reserved.
 
 #    This file is part of NewsViz Project.
@@ -35,6 +35,7 @@ from preprocessing_tools import clean_text, lemmatize
 
 logger = logging.getLogger("luigi-interface")
 
+
 def get_dirs(path):
     dirpaths = []
     for item in os.listdir(path):
@@ -43,6 +44,7 @@ def get_dirs(path):
             dirpaths.append(item)
     return dirpaths
 
+
 def get_fnames(path):
     fnames = []
     for item in os.listdir(path):
@@ -50,6 +52,16 @@ def get_fnames(path):
             continue
         fnames.append(item)
     return fnames
+
+
+def make_path_pairs(input_path, output_path):
+    path_pairs = []
+    for dirname in get_dirs(input_path):
+        for fname in get_fnames(os.path.join(input_path, dirname)):
+            readpath = os.path.join(input_path, dirname, fname)
+            writepath = os.path.join(output_path, dirname, fname)
+            path_pairs.append((readpath, writepath))
+    return path_pairs
 
 
 MULTIPROCESSING = True
@@ -82,12 +94,7 @@ class PreprocessorTask(luigi.Task):
         self.config.read(self.conf)
         self.input_path = self.config["common"]["raw_path"]
         self.output_path = self.config["preprocessor"]["output_path"]
-        self.path_pairs = []
-        for dirname in get_dirs(self.input_path):
-            for fname in get_fnames(os.path.join(self.input_path, dirname)):
-                readpath = os.path.join(self.input_path, dirname, fname)
-                writepath = os.path.join(self.output_path, dirname, fname)
-                self.path_pairs.append((readpath, writepath))
+        self.path_pairs = make_path_pairs(self.input_path, self.output_path)
         self.language = self.config["preprocessor"]["language"]
 
     def run(self):
@@ -100,15 +107,21 @@ class PreprocessorTask(luigi.Task):
             data = pd.read_csv(readpath, compression="gzip")
 
             logger.info("process %s, clean text", readpath)
-            data["cleaned_text"] = apply_function_mp(clean_text, data["text"], self.language)
+            data["cleaned_text"] = apply_function_mp(
+                clean_text, data["text"], self.language
+            )
 
             logger.info("process %s, lemmatize", readpath)
-            data["lemmatized"] = apply_function_mp(lemmatize, data["cleaned_text"], self.language)
+            data["lemmatized"] = apply_function_mp(
+                lemmatize, data["cleaned_text"], self.language
+            )
 
             logger.info("process %s, create ids", readpath)
             data["row_id"] = np.arange(data.shape[0])
             logger.info("write to %s", writepath)
-            data[["row_id", "date", "topics", "lemmatized"]].to_csv(writepath, index=False, compression="gzip")
+            data[["row_id", "date", "topics", "lemmatized"]].to_csv(
+                writepath, index=False, compression="gzip"
+            )
 
     def output(self):
         outputs = []
@@ -131,10 +144,9 @@ class RubricClassifierTask(luigi.Task):
         self.config.read(self.conf)
         self.input_path = self.config["preprocessor"]["output_path"]
         self.output_path = self.config["classifier"]["output_path"]
+        self.path_pairs = make_path_pairs(self.input_path, self.output_path)
         self.classifier_path = self.config["classifier"]["classifier_path"]
         self.ftransformer_path = self.config["classifier"]["ftransformer_path"]
-
-        self.fnames = get_fnames(self.input_path)
 
     def requires(self):
         return PreprocessorTask(conf=self.conf)
@@ -145,21 +157,20 @@ class RubricClassifierTask(luigi.Task):
         model = joblib.load(self.classifier_path)
         feats_trnsfr = joblib.load(self.ftransformer_path)
 
-        for fname in self.fnames:
-            logger.info("process %s", fname)
-            readpath = os.path.join(self.input_path, fname)
-            writepath = os.path.join(self.output_path, fname)
+        for readpath, writepath in self.path_pairs:
+            logger.info("process %s", readpath)
             data = pd.read_csv(readpath, compression="gzip")
             data.dropna(inplace=True, subset=["lemmatized"])
             feats = feats_trnsfr.transform(data["lemmatized"].values)
             preds = model.predict(feats)
             data["rubric_preds"] = preds
-            data[["row_id", "date", "rubric_preds"]].to_csv(writepath, index=False, compression="gzip")
+            data[["row_id", "date", "rubric_preds"]].to_csv(
+                writepath, index=False, compression="gzip"
+            )
 
     def output(self):
         outputs = []
-        for fname in self.fnames:
-            writepath = os.path.join(self.output_path, fname)
+        for readpath, writepath in self.path_pairs:
             outputs.append(luigi.LocalTarget(writepath))
         return outputs
 
@@ -186,8 +197,12 @@ class TopicPredictorTask(luigi.Task):
         # TODO: move model params to the model wrapper script
         self.dict_path = self.config["topic"]["dict_path"]
 
-        self.fnames = get_fnames(self.input_path_c)
-        self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path), "classnames.json"), "r"))
+        # self.fnames = get_fnames(self.input_path_c)
+        self.path_pairs = make_path_pairs(self.input_path_c, self.input_path_l)
+
+        self.class_renamer = json.load(
+            open(os.path.join(os.path.dirname(clf_path), "classnames.json"), "r")
+        )
 
     def requires(self):
         return RubricClassifierTask(conf=self.conf)
@@ -195,23 +210,24 @@ class TopicPredictorTask(luigi.Task):
     def make_writepath(self, source_name, cl):
         fname = "{}.csv.gz".format(self.class_renamer[str(cl)])
         dst = os.path.join(self.viz_path, source_name)
-        # print(dst)
         if not os.path.exists(dst):
             os.makedirs(dst)
         return os.path.join(dst, fname)
 
     def run(self):
         os.makedirs(os.path.join(self.output_path, "topwords"), exist_ok=True)
-        for fname in self.fnames:
-            readpath_c = os.path.join(self.input_path_c, fname)
-            readpath_l = os.path.join(self.input_path_l, fname)
+        for readpath_c, readpath_l in self.path_pairs:
             data_c = pd.read_csv(readpath_c, compression="gzip")
             data_l = pd.read_csv(readpath_l, compression="gzip")
-            data = data_l.merge(data_c[["row_id", "rubric_preds"]], on="row_id", how="inner")
+            data = data_l.merge(
+                data_c[["row_id", "rubric_preds"]], on="row_id", how="inner"
+            )
             classes = data["rubric_preds"].unique()
             source_name = fname.split(".")[0]
             for cl in classes:
-                tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))
+                tm = topic_model.TopicModelWrapperARTM(
+                    self.output_path, source_name + "_" + str(cl)
+                )
                 mask = data["rubric_preds"] == cl
                 # TODO: add option to replace class label by class name
                 writepath = self.make_writepath(source_name, cl)
@@ -226,10 +242,15 @@ class TopicPredictorTask(luigi.Task):
                     left_index=True,
                     right_index=True,
                 )
-                tm.save_top_words(os.path.join(self.viz_path, f"tw_{self.class_renamer[str(cl)]}.json"))
+                tm.save_top_words(
+                    os.path.join(
+                        self.viz_path, f"tw_{self.class_renamer[str(cl)]}.json"
+                    )
+                )
                 result.to_csv(writepath, compression="gzip", index=False)
 
     def output(self):
+        # TODO: add comments with example
         outputs = []
         for fname in self.fnames:
             readpath_c = os.path.join(self.input_path_c, fname)
