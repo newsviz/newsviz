@@ -107,21 +107,15 @@ class PreprocessorTask(luigi.Task):
             data = pd.read_csv(readpath, compression="gzip")
 
             logger.info("process %s, clean text", readpath)
-            data["cleaned_text"] = apply_function_mp(
-                clean_text, data["text"], self.language
-            )
+            data["cleaned_text"] = apply_function_mp(clean_text, data["text"], self.language)
 
             logger.info("process %s, lemmatize", readpath)
-            data["lemmatized"] = apply_function_mp(
-                lemmatize, data["cleaned_text"], self.language
-            )
+            data["lemmatized"] = apply_function_mp(lemmatize, data["cleaned_text"], self.language)
 
             logger.info("process %s, create ids", readpath)
             data["row_id"] = np.arange(data.shape[0])
             logger.info("write to %s", writepath)
-            data[["row_id", "date", "topics", "lemmatized"]].to_csv(
-                writepath, index=False, compression="gzip"
-            )
+            data[["row_id", "date", "topics", "lemmatized"]].to_csv(writepath, index=False, compression="gzip")
 
     def output(self):
         outputs = []
@@ -164,9 +158,7 @@ class RubricClassifierTask(luigi.Task):
             feats = feats_trnsfr.transform(data["lemmatized"].values)
             preds = model.predict(feats)
             data["rubric_preds"] = preds
-            data[["row_id", "date", "rubric_preds"]].to_csv(
-                writepath, index=False, compression="gzip"
-            )
+            data[["row_id", "date", "rubric_preds"]].to_csv(writepath, index=False, compression="gzip")
 
     def output(self):
         outputs = []
@@ -200,9 +192,7 @@ class TopicPredictorTask(luigi.Task):
         # self.fnames = get_fnames(self.input_path_c)
         self.path_pairs = make_path_pairs(self.input_path_c, self.input_path_l)
 
-        self.class_renamer = json.load(
-            open(os.path.join(os.path.dirname(clf_path), "classnames.json"), "r")
-        )
+        self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path), "classnames.json"), "r"))
 
     def requires(self):
         return RubricClassifierTask(conf=self.conf)
@@ -216,10 +206,8 @@ class TopicPredictorTask(luigi.Task):
 
     def run_model(self, source_name, cl, data):
         # Init model
-        tm = topic_model.TopicModelWrapperARTM(
-            self.output_path, source_name + "_" + str(cl)
-        )
-        
+        tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))
+
         # TODO: add option to replace class label by class name
         writepath = self.make_writepath(source_name, cl)
 
@@ -242,11 +230,7 @@ class TopicPredictorTask(luigi.Task):
         )
 
         # save top words for visualizer
-        tm.save_top_words(
-            os.path.join(
-                self.viz_path, f"tw_{self.class_renamer[str(cl)]}.json"
-            )
-        )
+        tm.save_top_words(os.path.join(self.viz_path, f"tw_{self.class_renamer[str(cl)]}.json"))
         result.to_csv(writepath, compression="gzip", index=False)
 
     def run(self):
@@ -254,19 +238,14 @@ class TopicPredictorTask(luigi.Task):
         for readpath_c, readpath_l in self.path_pairs:
             data_c = pd.read_csv(readpath_c, compression="gzip")
             data_l = pd.read_csv(readpath_l, compression="gzip")
-            data = data_l.merge(
-                data_c[["row_id", "rubric_preds"]], on="row_id", how="inner"
-            )
+            data = data_l.merge(data_c[["row_id", "rubric_preds"]], on="row_id", how="inner")
             classes = data["rubric_preds"].unique()
-            source_name = os.path.dirname(readpath_c).split('/')[-1]
+            source_name = os.path.dirname(readpath_c).split("/")[-1]
             for cl in classes:
                 mask = data["rubric_preds"] == cl
                 self.run_model(source_name, cl, data[mask].copy().reset_index())
                 # -----------
-                tm = topic_model.TopicModelWrapperARTM(
-                    self.output_path, source_name + "_" + str(cl)
-                )
-                
+                tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))
 
     def output(self):
         # TODO: add comments with example
@@ -275,7 +254,7 @@ class TopicPredictorTask(luigi.Task):
             data_c = pd.read_csv(readpath_c, compression="gzip")
             classes = data_c["rubric_preds"].unique()
             for cl in classes:
-                source_name = os.path.dirname(readpath_c).split('/')[-1]
+                source_name = os.path.dirname(readpath_c).split("/")[-1]
                 writepath = self.make_writepath(source_name, cl)
                 outputs.append(luigi.LocalTarget(writepath))
         return outputs
