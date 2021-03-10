@@ -15,3 +15,10 @@ tw_sport.json
 ```
 
 TODO: перейти на нормальный формат дат, чтобы не зависеть от уровня агреггации
+
+## Запуск визуализиции streamlit
+
+1. В окружении проекта установить библиотеку `streamlit` командой `pip install streamlit`
+2. В командной строке ввести команду `streamlit run st_app.py`
+
+[Документация](https://streamlit.io/) `streamlit`.

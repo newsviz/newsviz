@@ -56,13 +56,6 @@ https://github.com/newsviz/newsviz/wiki
 4. run_viz.sh для запуска контейнера с визуализацией, доступ по ссылке http://0.0.0.0:8080
 5. run_clear.sh для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся.
 
-## Запуск визуализиции streamlit
-
-1. В окружении проекта установить библиотеку `streamlit` командой `pip install streamlit`
-2. В командной строке ввести команду `streamlit run st_app.py`
-
-[Документация](https://streamlit.io/) `streamlit`.
-
 ## Requirements
 
 Python 3.6+
@@ -131,13 +124,6 @@ Launch project starting from data download to running visualization:
 4. run_viz.sh to run docker container with visualization, access via http://0.0.0.0:8080
 5. run_clear.sh to delete all intermediate data, models and other artifacts. Raw data will percist.
 
-
-## Run streamlit visualization
-
-1. Install package `streamlit` in the project environment using the command `pip install streamlit`
-2. Run command `streamlit run st_app.py` in command line
-
-`Streamlit` [documentation](https://streamlit.io/)
 
 ## Requirements
 
