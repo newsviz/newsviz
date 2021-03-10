@@ -56,6 +56,10 @@ https://github.com/newsviz/newsviz/wiki
 4. run_viz.sh для запуска контейнера с визуализацией, доступ по ссылке http://0.0.0.0:8080
 5. run_clear.sh для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся.
 
+## Запуск визуализиции streamlit
+
+1. Перейти в папку newsvis/visualizer
+2. В командной строке ввести команду `streamlit run st_app.py`
 
 ## Requirements
 
@@ -126,6 +130,10 @@ Launch project starting from data download to running visualization:
 5. run_clear.sh to delete all intermediate data, models and other artifacts. Raw data will percist.
 
 
+## Run streamlit visualization
+
+1. Go to folder newsvis/visualizer
+2. Run command `streamlit run st_app.py` in command line
 
 ## Requirements
 
