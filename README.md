@@ -59,8 +59,7 @@ https://github.com/newsviz/newsviz/wiki
 ## Запуск визуализиции streamlit
 
 1. В окружении проекта установить библиотеку `streamlit` командой `pip install streamlit`
-2. Перейти в папку newsvis/visualizer
-3. В командной строке ввести команду `streamlit run st_app.py`
+2. В командной строке ввести команду `streamlit run st_app.py`
 
 [Документация](https://streamlit.io/) `streamlit`.
 
@@ -136,8 +135,7 @@ Launch project starting from data download to running visualization:
 ## Run streamlit visualization
 
 1. Install package `streamlit` in the project environment using the command `pip install streamlit`
-2. Go to folder newsvis/visualizer
-3. Run command `streamlit run st_app.py` in command line
+2. Run command `streamlit run st_app.py` in command line
 
 `Streamlit` [documentation](https://streamlit.io/)
 
