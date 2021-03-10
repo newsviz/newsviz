@@ -1,6 +1,5 @@
 # Copyright © 2021 Andrey Lukyanenko. All rights reserved.
 # -*- coding: utf-8 -*-
-import argparse
 import configparser
 from typing import Dict, List, Tuple
 

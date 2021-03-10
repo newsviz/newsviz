@@ -1,13 +1,8 @@
 # Copyright © 2021 Andrey Lukyanenko. All rights reserved.
 # -*- coding: utf-8 -*-
 import argparse
-import configparser
-from typing import Dict, List, Tuple
 
-import pandas as pd
 import streamlit as st
-import utils
-from altair import Chart
 from st_app_functions import get_data, make_plot, update_data
 
 if __name__ == "__main__":
