@@ -56,7 +56,6 @@ https://github.com/newsviz/newsviz/wiki
 4. run_viz.sh для запуска контейнера с визуализацией, доступ по ссылке http://0.0.0.0:8080
 5. run_clear.sh для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся.
 
-
 ## Requirements
 
 Python 3.6+
@@ -124,7 +123,6 @@ Launch project starting from data download to running visualization:
 3. run_pipeline.sh to preprocess data, train model and prepare data for visualization
 4. run_viz.sh to run docker container with visualization, access via http://0.0.0.0:8080
 5. run_clear.sh to delete all intermediate data, models and other artifacts. Raw data will percist.
-
 
 
 ## Requirements
