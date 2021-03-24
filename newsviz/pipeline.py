@@ -23,7 +23,7 @@ import logging
 import multiprocessing as mp
 import os
 import sys
-from itertools import product
+from functools import partial
 
 import joblib
 import luigi
@@ -73,7 +73,7 @@ def apply_function_mp(function, series, language):
         with mp.Pool(CPU_COUNT) as pool:
             return list(
                 tqdm.tqdm(
-                    pool.starmap(function, product(series, [language])),
+                    pool.imap(partial(function, language), series),
                     total=len(series),
                 )
             )
