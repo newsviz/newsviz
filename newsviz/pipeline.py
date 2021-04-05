@@ -23,7 +23,7 @@ import logging
 import multiprocessing as mp
 import os
 import sys
-from functools import partial
+from itertools import product
 
 import joblib
 import luigi
@@ -73,7 +73,7 @@ def apply_function_mp(function, series, language):
         with mp.Pool(CPU_COUNT) as pool:
             return list(
                 tqdm.tqdm(
-                    pool.imap(partial(function, language), series),
+                    pool.starmap(function, product(series, [language])),
                     total=len(series),
                 )
             )
@@ -152,6 +152,7 @@ class RubricClassifierTask(luigi.Task):
         feats_trnsfr = joblib.load(self.ftransformer_path)
 
         for readpath, writepath in self.path_pairs:
+            os.makedirs(os.path.dirname(writepath), exist_ok=True)
             logger.info("process %s", readpath)
             data = pd.read_csv(readpath, compression="gzip")
             data.dropna(inplace=True, subset=["lemmatized"])
@@ -210,6 +211,7 @@ class TopicPredictorTask(luigi.Task):
 
         # TODO: add option to replace class label by class name
         writepath = self.make_writepath(source_name, cl)
+        os.makedirs(os.path.dirname(writepath), exist_ok=True)
 
         # Load model with dictionary
         tm.load_model(
