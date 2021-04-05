@@ -6,7 +6,7 @@
 [english version](#english-version)
 
 ## Что здесь происходит
-Мы делаем инструмент для исследования развития со временем [тем в текстах](www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование). Основной целевой набор текстов - русскоязычные новости, но методика и сам инструмент подходят для произвольного набора текстов.
+Мы делаем инструмент для исследования развития со временем [тем в текстах](http://www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование). Основной целевой набор текстов - русскоязычные новости, но методика и сам инструмент подходят для произвольного набора текстов.
 (Проект переехал [отсюда](https://github.com/ods-ai-ml4sg/proj_news_viz))
 
 Концепт такой:
@@ -56,7 +56,6 @@ https://github.com/newsviz/newsviz/wiki
 4. run_viz.sh для запуска контейнера с визуализацией, доступ по ссылке http://0.0.0.0:8080
 5. run_clear.sh для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся.
 
-
 ## Requirements
 
 Python 3.6+
@@ -76,7 +75,7 @@ Python 3.6+
 ## English version
 
 ## What's going on here
-We are making a tool for researching the development of [topics in the texts](www.machinelearning.ru/wiki/index.php?title=Thematic_modeling) over the time. The main target set of texts is Russian language news, but the methodology and the tool itself are suitable for an arbitrary set of texts.
+We are making a tool for researching the development of [topics in the texts](http://www.machinelearning.ru/wiki/index.php?title=Thematic_modeling) over the time. The main target set of texts is Russian language news, but the methodology and the tool itself are suitable for an arbitrary set of texts.
 (The project has moved [from here](https://github.com/ods-ai-ml4sg/proj_news_viz))
 
 The concept is this:
@@ -124,7 +123,6 @@ Launch project starting from data download to running visualization:
 3. run_pipeline.sh to preprocess data, train model and prepare data for visualization
 4. run_viz.sh to run docker container with visualization, access via http://0.0.0.0:8080
 5. run_clear.sh to delete all intermediate data, models and other artifacts. Raw data will percist.
-
 
 
 ## Requirements
