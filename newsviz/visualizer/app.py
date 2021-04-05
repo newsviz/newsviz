@@ -14,7 +14,7 @@ import plotly.figure_factory as ff
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
 from plotly import tools
-from visualizer import utils
+import utils
 
 # TODO: Add top words
 
