@@ -1,4 +1,4 @@
-# Copyright © 2020 Sviatoslav Kovalev. All rights reserved.
+# Copyright © 2020, 2021 Sviatoslav Kovalev. All rights reserved.
 # Copyright © 2020 Artem Tuisuzov. All rights reserved.
 
 #    This file is part of NewsViz Project.
@@ -23,6 +23,7 @@ import logging
 import multiprocessing as mp
 import os
 import sys
+from functools import partial
 
 import joblib
 import luigi
@@ -30,17 +31,18 @@ import numpy as np
 import pandas as pd
 import topic_model
 import tqdm
-from luigi.contrib import sqla
 from preprocessing_tools import clean_text, lemmatize
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-sys.path.append("./database")
-import uuid
-
-from models import News
 
 logger = logging.getLogger("luigi-interface")
+
+
+def get_dirs(path):
+    dirpaths = []
+    for item in os.listdir(path):
+        print(item)
+        if os.path.isdir(os.path.join(path, item)):
+            dirpaths.append(item)
+    return dirpaths
 
 
 def get_fnames(path):
@@ -52,16 +54,26 @@ def get_fnames(path):
     return fnames
 
 
+def make_path_pairs(input_path, output_path):
+    path_pairs = []
+    for dirname in get_dirs(input_path):
+        for fname in get_fnames(os.path.join(input_path, dirname)):
+            readpath = os.path.join(input_path, dirname, fname)
+            writepath = os.path.join(output_path, dirname, fname)
+            path_pairs.append((readpath, writepath))
+    return path_pairs
+
+
 MULTIPROCESSING = True
 CPU_COUNT = max(mp.cpu_count() - 4, 1)
 
 
-def apply_function_mp(function, series):
+def apply_function_mp(function, series, language):
     if MULTIPROCESSING:
         with mp.Pool(CPU_COUNT) as pool:
             return list(
                 tqdm.tqdm(
-                    pool.imap(function, series),
+                    pool.imap(partial(function, language), series),
                     total=len(series),
                 )
             )
@@ -82,88 +94,34 @@ class PreprocessorTask(luigi.Task):
         self.config.read(self.conf)
         self.input_path = self.config["common"]["raw_path"]
         self.output_path = self.config["preprocessor"]["output_path"]
-        self.fnames = get_fnames(self.input_path)
+        self.path_pairs = make_path_pairs(self.input_path, self.output_path)
+        self.language = self.config["preprocessor"]["language"]
 
     def run(self):
         logger = logging.getLogger("luigi-interface")
-        for fname in self.fnames:
-            logger.info("process %s", fname)
-            readpath = os.path.join(self.input_path, fname)
-            writepath = os.path.join(self.output_path, fname)
+        for readpath, writepath in self.path_pairs:
+            dname = os.path.dirname(writepath)
+            os.makedirs(dname, exist_ok=True)
+
+            logger.info("process %s", readpath)
             data = pd.read_csv(readpath, compression="gzip")
 
-            logger.info("process %s, clean text", fname)
-            data["cleaned_text"] = apply_function_mp(clean_text, data["text"])
+            logger.info("process %s, clean text", readpath)
+            data["cleaned_text"] = apply_function_mp(clean_text, data["text"], self.language)
 
-            logger.info("process %s, lemmatize", fname)
-            data["lemmatized"] = apply_function_mp(
-                lemmatize,
-                data["cleaned_text"],
-            )
+            logger.info("process %s, lemmatize", readpath)
+            data["lemmatized"] = apply_function_mp(lemmatize, data["cleaned_text"], self.language)
 
-            logger.info("process %s, create ids", fname)
+            logger.info("process %s, create ids", readpath)
             data["row_id"] = np.arange(data.shape[0])
             logger.info("write to %s", writepath)
             data[["row_id", "date", "topics", "lemmatized"]].to_csv(writepath, index=False, compression="gzip")
 
     def output(self):
         outputs = []
-        for fname in self.fnames:
-            writepath = os.path.join(self.output_path, fname)
+        for readpath, writepath in self.path_pairs:
             outputs.append(luigi.LocalTarget(writepath))
         return outputs
-
-
-class DBTransfer(luigi.Task):
-
-    conf = luigi.Parameter()
-
-    def __init__(self, *args, **kwargs):
-        super(DBTransfer, self).__init__(*args, **kwargs)
-        self.config = configparser.ConfigParser()
-        self.config.read(self.conf)
-        self.input_path = self.config["database"]["input_path"]
-        print("=" * 100)
-        print(self.input_path)
-        print("=" * 100)
-        self.database = self.config["database"]["database"]
-        self.engine = create_engine(f"sqlite:///{self.database}", echo=True)
-
-    def run(self):
-        fnames = get_fnames(self.input_path)
-        Session = sessionmaker()
-        Session.configure(bind=self.engine)
-        # Открыли сессию для записи
-        session = Session()
-        for fname in fnames:
-            read_path = os.path.join(self.input_path, fname)
-            data = pd.read_csv(read_path, compression="gzip")
-            for key, value in data.iterrows():
-                date = datetime.datetime.strptime(value[1], "%Y-%m-%d %H:%M:%S")
-                topic = value[2]
-                text = value[3]
-                session.add(
-                    News(
-                        id=str(uuid.uuid4()),
-                        date=date,
-                        topic=topic,
-                        text=text,
-                        created_at=datetime.date.today(),
-                        updated_at=datetime.date.today(),
-                    )
-                )
-
-            session.commit()
-
-        # вывод данных из базы. Использовал для тест-проверки
-        # for instance in session.query(News).order_by(News.id):
-        #    print(instance.id, instance.date, instance.topic, instance.text)
-
-    def requires(self):
-        return PreprocessorTask(conf=self.conf)
-
-    def output(self):
-        pass
 
 
 class RubricClassifierTask(luigi.Task):
@@ -180,10 +138,9 @@ class RubricClassifierTask(luigi.Task):
         self.config.read(self.conf)
         self.input_path = self.config["preprocessor"]["output_path"]
         self.output_path = self.config["classifier"]["output_path"]
+        self.path_pairs = make_path_pairs(self.input_path, self.output_path)
         self.classifier_path = self.config["classifier"]["classifier_path"]
         self.ftransformer_path = self.config["classifier"]["ftransformer_path"]
-
-        self.fnames = get_fnames(self.input_path)
 
     def requires(self):
         return PreprocessorTask(conf=self.conf)
@@ -194,10 +151,8 @@ class RubricClassifierTask(luigi.Task):
         model = joblib.load(self.classifier_path)
         feats_trnsfr = joblib.load(self.ftransformer_path)
 
-        for fname in self.fnames:
-            logger.info("process %s", fname)
-            readpath = os.path.join(self.input_path, fname)
-            writepath = os.path.join(self.output_path, fname)
+        for readpath, writepath in self.path_pairs:
+            logger.info("process %s", readpath)
             data = pd.read_csv(readpath, compression="gzip")
             data.dropna(inplace=True, subset=["lemmatized"])
             feats = feats_trnsfr.transform(data["lemmatized"].values)
@@ -207,8 +162,7 @@ class RubricClassifierTask(luigi.Task):
 
     def output(self):
         outputs = []
-        for fname in self.fnames:
-            writepath = os.path.join(self.output_path, fname)
+        for readpath, writepath in self.path_pairs:
             outputs.append(luigi.LocalTarget(writepath))
         return outputs
 
@@ -235,7 +189,9 @@ class TopicPredictorTask(luigi.Task):
         # TODO: move model params to the model wrapper script
         self.dict_path = self.config["topic"]["dict_path"]
 
-        self.fnames = get_fnames(self.input_path_c)
+        # self.fnames = get_fnames(self.input_path_c)
+        self.path_pairs = make_path_pairs(self.input_path_c, self.input_path_l)
+
         self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path), "classnames.json"), "r"))
 
     def requires(self):
@@ -244,48 +200,61 @@ class TopicPredictorTask(luigi.Task):
     def make_writepath(self, source_name, cl):
         fname = "{}.csv.gz".format(self.class_renamer[str(cl)])
         dst = os.path.join(self.viz_path, source_name)
-        # print(dst)
         if not os.path.exists(dst):
             os.makedirs(dst)
         return os.path.join(dst, fname)
 
+    def run_model(self, source_name, cl, data):
+        # Init model
+        tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))
+
+        # TODO: add option to replace class label by class name
+        writepath = self.make_writepath(source_name, cl)
+
+        # Load model with dictionary
+        tm.load_model(
+            os.path.join(self.model_path.format(cl)),
+            os.path.join(self.dict_path.format(cl)),
+        )
+
+        # Prepare data for transformation
+        tm.prepare_data(data["lemmatized"].values)
+
+        # Get predictions and join them to dates
+        # TODO: check if indexing is right after this crazy trick
+        theta = tm.transform()
+        result = theta.merge(
+            data[["date"]],
+            left_index=True,
+            right_index=True,
+        )
+
+        # save top words for visualizer
+        tm.save_top_words(os.path.join(self.viz_path, f"tw_{self.class_renamer[str(cl)]}.json"))
+        result.to_csv(writepath, compression="gzip", index=False)
+
     def run(self):
         os.makedirs(os.path.join(self.output_path, "topwords"), exist_ok=True)
-        for fname in self.fnames:
-            readpath_c = os.path.join(self.input_path_c, fname)
-            readpath_l = os.path.join(self.input_path_l, fname)
+        for readpath_c, readpath_l in self.path_pairs:
             data_c = pd.read_csv(readpath_c, compression="gzip")
             data_l = pd.read_csv(readpath_l, compression="gzip")
             data = data_l.merge(data_c[["row_id", "rubric_preds"]], on="row_id", how="inner")
             classes = data["rubric_preds"].unique()
-            source_name = fname.split(".")[0]
+            source_name = os.path.dirname(readpath_c).split("/")[-1]
             for cl in classes:
-                tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))
                 mask = data["rubric_preds"] == cl
-                # TODO: add option to replace class label by class name
-                writepath = self.make_writepath(source_name, cl)
-                tm.load_model(
-                    os.path.join(self.model_path.format(cl)),
-                    os.path.join(self.dict_path.format(cl)),
-                )
-                tm.prepare_data(data[mask]["lemmatized"].values)
-                theta = tm.transform()
-                result = theta.merge(
-                    data[mask].copy().reset_index()[["date"]],
-                    left_index=True,
-                    right_index=True,
-                )
-                tm.save_top_words(os.path.join(self.viz_path, f"tw_{self.class_renamer[str(cl)]}.json"))
-                result.to_csv(writepath, compression="gzip", index=False)
+                self.run_model(source_name, cl, data[mask].copy().reset_index())
+                # -----------
+                tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))
 
     def output(self):
+        # TODO: add comments with example
         outputs = []
-        for fname in self.fnames:
-            readpath_c = os.path.join(self.input_path_c, fname)
+        for readpath_c, readpath_l in self.path_pairs:
             data_c = pd.read_csv(readpath_c, compression="gzip")
             classes = data_c["rubric_preds"].unique()
             for cl in classes:
-                source_name = fname.split(".")[0]
+                source_name = os.path.dirname(readpath_c).split("/")[-1]
                 writepath = self.make_writepath(source_name, cl)
                 outputs.append(luigi.LocalTarget(writepath))
         return outputs
