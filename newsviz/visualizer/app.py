@@ -12,9 +12,9 @@ import numpy as np
 import pandas as pd
 import plotly.figure_factory as ff
 import plotly.graph_objs as go
+import utils
 from dash.dependencies import Input, Output, State
 from plotly import tools
-from visualizer import utils
 
 # TODO: Add top words
 
