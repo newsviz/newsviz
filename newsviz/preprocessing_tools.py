@@ -1,5 +1,4 @@
-# Copyright © 2021 @vtrokhymenko. All rights reserved.
-# Copyright © 2020 Viktor Trokhymenko. All rights reserved.
+# Copyright © 2020, 2021 @vtrokhymenko. All rights reserved.
 # Copyright © 2020 Sviatoslav Kovalev. All rights reserved.
 # Copyright © 2020 Artem Tuisuzov. All rights reserved.
 
@@ -98,7 +97,7 @@ def lemmatize(text: str, language, char4split: str = " ") -> (Optional[str]):
         if language == "ru":
 
             # TODO: make this a parameter
-            stopwords_path = "stopwords_ru.txt"
+            stopwords_path = "stopwords/sw_ru.txt"
             try:
                 with open(stopwords_path, "r") as file:
                     stopwords = file.read().splitlines()
@@ -111,7 +110,7 @@ def lemmatize(text: str, language, char4split: str = " ") -> (Optional[str]):
         if language == "en":
 
             # TODO: make this a parameter
-            stopwords_path = "stopwords_en.txt"
+            stopwords_path = "stopwords/sw_en.txt"
             try:
                 with open(stopwords_path, "r") as file:
                     stopwords = file.read().splitlines()
