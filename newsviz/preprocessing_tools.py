@@ -93,29 +93,23 @@ def lemmatize(text: str, language, char4split: str = " ") -> (Optional[str]):
         # get tokens from input text
         # in this case it's normal approach because we hard cleaned text
         list_tokens = text.split(char4split)
-        if language == "ru":
 
-            # TODO: make this a parameter
-            stopwords_path = "stopwords/sw_ru.txt"
-            try:
-                with open(stopwords_path, "r") as file:
-                    stopwords = file.read().splitlines()
-            except FileNotFoundError:
-                logger.error("can't load stopwords file")
-                stopwords = []
+        # read stopwords
+        # TODO: make stopwords path as parameter
+        try:
+            with open(f"stopwords/sw_{language}.txt", "r") as file:
+                stopwords = file.read().splitlines()
+        except FileNotFoundError:
+            logger.error("can't load stopwords file")
+            stopwords = []
+
+        if language == "ru":
 
             words_lem = [get_morph4token(token) for token in list_tokens if token not in stopwords]
 
-        if language == "en":
+        elif language == "en":
 
-            # TODO: make this a parameter
-            stopwords_path = "stopwords/sw_en.txt"
-            try:
-                with open(stopwords_path, "r") as file:
-                    stopwords = file.read().splitlines()
-            except FileNotFoundError:
-                logger.error("can't load stopwords file")
-                stopwords = []
+            pass
 
         if len(words_lem) > 3:
             return " ".join(words_lem)
