@@ -49,9 +49,7 @@ def clean_text(text: str, language: str) -> (Optional[str]):
 
         text = re.sub(r"http\S+", "", text)  # remove urls
         text = re.sub(r"\S+@\S+", "", text)  # remove emails
-        text = re.sub(
-            r"\!|\"|\:|\;|\.|\,|[<>]|\?|\@|\[|\]|\^|\_|\`|\*|/|[{}]|\~|[—–-]|[«»]|[()]|[>]|[“”]", " ", text
-        )  # remove punctuation
+        text = re.sub(r'[!"`“”:;\.,<>?@\[\]^_*\{\}~—–\-«»\(\)>]', " ", text)  # remove punctuation
 
         if language == "ru":
             text = re.sub(r"ё", "е", text)
@@ -59,10 +57,9 @@ def clean_text(text: str, language: str) -> (Optional[str]):
             pass
 
         text = re.sub(r"\s+", " ", text)  # remove the long blanks
-        text = text.strip()
 
         if len(text) > 3:
-            return text
+            return text.strip()
         else:
             return ""
     else:
@@ -122,8 +119,8 @@ def lemmatize(text: str, language, char4split: str = " ") -> (Optional[str]):
                 logger.error("can't load stopwords file")
                 stopwords = []
 
-        if len(text) > 3:
-            return text
+        if len(words_lem) > 3:
+            return " ".join(words_lem)
         else:
             return ""
 
