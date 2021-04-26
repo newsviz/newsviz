@@ -125,7 +125,7 @@ class TopicModelWrapperARTM:
             print("==" * 5)
 
     def save_model(self, path):
-        """ path: path to save model"""
+        """path: path to save model"""
         model_path = Path(path)
         dict_path = model_path.parent / f"dictionary_{model_path.stem}.txt"
         self.dictionary.save_text(str(dict_path))

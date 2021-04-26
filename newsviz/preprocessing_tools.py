@@ -20,11 +20,10 @@
 import html
 import re
 from functools import lru_cache
-
 from typing import Optional
-from loguru import logger
 
 import pymorphy2
+from loguru import logger
 
 morph = pymorphy2.MorphAnalyzer()
 
