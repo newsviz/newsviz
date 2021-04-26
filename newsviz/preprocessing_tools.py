@@ -55,7 +55,7 @@ def clean_text(text: str, language) -> (Optional[str]):
         if language == "ru":
             text = re.sub(r"ё", "е", text)
 
-        if language == "en":
+        elif language == "en":
             pass
 
         text = re.sub(r"\s+", " ", text)  # remove the long blanks
