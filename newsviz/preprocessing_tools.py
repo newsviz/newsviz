@@ -1,3 +1,4 @@
+# Copyright © 2021 @vtrokhymenko. All rights reserved.
 # Copyright © 2020 Viktor Trokhymenko. All rights reserved.
 # Copyright © 2020 Sviatoslav Kovalev. All rights reserved.
 # Copyright © 2020 Artem Tuisuzov. All rights reserved.
@@ -21,60 +22,56 @@ import html
 import re
 from functools import lru_cache
 
+from typing import Optional
+from loguru import logger
+
 import pymorphy2
 
 morph = pymorphy2.MorphAnalyzer()
 
-# read stopwords for RU
-# TODO: make this a parameter
-stopwords_path = "stopwords_ru.txt"
-try:
-    with open(stopwords_path, "r") as file:
-        stopwords = file.read().splitlines()
-except FileNotFoundError:
-    print("can't load {}".format(stopwords_path))
-    stopwords = []
 
-
-def clean_text(text: str = None, language: str = "ru") -> str:
+def clean_text(text: str, language) -> (Optional[str]):
     """
     clean text, leaving only tokens for clustering
-    parameters
-    ----------
-        text : string
+    args:
+        text (string)
             input text
-        language : string (default = "ru")
-            article (text) language
-    returns
-    -------
+        language (string)
+            "ru" or "en"
+    returns:
         cleaned string text without lower case
     """
 
-    if not isinstance(text, str):
-        text = str(text)
+    if (text is not None) and (text != ""):
 
-    text = html.unescape(text)
+        text = html.unescape(text)
 
-    text = re.sub(r"https?:\/\/.*[\r\n]*", "", text)  # remove urls
-    text = re.sub(r"\S+@\S+", "", text)  # remove emails
-    text = re.sub(r"ё", "е", text)
-    text = re.sub(
-        r"\!|\"|\:|\;|\.|\,|[<>]|\?|\@|\[|\]|\^|\_|\`|[{}]|\~|[—–-]|[«»]|[()]|[\$\#=']|[%\&\*\+/\\\|]",
-        " ",
-        text,
-    )  # remove punctuation
-    text = re.sub(r"\s+", " ", text)  # remove the long blanks
+        text = re.sub(r"http\S+", "", text)  # remove urls
+        text = re.sub(r"\S+@\S+", "", text)  # remove emails
+        text = re.sub(
+            r"\!|\"|\:|\;|\.|\,|[<>]|\?|\@|\[|\]|\^|\_|\`|\*|/|[{}]|\~|[—–-]|[«»]|[()]|[>]|[“”]", " ", text
+        )  # remove punctuation
 
-    text = text.strip()
+        if language == "ru":
+            text = re.sub(r"ё", "е", text)
 
-    if len(text) < 3:
-        return ""
+        if language == "en":
+            pass
+
+        text = re.sub(r"\s+", " ", text)  # remove the long blanks
+
+        text = text.strip()
+
+        if len(text) < 3:
+            return ""
+        else:
+            return text
     else:
-        return text
+        logger.error("input text only filled string")
 
 
 @lru_cache()
-def get_morph4token(token: str = None) -> str:
+def get_morph4token(token: str) -> (str):
     """
     get lemma for one tokens with decorator `@lru_cache`
     """
@@ -82,36 +79,53 @@ def get_morph4token(token: str = None) -> str:
     return morph.parse(token)[0].normal_form
 
 
-def lemmatize(text: str = None, language: str = "ru", char4split: str = " ") -> str:
+def lemmatize(text: str, language: str = "ru", char4split: str = " ") -> (Optional[str]):
     """
     lemmatize text with cache
-    parameters
-    ----------
-    input_text : string
-        cleaned text
-    language : string (default = "ru")
-        article (text) language
-    char4split : string (default = " ")
-        char-symbol how to split text
-    returns
-    -------
+    args:
+        input_text (string)
+            cleaned text
+        language (string)
+            "ru" or "en"
+        char4split (string = " ")
+            char-symbol how to split text
+    returns:
         lemmatized text
     """
 
-    # get tokens from input text
-    # in this case it's normal approach because we hard cleaned text
-    if not isinstance(text, str):
-        text = str(text)
+    if (text is not None) and (text != ""):
 
-    # get tokens from input text
-    # in this case it's normal approach because we hard cleaned text
-    list_tokens = text.split(char4split)
-    if language != "ru":
-        pass
+        # get tokens from input text
+        # in this case it's normal approach because we hard cleaned text
+        list_tokens = text.split(char4split)
+        if language != "ru":
 
-    words_lem = [get_morph4token(token) for token in list_tokens if token not in stopwords]
+            # TODO: make this a parameter
+            stopwords_path = "stopwords_ru.txt"
+            try:
+                with open(stopwords_path, "r") as file:
+                    stopwords = file.read().splitlines()
+            except FileNotFoundError:
+                logger.error("can't load stopwords file")
+                stopwords = []
 
-    if len(words_lem) < 3:
-        return ""
+            words_lem = [get_morph4token(token) for token in list_tokens if token not in stopwords]
+
+        if language == "en":
+
+            # TODO: make this a parameter
+            stopwords_path = "stopwords_en.txt"
+            try:
+                with open(stopwords_path, "r") as file:
+                    stopwords = file.read().splitlines()
+            except FileNotFoundError:
+                logger.error("can't load stopwords file")
+                stopwords = []
+
+        if len(words_lem) < 3:
+            return ""
+        else:
+            return " ".join(words_lem)
+
     else:
-        return " ".join(words_lem)
+        logger.error("input text only filled string")
