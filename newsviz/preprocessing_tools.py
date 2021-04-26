@@ -30,7 +30,7 @@ import pymorphy2
 morph = pymorphy2.MorphAnalyzer()
 
 
-def clean_text(text: str, language) -> (Optional[str]):
+def clean_text(text: str, language: str) -> (Optional[str]):
     """
     clean text, leaving only tokens for clustering
     args:
@@ -42,6 +42,7 @@ def clean_text(text: str, language) -> (Optional[str]):
         cleaned string text without lower case
     """
 
+    # TODO: add language for required filling
     if (text is not None) and (text != ""):
 
         text = html.unescape(text)
@@ -54,18 +55,16 @@ def clean_text(text: str, language) -> (Optional[str]):
 
         if language == "ru":
             text = re.sub(r"ё", "е", text)
-
         elif language == "en":
             pass
 
         text = re.sub(r"\s+", " ", text)  # remove the long blanks
-
         text = text.strip()
 
-        if len(text) < 3:
-            return ""
-        else:
+        if len(text) > 3:
             return text
+        else:
+            return ""
     else:
         logger.error("input text only filled string")
 
@@ -79,7 +78,7 @@ def get_morph4token(token: str) -> (str):
     return morph.parse(token)[0].normal_form
 
 
-def lemmatize(text: str, language: str = "ru", char4split: str = " ") -> (Optional[str]):
+def lemmatize(text: str, language, char4split: str = " ") -> (Optional[str]):
     """
     lemmatize text with cache
     args:
@@ -93,12 +92,13 @@ def lemmatize(text: str, language: str = "ru", char4split: str = " ") -> (Option
         lemmatized text
     """
 
+    # TODO: add language for required filling
     if (text is not None) and (text != ""):
 
         # get tokens from input text
         # in this case it's normal approach because we hard cleaned text
         list_tokens = text.split(char4split)
-        if language != "ru":
+        if language == "ru":
 
             # TODO: make this a parameter
             stopwords_path = "stopwords_ru.txt"
@@ -122,10 +122,10 @@ def lemmatize(text: str, language: str = "ru", char4split: str = " ") -> (Option
                 logger.error("can't load stopwords file")
                 stopwords = []
 
-        if len(words_lem) < 3:
-            return ""
+        if len(text) > 3:
+            return text
         else:
-            return " ".join(words_lem)
+            return ""
 
     else:
         logger.error("input text only filled string")
