@@ -28,19 +28,18 @@ from loguru import logger
 morph = pymorphy2.MorphAnalyzer()
 
 
-def clean_text(text: str, language: str) -> (Optional[str]):
+def clean_text(text: str, /, language: str) -> (Optional[str]):
     """
     clean text, leaving only tokens for clustering
     args:
         text (string)
             input text
-        language (string)
+        / language (string)
             "ru" or "en"
     returns:
         cleaned string text without lower case
     """
 
-    # TODO: add language for required filling
     if (text is not None) and (text != ""):
 
         text = html.unescape(text)
@@ -73,26 +72,21 @@ def get_morph4token(token: str) -> (str):
     return morph.parse(token)[0].normal_form
 
 
-def lemmatize(text: str, language, char4split: str = " ") -> (Optional[str]):
+def lemmatize(text: str, /, language: str, char4split: str = " ") -> (Optional[str]):
     """
     lemmatize text with cache
     args:
         input_text (string)
             cleaned text
-        language (string)
+        / language (string)
             "ru" or "en"
-        char4split (string = " ")
+        / char4split (string = " ")
             char-symbol how to split text
     returns:
         lemmatized text
     """
 
-    # TODO: add language for required filling
     if (text is not None) and (text != ""):
-
-        # get tokens from input text
-        # in this case it's normal approach because we hard cleaned text
-        list_tokens = text.split(char4split)
 
         # read stopwords
         # TODO: make stopwords path as parameter
@@ -102,6 +96,8 @@ def lemmatize(text: str, language, char4split: str = " ") -> (Optional[str]):
         except FileNotFoundError:
             logger.error("can't load stopwords file")
             stopwords = []
+
+        list_tokens = text.split(char4split)
 
         if language == "ru":
 
