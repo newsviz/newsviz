@@ -6,7 +6,7 @@ on:
     branches: [master, stage]
 
 jobs:
-  pre-commit:
+  pre-commit-pytests:
 
     runs-on: ubuntu-latest
     strategy:
@@ -22,3 +22,8 @@ jobs:
 
       - name: pre-commit-action
         uses: pre-commit/action@v2.0.0
+
+      - name: run tests
+        run: |
+          pip install pytest
+          python -m pytest tests/ -v
