@@ -28,13 +28,13 @@ from loguru import logger
 morph = pymorphy2.MorphAnalyzer()
 
 
-def clean_text(text: str, /, language: str) -> (Optional[str]):
+def clean_text(text: str, language: str) -> (Optional[str]):
     """
     clean text, leaving only tokens for clustering
     args:
         text (string)
             input text
-        / language (string)
+        language (string)
             "ru" or "en"
     returns:
         cleaned string text without lower case
@@ -46,7 +46,7 @@ def clean_text(text: str, /, language: str) -> (Optional[str]):
 
         text = re.sub(r"http\S+", "", text)  # remove urls
         text = re.sub(r"\S+@\S+", "", text)  # remove emails
-        text = re.sub(r'[!"`“”:;\.,<>?@\[\]^_*\{\}~—–\-«»\(\)>]', " ", text)  # remove punctuation
+        text = re.sub(r'["`“”:;\.,<>!?\&@\[\]/^_\*\{\}~—–\-«»\(\)]', "", text)  # remove punctuation
 
         if language == "ru":
             text = re.sub(r"ё", "е", text)
@@ -55,10 +55,8 @@ def clean_text(text: str, /, language: str) -> (Optional[str]):
 
         text = re.sub(r"\s+", " ", text)  # remove the long blanks
 
-        if len(text) > 3:
-            return text.strip()
-        else:
-            return ""
+        return text.strip()
+
     else:
         logger.error("input text only filled string")
 
@@ -72,15 +70,15 @@ def get_morph4token(token: str) -> (str):
     return morph.parse(token)[0].normal_form
 
 
-def lemmatize(text: str, /, language: str, char4split: str = " ") -> (Optional[str]):
+def lemmatize(text: str, language: str, char_for_split: str = " ") -> (Optional[str]):
     """
     lemmatize text with cache
     args:
         input_text (string)
             cleaned text
-        / language (string)
+        language (string)
             "ru" or "en"
-        / char4split (string = " ")
+        char_for_split (string = " ")
             char-symbol how to split text
     returns:
         lemmatized text
@@ -94,10 +92,10 @@ def lemmatize(text: str, /, language: str, char4split: str = " ") -> (Optional[s
             with open(f"stopwords/sw_{language}.txt", "r") as file:
                 stopwords = file.read().splitlines()
         except FileNotFoundError:
-            logger.error("can't load stopwords file")
+            logger.error("can't load stopwords file. maybe parameter `language` not correctly")
             stopwords = []
 
-        list_tokens = text.split(char4split)
+        list_tokens = text.split(char_for_split)
 
         if language == "ru":
 
