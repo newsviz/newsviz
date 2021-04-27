@@ -25,7 +25,7 @@ from newsviz.preprocessing_tools import clean_text
     "in_clean_text, out_clean_text",
     [
         ("слово &amp;", "слово"),
-        ("11 &quot; 22", '11 22'),
+        ("11 &quot; 22", "11 22"),
         ("&qquot; &pound;682m", "qquot £682m"),
         ("сайт https://web.kz/msk", "сайт"),
         ("сайт htps://web.kz/msk", "сайт htpswebkzmsk"),
@@ -33,7 +33,10 @@ from newsviz.preprocessing_tools import clean_text
         ("example@example.example", ""),
         ("слово до example@example.example", "слово до"),
         ("слово до example@example.example", "слово до"),
-        ('~слово–: (`перовое//”;) "{в-торое“} [—т*]ретье // @<четвер^&тое>. @«_пятое»!?', "слово перовое второе третье четвертое пятое"),
+        (
+            '~слово–: (`перовое//”;) "{в-торое“} [—т*]ретье // @<четвер^&тое>. @«_пятое»!?',
+            "слово перовое второе третье четвертое пятое",
+        ),
         ("ёмае", "емае"),
     ],
 )
