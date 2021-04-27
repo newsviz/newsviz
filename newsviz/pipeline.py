@@ -17,12 +17,10 @@
 #    along with NewsViz Project.  If not, see <https://www.gnu.org/licenses/>.
 
 import configparser
-import datetime
 import json
 import logging
 import multiprocessing as mp
 import os
-import sys
 from itertools import product
 
 import joblib
