@@ -58,7 +58,7 @@ def clean_text(text: str, language: str) -> (Optional[str]):
         return text.strip()
 
     else:
-        logger.error("input text only filled string")
+        logger.error("input text only filled string\n")
 
 
 @lru_cache()
@@ -81,10 +81,12 @@ def lemmatize(text: str, language: str, char_for_split: str = " ") -> (Optional[
         char_for_split (string = " ")
             char-symbol how to split text
     returns:
-        lemmatized text
+        lemmatized string text
     """
 
     if (text is not None) and (text != ""):
+
+        print(f"{text = }")
 
         # read stopwords
         # TODO: make stopwords path as parameter
@@ -92,10 +94,12 @@ def lemmatize(text: str, language: str, char_for_split: str = " ") -> (Optional[
             with open(f"stopwords/sw_{language}.txt", "r") as file:
                 stopwords = file.read().splitlines()
         except FileNotFoundError:
-            logger.error("can't load stopwords file. maybe parameter `language` not correctly")
+            logger.error("can't load stopwords file. maybe parameter `language` not correctly\n")
             stopwords = []
 
         list_tokens = text.split(char_for_split)
+
+        print(f"{list_tokens = }")
 
         if language == "ru":
 
@@ -105,10 +109,9 @@ def lemmatize(text: str, language: str, char_for_split: str = " ") -> (Optional[
 
             pass
 
-        if len(words_lem) > 3:
-            return " ".join(words_lem)
-        else:
-            return ""
+        print(f"{words_lem = }")
+
+        return " ".join(words_lem)
 
     else:
         logger.error("input text only filled string")
