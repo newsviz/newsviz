@@ -19,22 +19,16 @@
 
 import html
 import re
-
+from dataclasses import InitVar, dataclass, field
 from functools import lru_cache
-
-from typing import Optional
-from typing import List
-
-from dataclasses import dataclass
-from dataclasses import field
-from dataclasses import InitVar
-from loguru import logger
+from typing import List, Optional
 
 import spacy
+from loguru import logger
 
 
 @dataclass
-class Preprocessing():
+class Preprocessing:
     """
     args:
         language (string = "ru"):
@@ -51,11 +45,11 @@ class Preprocessing():
 
     def __post_init__(self, replace_path_stopwords_4_tests):
         """
-            in folder news/stopwords be 2 files: `sw_ru.txt` & `sw_en.txt`
-            for lemmatizer for your language u should download spacy trained pipelines
-                $ python -m spacy download ru_core_news_md
-                or
-                $ python -m spacy download en_core_web_md
+        in folder news/stopwords be 2 files: `sw_ru.txt` & `sw_en.txt`
+        for lemmatizer for your language u should download spacy trained pipelines
+            $ python -m spacy download ru_core_news_md
+            or
+            $ python -m spacy download en_core_web_md
         """
         # read stopwords
         # TODO: make stopwords path as parameter

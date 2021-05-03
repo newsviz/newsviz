@@ -111,7 +111,7 @@ class PreprocessorTask(luigi.Task):
             data["cleaned_text"] = apply_function_mp(preprocess.clean_text, data["text"])
 
             logger.info("process %s, lemmatize", readpath)
-            data["lemmatized"] = apply_function_mp(preprocess.lemmatize, data["cleaned_text"]
+            data["lemmatized"] = apply_function_mp(preprocess.lemmatize, data["cleaned_text"])
 
             logger.info("process %s, create ids", readpath)
             data["row_id"] = np.arange(data.shape[0])
