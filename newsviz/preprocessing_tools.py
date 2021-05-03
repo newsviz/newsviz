@@ -20,7 +20,8 @@
 import html
 import re
 from dataclasses import InitVar, dataclass, field
-from functools import lru_cache
+
+# from functools import lru_cache
 from typing import List, Optional
 
 import spacy

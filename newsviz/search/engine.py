@@ -16,7 +16,6 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with NewsViz Project.  If not, see <https://www.gnu.org/licenses/>.
-import numpy as np
 from sklearn.neighbors import NearestNeighbors
 
 

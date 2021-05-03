@@ -248,7 +248,7 @@ class TopicPredictorTask(luigi.Task):
                 mask = data["rubric_preds"] == cl
                 self.run_model(source_name, cl, data[mask].copy().reset_index())
                 # -----------
-                tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))
+                tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))  # noqa:
 
     def output(self):
         # TODO: add comments with example
