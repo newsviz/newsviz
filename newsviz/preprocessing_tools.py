@@ -31,16 +31,8 @@ from loguru import logger
 
 @dataclass
 class Preprocessing:
-    """
-    args:
-        language (string = "ru"):
-            "ru" or "en"
-        stopwords (List[str] = [])
-        replace_path_stopwords_4_tests (InitVar[bool] = False)
-        nlp: (spacy.lang = None)
-    """
 
-    language: str = "ru"
+    language: str = "ru"  # or "en"
     stopwords: List[str] = field(default_factory=list)
     replace_path_stopwords_4_tests: InitVar[bool] = False
     nlp: spacy.lang = None
