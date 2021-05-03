@@ -8,7 +8,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 import utils
-from dash.dependencies import Input, Output
+from dash.dependencies import Input
+from dash.dependencies import Output
 
 # TODO: Add top words
 

@@ -1,7 +1,6 @@
 # Copyright © 2020, 2021 @vtrokhymenko. All rights reserved.
 # Copyright © 2020 Sviatoslav Kovalev. All rights reserved.
 # Copyright © 2020 Artem Tuisuzov. All rights reserved.
-
 #    This file is part of NewsViz Project.
 #
 #    NewsViz Project is free software: you can redistribute it and/or modify
@@ -16,16 +15,18 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with NewsViz Project.  If not, see <https://www.gnu.org/licenses/>.
-
 import html
 import re
-from dataclasses import InitVar, dataclass, field
-
-# from functools import lru_cache
-from typing import List, Optional
+from dataclasses import dataclass
+from dataclasses import field
+from dataclasses import InitVar
+from typing import List
+from typing import Optional
 
 import spacy
 from loguru import logger
+
+# from functools import lru_cache
 
 
 @dataclass

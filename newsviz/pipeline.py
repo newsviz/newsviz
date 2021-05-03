@@ -1,7 +1,6 @@
 # Copyright © 2021 @vtrokhymenko. All rights reserved.
 # Copyright © 2020, 2021 Sviatoslav Kovalev. All rights reserved.
 # Copyright © 2020 Artem Tuisuzov. All rights reserved.
-
 #    This file is part of NewsViz Project.
 #
 #    NewsViz Project is free software: you can redistribute it and/or modify
@@ -16,7 +15,6 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with NewsViz Project.  If not, see <https://www.gnu.org/licenses/>.
-
 import configparser
 import json
 import logging

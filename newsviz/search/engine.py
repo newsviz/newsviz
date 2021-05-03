@@ -1,7 +1,6 @@
 # Copyright © 2021 Andrej Ilin. All rights reserved.
 # Copyright © 2021 Denis Sidorenko. All rights reserved.
 # Copyright © 2021 Sviatoslav Kovalev. All rights reserved.
-
 #    This file is part of NewsViz Project.
 #
 #    NewsViz Project is free software: you can redistribute it and/or modify
