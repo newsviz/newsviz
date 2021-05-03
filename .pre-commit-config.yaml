@@ -1,11 +1,11 @@
 repos:
   - repo: https://github.com/asottile/reorder_python_imports
-    rev: v2.4.0
+    rev: v2.5.0
     hooks:
       - id: reorder-python-imports
 
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.9.0
+    rev: 3.9.1
     hooks:
       - id: flake8
         args: ["--ignore=E501,W292", "--max-line-length=119"]
@@ -16,7 +16,7 @@ repos:
         #   - flake8-variables-names==0.0.2
 
   - repo: https://github.com/psf/black
-    rev: 21.4b0
+    rev: 21.4b2
     hooks:
       - id: black
         args: ["--line-length=119"]
