@@ -1,3 +1,4 @@
+# Copyright © 2021 @vtrokhymenko. All rights reserved.
 # Copyright © 2020, 2021 Sviatoslav Kovalev. All rights reserved.
 # Copyright © 2020 Artem Tuisuzov. All rights reserved.
 
@@ -29,7 +30,7 @@ import numpy as np
 import pandas as pd
 import topic_model
 import tqdm
-from preprocessing_tools import clean_text, lemmatize
+from preprocessing_tools import Preprocessing
 
 logger = logging.getLogger("luigi-interface")
 
@@ -104,11 +105,13 @@ class PreprocessorTask(luigi.Task):
             logger.info("process %s", readpath)
             data = pd.read_csv(readpath, compression="gzip")
 
+            preprocess = Preprocessing(language=self.language)
+
             logger.info("process %s, clean text", readpath)
-            data["cleaned_text"] = apply_function_mp(clean_text, data["text"], self.language)
+            data["cleaned_text"] = apply_function_mp(preprocess.clean_text, data["text"])
 
             logger.info("process %s, lemmatize", readpath)
-            data["lemmatized"] = apply_function_mp(lemmatize, data["cleaned_text"], self.language)
+            data["lemmatized"] = apply_function_mp(preprocess.lemmatize, data["cleaned_text"]
 
             logger.info("process %s, create ids", readpath)
             data["row_id"] = np.arange(data.shape[0])
