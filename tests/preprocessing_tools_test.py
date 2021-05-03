@@ -18,7 +18,10 @@
 import pytest
 from loguru_caplog import loguru_caplog as caplog  # noqa: F401
 
-from newsviz.preprocessing_tools import clean_text
+from newsviz.preprocessing_tools import Preprocessing
+
+preproc_ru = Preprocessing(language="ru", replace_path_stopwords_4_tests=True)
+preproc_en = Preprocessing(language="en", replace_path_stopwords_4_tests=True)
 
 
 @pytest.mark.parametrize(
@@ -42,10 +45,22 @@ from newsviz.preprocessing_tools import clean_text
 )
 def test_clean_text(caplog, in_clean_text, out_clean_text):  # noqa: F811
 
-    clean_text("", language="ru")
+    preproc_ru.clean_text("")
     assert "input text only filled string" in caplog.text
 
-    clean_text(None, language="ru")
+    preproc_en.clean_text(None)
     assert "input text only filled string" in caplog.text
 
-    assert clean_text(in_clean_text, language="ru") == out_clean_text
+    assert preproc_ru.clean_text(in_clean_text) == out_clean_text
+
+
+def test_lemmatize(caplog):  # noqa: F811
+
+    preproc_en.lemmatize("")
+    assert "input text only filled string" in caplog.text
+
+    preproc_ru.lemmatize(None)
+    assert "input text only filled string" in caplog.text
+
+    assert preproc_ru.lemmatize("Шла Саша по шоссе и сосала сушку") == "шла саша шоссе сосать сушка"
+    # assert preproc_en.lemmatize("I was reading the paper") == "i read paper"
