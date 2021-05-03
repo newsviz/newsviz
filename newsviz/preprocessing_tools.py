@@ -1,7 +1,6 @@
-# Copyright © 2020 Viktor Trokhymenko. All rights reserved.
+# Copyright © 2020, 2021 @vtrokhymenko. All rights reserved.
 # Copyright © 2020 Sviatoslav Kovalev. All rights reserved.
 # Copyright © 2020 Artem Tuisuzov. All rights reserved.
-
 #    This file is part of NewsViz Project.
 #
 #    NewsViz Project is free software: you can redistribute it and/or modify
@@ -16,102 +15,116 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with NewsViz Project.  If not, see <https://www.gnu.org/licenses/>.
-
 import html
 import re
-from functools import lru_cache
+from dataclasses import dataclass
+from dataclasses import field
+from dataclasses import InitVar
+from typing import List
+from typing import Optional
 
-import pymorphy2
+import spacy
+from loguru import logger
 
-morph = pymorphy2.MorphAnalyzer()
-
-# read stopwords for RU
-# TODO: make this a parameter
-stopwords_path = "stopwords_ru.txt"
-try:
-    with open(stopwords_path, "r") as file:
-        stopwords = file.read().splitlines()
-except FileNotFoundError:
-    print("can't load {}".format(stopwords_path))
-    stopwords = []
+# from functools import lru_cache
 
 
-def clean_text(text: str = None, language: str = "ru") -> str:
-    """
-    clean text, leaving only tokens for clustering
-    parameters
-    ----------
-        text : string
-            input text
-        language : string (default = "ru")
-            article (text) language
-    returns
-    -------
-        cleaned string text without lower case
-    """
+@dataclass
+class Preprocessing:
 
-    if not isinstance(text, str):
-        text = str(text)
+    language: str = "ru"  # or "en"
+    stopwords: List[str] = field(default_factory=list)
+    replace_path_stopwords_4_tests: InitVar[bool] = False
+    nlp: spacy.lang = None
 
-    text = html.unescape(text)
+    def __post_init__(self, replace_path_stopwords_4_tests):
+        """
+        in folder news/stopwords be 2 files: `sw_ru.txt` & `sw_en.txt`
+        for lemmatizer for your language u should download spacy trained pipelines
+            $ python -m spacy download ru_core_news_md
+            or
+            $ python -m spacy download en_core_web_md
+        """
+        # read stopwords
+        # TODO: make stopwords path as parameter
+        try:
+            if replace_path_stopwords_4_tests:
+                path_stopwords = f"newsviz/stopwords/sw_{self.language}.txt"
+            else:
+                path_stopwords = f"./stopwords/sw_{self.language}.txt"
 
-    text = re.sub(r"https?:\/\/.*[\r\n]*", "", text)  # remove urls
-    text = re.sub(r"\S+@\S+", "", text)  # remove emails
-    text = re.sub(r"ё", "е", text)
-    text = re.sub(
-        r"\!|\"|\:|\;|\.|\,|[<>]|\?|\@|\[|\]|\^|\_|\`|[{}]|\~|[—–-]|[«»]|[()]|[\$\#=']|[%\&\*\+/\\\|]",
-        " ",
-        text,
-    )  # remove punctuation
-    text = re.sub(r"\s+", " ", text)  # remove the long blanks
+            with open(path_stopwords, "r") as file:
+                self.stopwords = file.read().splitlines()
+        except FileNotFoundError:
+            logger.error("can't load stopwords file. maybe parameter `language` not correctly\n")
+            self.stopwords = []
 
-    text = text.strip()
+        print(f"{len(self.stopwords) = }")
 
-    if len(text) < 3:
-        return ""
-    else:
-        return text
+        # load lemmatizer
+        if self.language == "ru":
+            spacy_pipeline = "ru_core_news_md"
+        elif self.language == "en":
+            spacy_pipeline = "en_core_web_md"
 
+        self.nlp = spacy.load(spacy_pipeline)
 
-@lru_cache()
-def get_morph4token(token: str = None) -> str:
-    """
-    get lemma for one tokens with decorator `@lru_cache`
-    """
+    def clean_text(self, text: str) -> (Optional[str]):
+        """
+        clean text, leaving only tokens for clustering
+        args:
+            text (string)
+                input text
+        returns:
+            cleaned string text without lower case
+        """
 
-    return morph.parse(token)[0].normal_form
+        if (text is not None) and (text != ""):
 
+            text = html.unescape(text)
 
-def lemmatize(text: str = None, language: str = "ru", char4split: str = " ") -> str:
-    """
-    lemmatize text with cache
-    parameters
-    ----------
-    input_text : string
-        cleaned text
-    language : string (default = "ru")
-        article (text) language
-    char4split : string (default = " ")
-        char-symbol how to split text
-    returns
-    -------
-        lemmatized text
-    """
+            text = re.sub(r"http\S+", "", text)  # remove urls
+            text = re.sub(r"\S+@\S+", "", text)  # remove emails
+            text = re.sub(r'["`“”:;\.,<>!?\&@\[\]/^_\*\{\}~—–\-«»\(\)]', "", text)  # remove punctuation
 
-    # get tokens from input text
-    # in this case it's normal approach because we hard cleaned text
-    if not isinstance(text, str):
-        text = str(text)
+            if self.language == "ru":
+                text = re.sub(r"ё", "е", text)
+            elif self.language == "en":
+                pass
 
-    # get tokens from input text
-    # in this case it's normal approach because we hard cleaned text
-    list_tokens = text.split(char4split)
-    if language != "ru":
-        pass
+            text = re.sub(r"\s+", " ", text)  # remove the long blanks
 
-    words_lem = [get_morph4token(token) for token in list_tokens if token not in stopwords]
+            return text.strip()
 
-    if len(words_lem) < 3:
-        return ""
-    else:
-        return " ".join(words_lem)
+        else:
+            logger.error("input text only filled string\n")
+
+    # @property
+    # @lru_cache()
+    # def get_spacy_lemma_from_token(token: spacy.tokens.token.Token) -> (str):
+    #     """
+    #     get lemma for one tokens with decorator `@lru_cache`
+    #     """
+
+    #     return token.lemma_
+
+    def lemmatize(self, text: str) -> (Optional[str]):
+        """
+        lemmatize text with cache
+        args:
+            input_text (string)
+                cleaned text
+        returns:
+            lemmatized string text
+        """
+        if (text is not None) and (text != ""):
+
+            doc = self.nlp(text)
+
+            words_lem = [token.lemma_ for token in doc if str(token) not in self.stopwords]
+            # words_lem = [get_spacy_lemma_from_token(token) for token in doc if str(token) not in self.stopwords]
+
+            return " ".join(words_lem).lower()
+
+        else:
+            logger.error("input text only filled string")

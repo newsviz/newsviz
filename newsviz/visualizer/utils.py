@@ -1,6 +1,5 @@
 import json
 import os
-from pathlib import Path
 
 import colorlover as cl
 import numpy as np

@@ -3,7 +3,9 @@
 import argparse
 
 import streamlit as st
-from st_app_functions import get_data, make_plot, update_data
+from st_app_functions import get_data
+from st_app_functions import make_plot
+from st_app_functions import update_data
 
 if __name__ == "__main__":
     """
