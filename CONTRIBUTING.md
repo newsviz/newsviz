@@ -5,7 +5,8 @@
 3. Переходим в ветку `stage`
    `$ git checkout stage`
 4. Вносим свои изменения.
-5. Запустить [pre-commit](https://github.com/pre-commit/pre-commit)
+5. Написать тесты в `./tests` для своего кода (опционально)
+6. Запустить [pre-commit](https://github.com/pre-commit/pre-commit)
 
     4.1 `$ pip install pre-commit`
 
@@ -82,7 +83,8 @@ Keep it simple stupid! Все отдельные элементы должны �
 3. Change branch to `stage`
     `$ git checkout stage`
 4. Make your changes.
-5. Make [pre-commit](https://github.com/pre-commit/pre-commit)
+5. Write tests in `./tests` for your code (oprional)
+6. Make [pre-commit](https://github.com/pre-commit/pre-commit)
 
     4.1 `$ pip install pre-commit black isort`
 
