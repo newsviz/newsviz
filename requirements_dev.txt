@@ -3,3 +3,8 @@ matplotlib
 notebook
 pre-commit
 scikit-learn
+loguru
+loguru_caplog
+setuptools==56.0.0
+spacy==3.0.6
+wheel==0.36.2
