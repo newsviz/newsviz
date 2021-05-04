@@ -20,13 +20,12 @@ import re
 from dataclasses import dataclass
 from dataclasses import field
 from dataclasses import InitVar
+from functools import lru_cache
 from typing import List
 from typing import Optional
 
 import spacy
 from loguru import logger
-
-# from functools import lru_cache
 
 
 @dataclass
@@ -99,15 +98,6 @@ class Preprocessing:
         else:
             logger.error("input text only filled string\n")
 
-    # @property
-    # @lru_cache()
-    # def get_spacy_lemma_from_token(token: spacy.tokens.token.Token) -> (str):
-    #     """
-    #     get lemma for one tokens with decorator `@lru_cache`
-    #     """
-
-    #     return token.lemma_
-
     def lemmatize(self, text: str) -> (Optional[str]):
         """
         lemmatize text with cache
@@ -117,12 +107,21 @@ class Preprocessing:
         returns:
             lemmatized string text
         """
+
         if (text is not None) and (text != ""):
 
             doc = self.nlp(text)
 
-            words_lem = [token.lemma_ for token in doc if str(token) not in self.stopwords]
-            # words_lem = [get_spacy_lemma_from_token(token) for token in doc if str(token) not in self.stopwords]
+            @lru_cache()
+            def get_spacy_lemma_from_token(token: spacy.tokens.token.Token) -> (str):
+                """
+                get lemma for one tokens with decorator `@lru_cache`
+                """
+
+                return token.lemma_
+
+            # words_lem = [token.lemma_ for token in doc if str(token) not in self.stopwords]
+            words_lem = [get_spacy_lemma_from_token(token) for token in doc if str(token) not in self.stopwords]
 
             return " ".join(words_lem).lower()
 
