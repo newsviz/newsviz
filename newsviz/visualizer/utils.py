@@ -1,6 +1,5 @@
 import json
 import os
-from pathlib import Path
 
 import colorlover as cl
 import numpy as np
@@ -51,7 +50,7 @@ def preprocess_data(df):
     topics.remove("date")
     # scale columns
     maxes = df[topics].max().values
-    df[topics] = df[topics].astype(np.float32) / np.std(maxes)
+    df[topics] = df[topics].astype(np.float32) / np.mean(maxes)
     return df, topics
 
 

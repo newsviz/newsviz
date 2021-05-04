@@ -1,6 +1,6 @@
+# Copyright © 2021 @vtrokhymenko. All rights reserved.
 # Copyright © 2020, 2021 Sviatoslav Kovalev. All rights reserved.
 # Copyright © 2020 Artem Tuisuzov. All rights reserved.
-
 #    This file is part of NewsViz Project.
 #
 #    NewsViz Project is free software: you can redistribute it and/or modify
@@ -15,15 +15,12 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with NewsViz Project.  If not, see <https://www.gnu.org/licenses/>.
-
 import configparser
-import datetime
 import json
 import logging
 import multiprocessing as mp
 import os
-import sys
-from functools import partial
+from itertools import product
 
 import joblib
 import luigi
@@ -31,7 +28,7 @@ import numpy as np
 import pandas as pd
 import topic_model
 import tqdm
-from preprocessing_tools import clean_text, lemmatize
+from preprocessing_tools import Preprocessing
 
 logger = logging.getLogger("luigi-interface")
 
@@ -73,7 +70,7 @@ def apply_function_mp(function, series, language):
         with mp.Pool(CPU_COUNT) as pool:
             return list(
                 tqdm.tqdm(
-                    pool.imap(partial(function, language), series),
+                    pool.starmap(function, product(series, [language])),
                     total=len(series),
                 )
             )
@@ -106,11 +103,13 @@ class PreprocessorTask(luigi.Task):
             logger.info("process %s", readpath)
             data = pd.read_csv(readpath, compression="gzip")
 
+            preprocess = Preprocessing(language=self.language)
+
             logger.info("process %s, clean text", readpath)
-            data["cleaned_text"] = apply_function_mp(clean_text, data["text"], self.language)
+            data["cleaned_text"] = apply_function_mp(preprocess.clean_text, data["text"])
 
             logger.info("process %s, lemmatize", readpath)
-            data["lemmatized"] = apply_function_mp(lemmatize, data["cleaned_text"], self.language)
+            data["lemmatized"] = apply_function_mp(preprocess.lemmatize, data["cleaned_text"])
 
             logger.info("process %s, create ids", readpath)
             data["row_id"] = np.arange(data.shape[0])
@@ -152,6 +151,7 @@ class RubricClassifierTask(luigi.Task):
         feats_trnsfr = joblib.load(self.ftransformer_path)
 
         for readpath, writepath in self.path_pairs:
+            os.makedirs(os.path.dirname(writepath), exist_ok=True)
             logger.info("process %s", readpath)
             data = pd.read_csv(readpath, compression="gzip")
             data.dropna(inplace=True, subset=["lemmatized"])
@@ -210,6 +210,7 @@ class TopicPredictorTask(luigi.Task):
 
         # TODO: add option to replace class label by class name
         writepath = self.make_writepath(source_name, cl)
+        os.makedirs(os.path.dirname(writepath), exist_ok=True)
 
         # Load model with dictionary
         tm.load_model(
@@ -245,7 +246,7 @@ class TopicPredictorTask(luigi.Task):
                 mask = data["rubric_preds"] == cl
                 self.run_model(source_name, cl, data[mask].copy().reset_index())
                 # -----------
-                tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))
+                tm = topic_model.TopicModelWrapperARTM(self.output_path, source_name + "_" + str(cl))  # noqa:
 
     def output(self):
         # TODO: add comments with example
