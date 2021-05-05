@@ -50,11 +50,11 @@ https://github.com/newsviz/newsviz/wiki
 ## Запуск с помощью docker
 
 Шаги по запуску проекта с нуля - от скачивания данных до визуализации:
-1. run_download_data.sh для скачивания исходных непроцессированных данных
-2. run_build.sh для сборки контейнера
-3. run_pipeline.sh для препроцессинга данных, обучения моделей и подготовки данных для визуализации
-4. run_viz.sh для запуска контейнера с визуализацией, доступ по ссылке http://0.0.0.0:8080
-5. run_clear.sh для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся.
+* `newsviz/download_data.sh` – для скачивания исходных непроцессированных данных
+* `newsviz/build.sh` – для сборки контейнера
+* `newsviz/pipeline.sh` – для препроцессинга данных, обучения моделей и подготовки данных для визуализации
+* `newsviz/viz.sh` – для запуска контейнера с визуализацией, доступ по ссылке http://0.0.0.0:8080
+* `newsviz/clear.sh` – для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся.
 
 ## Requirements
 
@@ -118,11 +118,11 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 ## Run with docker
 
 Launch project starting from data download to running visualization:
-1. run_download_data.sh to download raw data
-2. run_build.sh to build docker container
-3. run_pipeline.sh to preprocess data, train model and prepare data for visualization
-4. run_viz.sh to run docker container with visualization, access via http://0.0.0.0:8080
-5. run_clear.sh to delete all intermediate data, models and other artifacts. Raw data will percist.
+* `newsviz/download_data.sh` – to download raw data
+* `newsviz/build.sh` – to build docker container
+* `newsviz/pipeline.sh` – to preprocess data, train model and prepare data for visualization
+* `newsviz/viz.sh` – to run docker container with visualization, access via http://0.0.0.0:8080
+* `newsviz/clear.sh` – to delete all intermediate data, models and other artifacts. Raw data will percist.
 
 
 ## Requirements
