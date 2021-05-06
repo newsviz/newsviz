@@ -1,7 +1,9 @@
 # Copyright © 2021 Andrey Lukyanenko. All rights reserved.
 # -*- coding: utf-8 -*-
 import configparser
-from typing import Dict, List, Tuple
+from typing import Dict
+from typing import List
+from typing import Tuple
 
 import pandas as pd
 import streamlit as st

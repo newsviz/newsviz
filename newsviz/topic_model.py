@@ -1,6 +1,5 @@
 # Copyright © 2020 Sviatoslav Kovalev. All rights reserved.
 # Copyright © 2020 Artem Tuisuzov. All rights reserved.
-
 #    This file is part of NewsViz Project.
 #
 #    NewsViz Project is free software: you can redistribute it and/or modify
@@ -15,14 +14,11 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with NewsViz Project.  If not, see <https://www.gnu.org/licenses/>.
-
 import json
 import os
 from pathlib import Path
 
 import artm
-import numpy as np
-import pandas as pd
 
 
 class TopicModelWrapperARTM:
@@ -125,7 +121,7 @@ class TopicModelWrapperARTM:
             print("==" * 5)
 
     def save_model(self, path):
-        """ path: path to save model"""
+        """path: path to save model"""
         model_path = Path(path)
         dict_path = model_path.parent / f"dictionary_{model_path.stem}.txt"
         self.dictionary.save_text(str(dict_path))
