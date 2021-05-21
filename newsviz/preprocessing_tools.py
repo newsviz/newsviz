@@ -54,11 +54,12 @@ class Preprocessing:
 
             with open(path_stopwords, "r") as file:
                 self.stopwords = file.read().splitlines()
+
+            logger.info(f"{len(self.stopwords) = }")
+
         except FileNotFoundError:
             logger.error("can't load stopwords file. maybe parameter `language` not correctly\n")
             self.stopwords = []
-
-        print(f"{len(self.stopwords) = }")
 
         # load lemmatizer
         if self.language == "ru":
