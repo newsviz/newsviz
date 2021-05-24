@@ -62,15 +62,16 @@ def make_path_pairs(input_path, output_path):
 
 
 MULTIPROCESSING = True
-CPU_COUNT = max(mp.cpu_count() - 4, 1)
+CPU_COUNT = mp.cpu_count()
 
 
-def apply_function_mp(function, series, language):
+def apply_function_mp(function, series, chunksize=None):
     if MULTIPROCESSING:
-        with mp.Pool(CPU_COUNT) as pool:
+        chunksize = chunksize or (len(series) // CPU_COUNT // 2)
+        with mp.Pool(CPU_COUNT, maxtasksperchild=1) as pool:
             return list(
                 tqdm.tqdm(
-                    pool.starmap(function, product(series, [language])),
+                    pool.imap(function, series, chunksize=chunksize),
                     total=len(series),
                 )
             )
@@ -93,6 +94,8 @@ class PreprocessorTask(luigi.Task):
         self.output_path = self.config["preprocessor"]["output_path"]
         self.path_pairs = make_path_pairs(self.input_path, self.output_path)
         self.language = self.config["preprocessor"]["language"]
+        #For MacOS and Python 3.8
+        mp.set_start_method('fork')
 
     def run(self):
         logger = logging.getLogger("luigi-interface")
@@ -109,7 +112,7 @@ class PreprocessorTask(luigi.Task):
             data["cleaned_text"] = apply_function_mp(preprocess.clean_text, data["text"])
 
             logger.info("process %s, lemmatize", readpath)
-            data["lemmatized"] = apply_function_mp(preprocess.lemmatize, data["cleaned_text"])
+            data["lemmatized"] = apply_function_mp(preprocess.lemmatize, data["cleaned_text"], chunksize=1000)
 
             logger.info("process %s, create ids", readpath)
             data["row_id"] = np.arange(data.shape[0])
