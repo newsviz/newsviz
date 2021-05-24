@@ -43,7 +43,7 @@ def init(basedir, projname):
     message += f"See or edit expected model names in `{confpath}`\n"
     message += "If models are ready, you can run full pipeline with command\n"
     message += f"`PYTHONPATH='.' luigi --module pipeline TopicPredictorTask --conf={confpath} --local-scheduler `"
-    
+
     return message
 
 
