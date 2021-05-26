@@ -16,6 +16,8 @@ RUN pip install -r requirements.txt
 COPY requirements_dev.txt /code/
 RUN pip install -r requirements_dev.txt
 
+RUN python -m spacy download ru_core_news_md
+
 ARG USERNAME=backend
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID

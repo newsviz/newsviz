@@ -55,7 +55,7 @@ class Preprocessing:
             with open(path_stopwords, "r") as file:
                 self.stopwords = file.read().splitlines()
 
-            logger.info(f"{len(self.stopwords) = }")
+            logger.info(f"Stop words: {len(self.stopwords)}")
 
         except FileNotFoundError:
             logger.error("can't load stopwords file. maybe parameter `language` not correctly\n")
@@ -78,6 +78,9 @@ class Preprocessing:
         returns:
             cleaned string text without lower case
         """
+
+        if not isinstance(text, str):
+            text = str(text)
 
         if (text is not None) and (text != ""):
 
@@ -108,6 +111,9 @@ class Preprocessing:
         returns:
             lemmatized string text
         """
+
+        if not isinstance(text, str):
+            text = str(text)
 
         if (text is not None) and (text != ""):
 
