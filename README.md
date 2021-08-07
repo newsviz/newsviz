@@ -54,7 +54,6 @@ https://github.com/newsviz/newsviz/wiki
 │
 ├── tests
 │    └── preprocesing_tools_tests.py
-│
 ```
 
 
