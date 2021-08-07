@@ -5,6 +5,8 @@ import colorlover as cl
 import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
+from loguru import logger
+
 
 colors = cl.to_rgb(cl.interp(cl.scales["12"]["qual"]["Paired"], 20))
 add_colors = cl.to_rgb(cl.scales["7"]["qual"]["Set1"])
@@ -32,7 +34,7 @@ def load_data(path):
     for source in sources:
         rubric_files = os.listdir(os.path.join(path, source))
         for fname in rubric_files:
-            print(os.path.join(path, source, fname))
+            logger.info(os.path.join(path, source, fname))
             data = pd.read_csv(os.path.join(path, source, fname), compression="gzip")
             # print(data.head())
             data, topics = preprocess_data(data)
