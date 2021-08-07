@@ -23,12 +23,12 @@ jobs:
           extra_args: --all-files
 
   pytests:
-
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs: [pre_commit]
     strategy:
       matrix:
-        python-version: [3.6, 3.7]
+        python-version: [3.6, 3.7, 3.8]
 
     steps:
       - name: checkout code
