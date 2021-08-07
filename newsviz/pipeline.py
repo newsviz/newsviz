@@ -94,8 +94,8 @@ class PreprocessorTask(luigi.Task):
         self.output_path = self.config["preprocessor"]["output_path"]
         self.path_pairs = make_path_pairs(self.input_path, self.output_path)
         self.language = self.config["preprocessor"]["language"]
-        # For MacOS and Python 3.8
-        mp.set_start_method("fork")
+        #For MacOS and Python 3.8
+        mp.set_start_method('fork')
 
     def run(self):
         logger = logging.getLogger("luigi-interface")
