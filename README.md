@@ -21,13 +21,24 @@ https://github.com/newsviz/newsviz/wiki
 
 ```bash
 .
-├── config/config.ini -- директория для конфигов
+├── config
+│    └─ config.ini -- директория для конфигов
+│
+├── docs
+│    └─ first_run.md
+│
 ├── data/ -- на гитхабе только пустые папки будут, а так датка локально будет здесь во время запуска
 │    ├── raw -- сырые данные
 │    ├── processed -- токенизировано и лемматизировано
 │    ├── classified -- после классификации
 │    ├── topic_modelleded -- после ТМ
 │    └── ready2viz -- бери и вставляй в визуалайзер
+│
+├── models -- папка для моделей по умолчанию
+│    └── classifier
+│        ├── clf.bin
+│        └── feature_extractor.bin
+│
 ├── newsviz -- собственно основной код
 │    ├── run.sh -- one ring to rule them all
 │    ├── pipeline.py -- основной скрипт со всеми luigi тасками
@@ -36,14 +47,14 @@ https://github.com/newsviz/newsviz/wiki
 │    └── vizualizer -- здесь будет лежать стандартный визуализатор
 │        ├── app.py
 │        └── utils.py
-├── models -- папка для моделей по умолчанию
-│    └── classifier
-│        ├── clf.bin
-│        └── feature_extractor.bin
+│
 ├── topic_model
-│        ├── model.bin
-│        └── dictionary{classname}.txt
-└──tests
+│    ├── model.bin
+│    └── dictionary{classname}.txt
+│
+├── tests
+│    └── preprocesing_tools_tests.py
+│
 ```
 
 
@@ -90,12 +101,13 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 ## Repository structure
 ```bash
 .
-├── config/config.ini -- directory for configs
+├── config
+│    └─ config.ini -- directory for configs
 │
 ├── docs
-│    └─ firs_run.md
+│    └─ first_run.md
 │
-├── data/ -- on github this folder will be empty, but during the launch data will be here locally
+├── data -- on github this folder will be empty, but during the launch data will be here locally
 │    ├── raw -- raw data
 │    ├── processed -- tokenized and lemmatized
 │    ├── classified -- after classification
