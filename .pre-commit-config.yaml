@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/asottile/reorder_python_imports
-    rev: v2.5.0
+    rev: v2.6.0
     hooks:
       - id: reorder-python-imports
 
@@ -9,14 +9,14 @@ repos:
     hooks:
       - id: flake8
         args: ["--ignore=E501,W292", "--max-line-length=119"]
-        # additional_dependencies:
-        #   - flake8-bugbear==21.3.2
-        #   - flake8-builtins==1.5.3
-        #   - pep8-naming==0.11.1
-        #   - flake8-variables-names==0.0.2
+        additional_dependencies:
+          - flake8-bugbear==21.3.2
+          - flake8-builtins==1.5.3
+          - pep8-naming==0.11.1
+          - flake8-variables-names==0.0.2
 
   - repo: https://github.com/psf/black
-    rev: 21.5b1
+    rev: 21.7b0
     hooks:
       - id: black
         args: ["--line-length=119"]
