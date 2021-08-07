@@ -21,24 +21,13 @@ https://github.com/newsviz/newsviz/wiki
 
 ```bash
 .
-├── config
-│    └─ config.ini -- директория для конфигов
-│
-├── docs
-│    └─ first_run.md
-│
-├── data -- на гитхабе только пустые папки будут, а так датка локально будет здесь во время запуска
+├── config/config.ini -- директория для конфигов
+├── data/ -- на гитхабе только пустые папки будут, а так датка локально будет здесь во время запуска
 │    ├── raw -- сырые данные
 │    ├── processed -- токенизировано и лемматизировано
 │    ├── classified -- после классификации
 │    ├── topic_modelleded -- после ТМ
 │    └── ready2viz -- бери и вставляй в визуалайзер
-│
-├── models -- папка для моделей по умолчанию
-│    └── classifier
-│        ├── clf.bin
-│        └── feature_extractor.bin
-│
 ├── newsviz -- собственно основной код
 │    ├── run.sh -- one ring to rule them all
 │    ├── pipeline.py -- основной скрипт со всеми luigi тасками
@@ -47,27 +36,25 @@ https://github.com/newsviz/newsviz/wiki
 │    └── vizualizer -- здесь будет лежать стандартный визуализатор
 │        ├── app.py
 │        └── utils.py
-│
+├── models -- папка для моделей по умолчанию
+│    └── classifier
+│        ├── clf.bin
+│        └── feature_extractor.bin
 ├── topic_model
-│    ├── model.bin
-│    └── dictionary{classname}.txt
-│
-├── tests
-│    └── preprocesing_tools_tests.py
-│
+│        ├── model.bin
+│        └── dictionary{classname}.txt
+└──tests
 ```
 
 
 ## Запуск с помощью docker
 
 Шаги по запуску проекта с нуля - от скачивания данных до визуализации:
-* `scripts/build.sh` – для сборки контейнера
-* `scripts/clear.sh` – для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся.
 * `scripts/download_data.sh` – для скачивания исходных непроцессированных данных
-* `scripts/jupyter.sh` – запуск jupyter ` make_news_viz_classifier.ipynb`
+* `scripts/build.sh` – для сборки контейнера
 * `scripts/pipeline.sh` – для препроцессинга данных, обучения моделей и подготовки данных для визуализации
-* `scripts/pre-commit.sh` – запуск pre-commit
 * `scripts/viz.sh` – для запуска контейнера с визуализацией, доступ по ссылке http://0.0.0.0:8080
+* `scripts/clear.sh` – для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся.
 
 ## Requirements
 
@@ -103,24 +90,13 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 ## Repository structure
 ```bash
 .
-├── config
-│    └─ config.ini -- directory for configs
-│
-├── docs
-│    └─ first_run.md
-│
-├── data -- on github this folder will be empty, but during the launch data will be here locally
+├── config/config.ini -- directory for configs
+├── data/ -- on github this folder will be empty, but during the launch data will be here locally
 │    ├── raw -- raw data
 │    ├── processed -- tokenized and lemmatized
 │    ├── classified -- after classification
 │    ├── topic_modelleded -- after TM
 │    └── ready2viz -- take and insert into the visualizer
-│
-├── models -- folder for default models
-│    └── classifier
-│        ├── clf.bin
-│        └── feature_extractor.bin
-│
 ├── newsviz -- the actual main code
 │    ├── run.sh -- one ring to rule them all
 │    ├── pipeline.py -- main script with all luigi tasks
@@ -129,25 +105,24 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 │    └── vizualizer -- the standard visualizer will be here
 │        ├── app.py
 │        └── utils.py
-│
+├── models -- folder for default models
+│    └── classifier
+│        ├── clf.bin
+│        └── feature_extractor.bin
 ├── topic_model
-│    ├── model.bin
-│    └── dictionary{classname}.txt
-│
-├── tests
-│    └── preprocesing_tools_tests.py
+│        ├── model.bin
+│        └── dictionary{classname}.txt
+└──tests
 ```
 
 ## Run with docker
 
 Launch project starting from data download to running visualization:
-* `scripts/build.sh` – to build docker container
-* `scripts/clear.sh` – to delete all intermediate data, models and other artifacts. Raw data will percist.
 * `scripts/download_data.sh` – to download raw data
-* `scripts/jupyter.sh` – run jupyter
+* `scripts/build.sh` – to build docker container
 * `scripts/pipeline.sh` – to preprocess data, train model and prepare data for visualization
-* `scripts/pre-commit.sh` – run pre-commit
 * `scripts/viz.sh` – to run docker container with visualization, access via http://0.0.0.0:8080
+* `scripts/clear.sh` – to delete all intermediate data, models and other artifacts. Raw data will percist.
 
 
 ## Requirements

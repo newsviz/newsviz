@@ -20,6 +20,7 @@ import json
 import logging
 import multiprocessing as mp
 import os
+from itertools import product
 
 import joblib
 import luigi
