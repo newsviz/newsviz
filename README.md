@@ -91,12 +91,22 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 ```bash
 .
 ├── config/config.ini -- directory for configs
+│
+├── docs
+│    └─ firs_run.md
+│
 ├── data/ -- on github this folder will be empty, but during the launch data will be here locally
 │    ├── raw -- raw data
 │    ├── processed -- tokenized and lemmatized
 │    ├── classified -- after classification
 │    ├── topic_modelleded -- after TM
 │    └── ready2viz -- take and insert into the visualizer
+│
+├── models -- folder for default models
+│    └── classifier
+│        ├── clf.bin
+│        └── feature_extractor.bin
+│
 ├── newsviz -- the actual main code
 │    ├── run.sh -- one ring to rule them all
 │    ├── pipeline.py -- main script with all luigi tasks
@@ -105,14 +115,13 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 │    └── vizualizer -- the standard visualizer will be here
 │        ├── app.py
 │        └── utils.py
-├── models -- folder for default models
-│    └── classifier
-│        ├── clf.bin
-│        └── feature_extractor.bin
+│
 ├── topic_model
-│        ├── model.bin
-│        └── dictionary{classname}.txt
-└──tests
+│    ├── model.bin
+│    └── dictionary{classname}.txt
+│
+├── tests
+│    └── preprocesing_tools_tests.py
 ```
 
 ## Run with docker
