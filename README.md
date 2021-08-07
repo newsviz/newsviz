@@ -20,7 +20,6 @@ https://github.com/newsviz/newsviz/wiki
 ## Структура репозитория
 
 ```bash
-.
 ├── config
 │    └─ config.ini -- директория для конфигов
 │
@@ -101,7 +100,6 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 
 ## Repository structure
 ```bash
-.
 ├── config
 │    └─ config.ini -- directory for configs
 │
