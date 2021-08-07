@@ -22,7 +22,7 @@ jobs:
         with:
           extra_args: --all-files
 
-  pytests:
+  pytest:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: [pre_commit]
