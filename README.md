@@ -24,19 +24,7 @@ https://github.com/newsviz/newsviz/wiki
 │    └─ config.ini -- директория для конфигов
 │
 ├── docs
-│    └─ first_run.md
-│
-├── data -- на гитхабе только пустые папки будут, а так датка локально будет здесь во время запуска
-│    ├── raw -- сырые данные
-│    ├── processed -- токенизировано и лемматизировано
-│    ├── classified -- после классификации
-│    ├── topic_modelleded -- после ТМ
-│    └── ready2viz -- бери и вставляй в визуалайзер
-│
-├── models -- папка для моделей по умолчанию
-│    └── classifier
-│        ├── clf.bin
-│        └── feature_extractor.bin
+│    └─ first_run.md -- как запустить `pipeline.py` и немного о визуализации
 │
 ├── newsviz -- собственно основной код
 │    ├── run.sh -- one ring to rule them all
@@ -104,19 +92,7 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 │    └─ config.ini -- directory for configs
 │
 ├── docs
-│    └─ first_run.md
-│
-├── data -- on github this folder will be empty, but during the launch data will be here locally
-│    ├── raw -- raw data
-│    ├── processed -- tokenized and lemmatized
-│    ├── classified -- after classification
-│    ├── topic_modelleded -- after TM
-│    └── ready2viz -- take and insert into the visualizer
-│
-├── models -- folder for default models
-│    └── classifier
-│        ├── clf.bin
-│        └── feature_extractor.bin
+│    └─ first_run.md -- how run `pipeline.py` & little bit about visualisation
 │
 ├── newsviz -- the actual main code
 │    ├── run.sh -- one ring to rule them all
