@@ -1,5 +1,19 @@
+# Copyright © 2021 @vtrokhymenko. All rights reserved.
 # Copyright © 2021 Andrey Lukyanenko. All rights reserved.
-# -*- coding: utf-8 -*-
+#    This file is part of NewsViz Project.
+#
+#    NewsViz Project is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    NewsViz Project is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with NewsViz Project.  If not, see <https://www.gnu.org/licenses/>.
 import argparse
 
 import streamlit as st
@@ -7,14 +21,11 @@ from st_app_functions import get_data
 from st_app_functions import make_plot
 from st_app_functions import update_data
 
+
 if __name__ == "__main__":
-    """
-    Example of usage:
-    >>> python st_app.py
-    """
 
     parser = argparse.ArgumentParser(description="Streamlip app")
-    parser.add_argument("--config_path", help="path to config", type=str, default="config/config.ini")
+    parser.add_argument("--config_path", help="path to config", type=str, default="../config/config.ini")
 
     args = parser.parse_args()
 
@@ -40,7 +51,7 @@ if __name__ == "__main__":
     # show the results
     figure = make_plot(type_chart, df, topic)
 
-    st.plotly_chart(figure)
+    st.plotly_chart(figure, use_container_width=True)
     st.header("Топ слов по темам")
     st.subheader(rubric)
     st.dataframe(top_words_df)
