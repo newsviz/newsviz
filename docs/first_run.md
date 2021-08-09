@@ -40,7 +40,14 @@ PYTHONPATH='.' luigi --module pipeline TopicPredictorTask --conf=../config/confi
 
 ## Как визуализировать
 ### Через Dash скриптами из проекта
-После выполнения пайплайна, или когда уже все нужные файлы лежат в ready2viz из директории `newsviz` выполнить `python app.py`. Запустится Dash и там можно смотреть что как.
+После выполнения пайплайна, или когда уже все нужные файлы лежат в `ready2viz` из директории `newsviz` выполнить `python app.py`. Запустится Dash и там можно смотреть что как.
+
+### Через [streamlit](https://github.com/streamlit/streamlit)
+После выполнения пайплайна, или когда уже все нужные файлы лежат в `ready2viz` (но можете взять готовые [отсюда](https://drive.google.com/drive/folders/18FAmcf87qbfcRWKiB-KUr38c0p7-ZybP)) из директории `newsviz` выполнить
+```
+streamlit run visualizer/st_app.py
+```
+Выбрать Network или External URL, вбить в браузер и сможете посмотреть что да как
 
 ### Чем угодно
 Собственно колонки `topic_*` это вероятность данной темы для данного документа. В нашем проекте мы суммируем такие колонки по месяцам. То есть
