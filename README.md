@@ -15,7 +15,7 @@
 ### Ответы на все вопросы первым делом искать тут:
 https://github.com/newsviz/newsviz/wiki
 
-Тут документация по основному коду https://github.com/newsviz/newsviz/wiki/Инструкция-по-запуску
+Тут документация по основному коду https://github.com/newsviz/newsviz/blob/stage/docs/first_run.md
 
 ## Структура репозитория
 
