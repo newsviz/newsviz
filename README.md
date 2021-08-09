@@ -95,6 +95,7 @@ https://github.com/newsviz/newsviz/wiki
 Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкция-по-запуску
 
 ## Repository structure
+
 ```bash
 ├── config
 │    └─ config.ini -- directory for configs
