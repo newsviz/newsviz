@@ -101,7 +101,7 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 │    └─ config.ini -- directory for configs
 │
 ├── docs
-│    └─ first_run.md -- how run `pipeline.py` & little bit about visualisation
+│    └─ first_run.md -- how to run `pipeline.py` & little bit about visualisation
 │
 ├── newsviz -- the actual main code
 │    ├── search
