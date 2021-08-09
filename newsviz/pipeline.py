@@ -71,6 +71,7 @@ def apply_function_mp(function, series, chunksize=None):
             return list(
                 tqdm.tqdm(
                     pool.imap(function, series, chunksize=chunksize),
+                    # pool.imap(partial(function, language=language), series),
                     total=len(series),
                 )
             )
@@ -93,8 +94,9 @@ class PreprocessorTask(luigi.Task):
         self.output_path = self.config["preprocessor"]["output_path"]
         self.path_pairs = make_path_pairs(self.input_path, self.output_path)
         self.language = self.config["preprocessor"]["language"]
+
         # For MacOS and Python 3.8
-        mp.set_start_method("fork")
+        # mp.set_start_method("fork")
 
     def run(self):
         logger = logging.getLogger("luigi-interface")
@@ -194,7 +196,7 @@ class TopicPredictorTask(luigi.Task):
         # self.fnames = get_fnames(self.input_path_c)
         self.path_pairs = make_path_pairs(self.input_path_c, self.input_path_l)
 
-        self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path), "classnames.json"), "r"))
+        self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path), "classnames_gazeta.json"), "r"))
 
     def requires(self):
         return RubricClassifierTask(conf=self.conf)
