@@ -27,17 +27,28 @@ https://github.com/newsviz/newsviz/wiki
 │    └─ first_run.md -- как запустить `pipeline.py` и немного о визуализации
 │
 ├── newsviz -- собственно основной код
-│    ├── run.sh -- one ring to rule them all
+│    ├── search
+│    │    └── engine.py
+│    │
+│    ├── stopwords
+│    │    ├── sw_en.txt
+│    │    └── sw_ru.txt
+│    │
+│    ├── visualizer -- здесь будет лежать стандартный визуализатор
+│    │    ├── app.py
+│    │    ├── readme.md
+│    │    ├── st_app.py
+│    │    ├── st_app_functions.py
+│    │    └── utils.py
+│    │
+│    ├── init_proj.py
+│    ├── learning_frontend.py
 │    ├── pipeline.py -- основной скрипт со всеми luigi тасками
 │    ├── preprocessing_tools.py -- скрипты препроцессинга
-│    ├── topic_model.py -- обёртка для тематической модели
-│    └── vizualizer -- здесь будет лежать стандартный визуализатор
-│        ├── app.py
-│        └── utils.py
+│    └── topic_model.py -- обёртка для тематической модели
 │
-├── topic_model
-│    ├── model.bin
-│    └── dictionary{classname}.txt
+├── templates
+│    └── make_tm.py
 │
 ├── tests
 │    └── preprocesing_tools_tests.py
@@ -95,13 +106,25 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 │    └─ first_run.md -- how run `pipeline.py` & little bit about visualisation
 │
 ├── newsviz -- the actual main code
-│    ├── run.sh -- one ring to rule them all
+│    ├── search
+│    │    └── engine.py
+│    │
+│    ├── stopwords
+│    │    ├── sw_en.txt
+│    │    └── sw_ru.txt
+│    │
+│    ├── visualizer -- the standard visualizer will be here
+│    │    ├── app.py
+│    │    ├── readme.md
+│    │    ├── st_app.py
+│    │    ├── st_app_functions.py
+│    │    └── utils.py
+│    │
+│    ├── init_proj.py
+│    ├── learning_frontend.py
 │    ├── pipeline.py -- main script with all luigi tasks
 │    ├── preprocessing_tools.py -- preprocessing scripts
-│    ├── topic_model.py -- wrapper for topic model
-│    └── vizualizer -- the standard visualizer will be here
-│        ├── app.py
-│        └── utils.py
+│    └── topic_model.py -- wrapper for topic model
 │
 ├── topic_model
 │    ├── model.bin
