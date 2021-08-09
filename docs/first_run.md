@@ -1,6 +1,9 @@
 # Документация по пайплану
 Основной код проекта находится здесь:
 https://github.com/newsviz/newsviz/tree/master/newsviz
+
+Часть данных можно взять отсюда:
+https://github.com/newsviz/newsviz/releases/tag/v0.1
 ## Файлики:  
 - `pipeline.py` собственно содержит все [luigi](https://github.com/spotify/luigi) таски. Там прописано, что выполняется и как.
 - `../config/config.ini` определяет пути к директориям, предобученным моделям и прочие параметры пайплайна
