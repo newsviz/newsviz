@@ -47,24 +47,21 @@ https://github.com/newsviz/newsviz/wiki
 │    ├── preprocessing_tools.py -- скрипты препроцессинга
 │    └── topic_model.py -- обёртка для тематической модели
 │
+├── scripts -- запуск с помощью docker
+│    ├── build.sh -- для сборки контейнера
+│    ├── clear.sh -- для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся
+│    ├── download_data.sh -- для скачивания исходных непроцессированных данных
+│    ├── jupyter.sh -- запуск jupyter `make_news_viz_classifier.ipynb`
+│    ├── pipeline.sh -- для препроцессинга данных, обучения моделей и подготовки данных для визуализации
+│    ├── pre-commit.sh -- запуск pre-commit
+│    └── viz.sh --  для запуска контейнера с визуализацией, доступ по ссылке http://0.0.0.0:8080
+│
 ├── templates
 │    └── make_tm.py
 │
 ├── tests
 │    └── preprocesing_tools_tests.py
 ```
-
-
-## Запуск с помощью docker
-
-Шаги по запуску проекта с нуля - от скачивания данных до визуализации:
-* `scripts/build.sh` – для сборки контейнера
-* `scripts/clear.sh` – для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся.
-* `scripts/download_data.sh` – для скачивания исходных непроцессированных данных
-* `scripts/jupyter.sh` – запуск jupyter ` make_news_viz_classifier.ipynb`
-* `scripts/pipeline.sh` – для препроцессинга данных, обучения моделей и подготовки данных для визуализации
-* `scripts/pre-commit.sh` – запуск pre-commit
-* `scripts/viz.sh` – для запуска контейнера с визуализацией, доступ по ссылке http://0.0.0.0:8080
 
 ## Requirements
 
@@ -126,25 +123,21 @@ Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкц
 │    ├── preprocessing_tools.py -- preprocessing scripts
 │    └── topic_model.py -- wrapper for topic model
 │
-├── topic_model
-│    ├── model.bin
-│    └── dictionary{classname}.txt
+├── scripts -- run with docker
+│    ├── build.sh -- to build docker container
+│    ├── clear.sh -- to delete all intermediate data, models and other artifacts. Raw data will percist
+│    ├── download_data.sh -- to download raw data
+│    ├── jupyter.sh -- run jupyter `make_news_viz_classifier.ipynb`
+│    ├── pipeline.sh -- to preprocess data, train model and prepare data for visualization
+│    ├── pre-commit.sh -- run pre-commit
+│    └── viz.sh -- to run docker container with visualization, access via http://0.0.0.0:8080
+│
+├── templates
+│    └── make_tm.py
 │
 ├── tests
 │    └── preprocesing_tools_tests.py
 ```
-
-## Run with docker
-
-Launch project starting from data download to running visualization:
-* `scripts/build.sh` – to build docker container
-* `scripts/clear.sh` – to delete all intermediate data, models and other artifacts. Raw data will percist.
-* `scripts/download_data.sh` – to download raw data
-* `scripts/jupyter.sh` – run jupyter
-* `scripts/pipeline.sh` – to preprocess data, train model and prepare data for visualization
-* `scripts/pre-commit.sh` – run pre-commit
-* `scripts/viz.sh` – to run docker container with visualization, access via http://0.0.0.0:8080
-
 
 ## Requirements
 
