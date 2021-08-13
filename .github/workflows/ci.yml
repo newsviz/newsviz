@@ -3,25 +3,49 @@ name: ci
 on:
   pull_request:
   push:
-    branches: [master, stage]
+    branches: [ master, stage ]
 
 jobs:
-  pre-commit-pytests:
-
+  pre_commit:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.7]
+    timeout-minutes: 4
 
     steps:
       - name: checkout code
         uses: actions/checkout@v2
 
       - name: setup python
-        uses: actions/setup-python@v2.1.3
+        uses: actions/setup-python@v2.2.2
 
-      - name: pre-commit-action
-        uses: pre-commit/action@v2.0.0
+      - name: run pre-commit action
+        uses: pre-commit/action@v2.0.3
+        with:
+          extra_args: --all-files
+
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: setup python
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: cache pip
+        uses: actions/cache@v2.1.6
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
 
       - name: install dependencies
         run: |
