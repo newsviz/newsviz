@@ -190,13 +190,14 @@ class TopicPredictorTask(luigi.Task):
         self.viz_path = self.config["visualizer"]["data_path"]
         clf_path = self.config["classifier"]["classifier_path"]
         # TODO: add class to classname mapping
+        class_names = self.config["classifier"]["class_names"]
         # TODO: move model params to the model wrapper script
         self.dict_path = self.config["topic"]["dict_path"]
 
         # self.fnames = get_fnames(self.input_path_c)
         self.path_pairs = make_path_pairs(self.input_path_c, self.input_path_l)
 
-        self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path), "classnames_gazeta.json"), "r"))
+        self.class_renamer = json.load(open(os.path.join(os.path.dirname(clf_path), class_names), "r"))
 
     def requires(self):
         return RubricClassifierTask(conf=self.conf)
