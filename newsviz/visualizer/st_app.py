@@ -29,6 +29,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    st.set_page_config(layout="wide")
     st.title("NewsViz Project")
 
     container, source0, rubric0, top_words = get_data(args.config_path)
