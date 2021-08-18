@@ -98,12 +98,12 @@ class TopicModelWrapperARTM:
             self.init_model()
         self.model.fit_offline(batch_vectorizer=self.batch_vectorizer, num_collection_passes=50)
 
-        sparsityTheta = self.model.score_tracker["SparsityThetaScore"].last_value
-        sparsityPhi = self.model.score_tracker["SparsityPhiScore"].last_value
+        sparsity_theta = self.model.score_tracker["SparsityThetaScore"].last_value
+        sparsity_phi = self.model.score_tracker["SparsityPhiScore"].last_value
         perpl = self.model.score_tracker["PerplexityScore"].last_value
 
-        print(f"\tSparsityThetaScore: {sparsityTheta}")
-        print(f"\tSparsityPhiScore: {sparsityPhi}")
+        print(f"\tSparsityThetaScore: {sparsity_theta}")
+        print(f"\tSparsityPhiScore: {sparsity_phi}")
         print(f"\tPerplexityScore: {perpl}")
 
     def get_phi(self):

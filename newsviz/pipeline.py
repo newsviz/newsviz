@@ -122,7 +122,9 @@ class PreprocessorTask(luigi.Task):
 
     def output(self):
         outputs = []
-        for readpath, writepath in self.path_pairs:
+
+        # TODO: refactor variable `readpath` to remove not used within the loop body
+        for readpath, writepath in self.path_pairs:  # noqa: B007
             outputs.append(luigi.LocalTarget(writepath))
         return outputs
 
@@ -166,7 +168,9 @@ class RubricClassifierTask(luigi.Task):
 
     def output(self):
         outputs = []
-        for readpath, writepath in self.path_pairs:
+
+        # TODO: refactor variable `readpath` to remove not used within the loop body
+        for readpath, writepath in self.path_pairs:  # noqa: B007
             outputs.append(luigi.LocalTarget(writepath))
         return outputs
 
@@ -189,8 +193,10 @@ class TopicPredictorTask(luigi.Task):
         self.model_path = self.config["topic"]["model_path"]
         self.viz_path = self.config["visualizer"]["data_path"]
         clf_path = self.config["classifier"]["classifier_path"]
+
         # TODO: add class to classname mapping
         class_names = self.config["classifier"]["class_names"]
+
         # TODO: move model params to the model wrapper script
         self.dict_path = self.config["topic"]["dict_path"]
 
@@ -256,7 +262,9 @@ class TopicPredictorTask(luigi.Task):
     def output(self):
         # TODO: add comments with example
         outputs = []
-        for readpath_c, readpath_l in self.path_pairs:
+
+        # TODO: refactor variable `readpath_l` to remove not used within the loop body
+        for readpath_c, readpath_l in self.path_pairs:  # noqa: B007
             data_c = pd.read_csv(readpath_c, compression="gzip")
             classes = data_c["rubric_preds"].unique()
             for cl in classes:

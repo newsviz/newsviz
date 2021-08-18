@@ -93,10 +93,10 @@ def aggregate_by_date(df, level="month"):
 
 def compute_figure_height(count_of_plots):
     # values are selected empirically
-    MIN_HEIGHT = 300
-    MAX_HEIGHT = 900
-    PLOT_HEIGHT = 50
-    return min(MIN_HEIGHT + (count_of_plots * PLOT_HEIGHT), MAX_HEIGHT)
+    min_height = 300
+    max_height = 900
+    plot_height = 50
+    return min(min_height + (count_of_plots * plot_height), max_height)
 
 
 def bump_chart(df, topics):
@@ -109,7 +109,7 @@ def bump_chart(df, topics):
     data = list()
     df_plot = df.loc[:, topics].rank(axis=1, method="max").astype(int)
     df_plot["date"] = df["date"]
-    for idx, topic in enumerate(topics):
+    for topic in topics:
         trace = go.Scatter(
             x=df_plot["date"],
             y=df_plot[topic].values,
