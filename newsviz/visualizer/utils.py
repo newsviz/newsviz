@@ -91,11 +91,7 @@ def aggregate_by_date(df, level="month"):
     return dfgb
 
 
-def compute_figure_height(count_of_plots):
-    # values are selected empirically
-    min_height = 300
-    max_height = 900
-    plot_height = 50
+def compute_figure_height(count_of_plots, min_height=300, max_height=900, plot_height=50):
     return min(min_height + (count_of_plots * plot_height), max_height)
 
 
