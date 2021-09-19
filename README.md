@@ -12,8 +12,9 @@
 Концепт такой:
 ![Preview2](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
 
-### Ответы на все вопросы первым делом искать тут:
-https://github.com/newsviz/newsviz/wiki
+## Ответы на все вопросы первым делом искать тут:
+https://github.com/newsviz/newsviz/wiki   
+И вот тут [./docs/](./docs/)
 
 Документация по основному коду – [./docs/first_run.md](./docs/first_run.md)
 
@@ -89,9 +90,9 @@ The concept is this:
 
 ![Preview2](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
 
-### Look for answers to all questions here:
-https://github.com/newsviz/newsviz/wiki
-
+## Look for answers to all questions here:
+https://github.com/newsviz/newsviz/wiki  
+And here [./docs/](./docs/)  
 Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкция-по-запуску
 
 ## Repository structure
@@ -177,6 +178,7 @@ See [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.m
  - [@monuvio](https://github.com/monuvio)
  - [@orech](https://github.com/orech)
  - [@p-kachalov](https://github.com/p-kachalov)
+ - [@pacifikus](https://github.com/pacifikus)
  - [@stroykova](https://github.com/stroykova)
  - [@Teoretic6](https://github.com/Teoretic6)
  - [@tu-artem](https://github.com/tu-artem)
