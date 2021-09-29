@@ -3,7 +3,7 @@ import configparser
 import os
 
 
-def init(basedir, projname):
+def init(basedir, projname, lang='ru'):
     # Raw
     rawdir = os.path.join(basedir, "data/raw")
     os.makedirs(rawdir, exist_ok=True)
@@ -18,6 +18,7 @@ def init(basedir, projname):
         "output_path": prepdir,
         "classifier_path": os.path.join(modelsdir_c, projname + ".bin"),
         "ftransformer_path": os.path.join(modelsdir_c, projname + "_trans.bin"),
+        "language": "ru"
     }
     # Topic
     topicdir = os.path.join(basedir, "data/topic_model_ed")
@@ -51,9 +52,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--basedir", required=True)
     parser.add_argument("--projname", required=True)
+    parser.add_argument("--language", choices=['ru'], default='ru')
 
     args = parser.parse_args()
     print(args)
     basedir = args.basedir
     projname = args.projname
-    init(basedir, projname)
+    init(basedir, projname, lang=args.language)
