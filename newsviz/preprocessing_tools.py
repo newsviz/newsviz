@@ -17,14 +17,14 @@
 #    along with NewsViz Project.  If not, see <https://www.gnu.org/licenses/>.
 import html
 import re
-from dataclasses import dataclass
-from dataclasses import field
-from dataclasses import InitVar
 from functools import lru_cache
 from typing import List
 from typing import Optional
 
 import spacy
+from dataclasses import dataclass
+from dataclasses import field
+from dataclasses import InitVar
 from loguru import logger
 
 

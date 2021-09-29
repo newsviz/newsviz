@@ -13,7 +13,7 @@
 ![Preview2](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
 
 ## Ответы на все вопросы первым делом искать тут:
-https://github.com/newsviz/newsviz/wiki   
+https://github.com/newsviz/newsviz/wiki  
 И вот тут [./docs/](./docs/)
 
 Документация по основному коду – [./docs/first_run.md](./docs/first_run.md)
