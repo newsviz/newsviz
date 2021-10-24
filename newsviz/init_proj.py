@@ -9,16 +9,19 @@ def init(basedir, projname, lang="ru"):
     os.makedirs(rawdir, exist_ok=True)
     config = configparser.ConfigParser()
     config["common"] = {"raw_path": rawdir}
-    # Classifier
+    # Preprocessor
     prepdir = os.path.join(basedir, "data/processed")
     os.makedirs(prepdir, exist_ok=True)
+    config["preprocessor"] = {"output_path": prepdir, "language": lang}
+    # Classifier
+    classdir = os.path.join(basedir, "data/classified")
+    os.makedirs(classdir, exist_ok=True)
     modelsdir_c = os.path.join(basedir, "models/classifier")
     os.makedirs(modelsdir_c, exist_ok=True)
-    config["preprocessor"] = {
-        "output_path": prepdir,
+    config["classifier"] = {
+        "output_path": classdir,
         "classifier_path": os.path.join(modelsdir_c, projname + ".bin"),
         "ftransformer_path": os.path.join(modelsdir_c, projname + "_trans.bin"),
-        "language": "ru",
     }
     # Topic
     topicdir = os.path.join(basedir, "data/topic_model_ed")
