@@ -22,7 +22,7 @@ def init(basedir, projname, lang="ru"):
         "output_path": classdir,
         "classifier_path": os.path.join(modelsdir_c, projname + ".bin"),
         "ftransformer_path": os.path.join(modelsdir_c, projname + "_trans.bin"),
-        "class_names": "classnames_{}.json".format(projname)
+        "class_names": "classnames_{}.json".format(projname),
     }
     # Topic
     topicdir = os.path.join(basedir, "data/topic_model_ed")
