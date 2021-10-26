@@ -22,6 +22,7 @@ def init(basedir, projname, lang="ru"):
         "output_path": classdir,
         "classifier_path": os.path.join(modelsdir_c, projname + ".bin"),
         "ftransformer_path": os.path.join(modelsdir_c, projname + "_trans.bin"),
+        "class_names": "classnames_{}.json".format(projname),
     }
     # Topic
     topicdir = os.path.join(basedir, "data/topic_model_ed")
@@ -31,7 +32,7 @@ def init(basedir, projname, lang="ru"):
     config["topic"] = {
         "output_path": topicdir,
         "model_path": os.path.join(modelsdir_t, "tm_" + projname + "_{}.bin"),
-        "dict_path": os.path.join(modelsdir_t, "dictionary_tm_" + projname + "_{}.bin"),
+        "dict_path": os.path.join(modelsdir_t, "dictionary_tm_" + projname + "_{}.txt"),
     }
     # Vis
     vispath = os.path.join(basedir, "data/ready2viz")

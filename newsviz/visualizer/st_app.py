@@ -21,14 +21,16 @@ from st_app_functions import get_data
 from st_app_functions import make_plot
 from st_app_functions import update_data
 
+# According to https://github.com/streamlit/streamlit/issues/337
+# run it like this:
+# streamlit run st_app.py -- --config_path /path/to/config
+
+parser = argparse.ArgumentParser(description="Streamlip app")
+parser.add_argument("--config_path", help="path to config", type=str, default="../config/config.ini")
+
+args = parser.parse_args()
 
 if __name__ == "__main__":
-
-    parser = argparse.ArgumentParser(description="Streamlip app")
-    parser.add_argument("--config_path", help="path to config", type=str, default="../config/config.ini")
-
-    args = parser.parse_args()
-
     st.set_page_config(layout="wide")
     st.title("NewsViz Project")
 
