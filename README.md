@@ -16,7 +16,8 @@
 https://github.com/newsviz/newsviz/wiki  
 И вот тут [./docs/](./docs/)
 
-Документация по основному коду – [./docs/first_run.md](./docs/first_run.md)
+Документация по основному коду – [./docs/first_run.md](./docs/first_run.md)  
+Самая свежая версия всегда в ветке `stage`
 
 ## Структура репозитория
 
@@ -93,7 +94,8 @@ The concept is this:
 ## Look for answers to all questions here:
 https://github.com/newsviz/newsviz/wiki  
 And here [./docs/](./docs/)  
-Main code documentation https://github.com/newsviz/newsviz/wiki/Инструкция-по-запуску
+Main code documentation [./docs/first_run.md](./docs/first_run.md)  
+`stage` branch is always more actual, but not stable  
 
 ## Repository structure
 
