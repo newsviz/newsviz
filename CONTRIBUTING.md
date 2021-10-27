@@ -2,15 +2,24 @@
 ### Порядок работы:
 1. Находим [ISSUE](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) с описанием проблемы и пути решения, либо создаём свой и описываем проблему.
 2. [Делаем форк](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo).
-3. Вносим свои изменения.
-4. Запустить [pre-commit](https://github.com/pre-commit/pre-commit)
+3. Переходим в ветку `stage`
+   ```
+   git checkout stage
+   ```
+4. Вносим свои изменения.
+5. Написать тесты в `./tests` для своего кода (опционально)
+6. Запустить [pre-commit](https://github.com/pre-commit/pre-commit)
 
-    4.1 `$ pip install pre-commit black isort`
+    6.1 установить если ещё не
 
-    4.2 `$ pre-commit run -a`
+        pip install pre-commit
 
-5. Создаём [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) в ветку `stage`.
-6. Прилинкуйте соответствующий ISSUE к созданному PR ([как это сделать](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests)).
+    6.2 запустить
+
+        pre-commit run -a
+
+7. Создаём [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) в ветку `stage`.
+8. Прилинкуйте соответствующий ISSUE к созданному PR ([как это сделать](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests)).
 
 ### CODESTYLE:
 В проекте используются автоматические проверки [pre-commit](https://pre-commit.com/). Они запускаются в [github actions](https://github.com/newsviz/newsviz/actions/) при создании pull request.
@@ -77,15 +86,24 @@ Keep it simple stupid! Все отдельные элементы должны �
 ### Contributing procedure:
 1. Find [ISSUE](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) with a description of the problem and the solution path, or create our own and describe the problem.
 2. [Fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo).
-3. Make your changes.
-4. Make [pre-commit](https://github.com/pre-commit/pre-commit)
+3. Change branch to `stage`
+    ```
+    git checkout stage
+    ```
+4. Make your changes.
+5. Write tests in `./tests` for your code (oprional)
+6. Make [pre-commit](https://github.com/pre-commit/pre-commit)
 
-    4.1 `$ pip install pre-commit black isort`
+    6.1 install if not already
 
-    4.2 `$ pre-commit run -a`
+        pip install pre-commit
 
-5. Create a [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to the `stage` branch.
-6. Link the appropriate ISSUE to the generated PR ([how to do it](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests)).
+    6.2 run
+
+        pre-commit run -a
+
+7. Create a [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to the `stage` branch.
+8. Link the appropriate ISSUE to the generated PR ([how to do it](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests)).
 
 ### CODESTYLE:
 Just use [black](https://github.com/psf/black) and read [pep-8](https://www.python.org/dev/peps/pep-0008/).

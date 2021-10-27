@@ -1,5 +1,11 @@
 black
+loguru
+loguru_caplog
 matplotlib
 notebook
 pre-commit
 scikit-learn
+setuptools==56.0.0
+spacy==3.0.6
+streamlit==0.86.0
+wheel==0.36.2

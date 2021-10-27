@@ -1,11 +1,12 @@
 import json
 import os
-from pathlib import Path
 
 import colorlover as cl
 import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
+from loguru import logger
+
 
 colors = cl.to_rgb(cl.interp(cl.scales["12"]["qual"]["Paired"], 20))
 add_colors = cl.to_rgb(cl.scales["7"]["qual"]["Set1"])
@@ -33,7 +34,7 @@ def load_data(path):
     for source in sources:
         rubric_files = os.listdir(os.path.join(path, source))
         for fname in rubric_files:
-            print(os.path.join(path, source, fname))
+            logger.info(os.path.join(path, source, fname))
             data = pd.read_csv(os.path.join(path, source, fname), compression="gzip")
             # print(data.head())
             data, topics = preprocess_data(data)
@@ -51,7 +52,7 @@ def preprocess_data(df):
     topics.remove("date")
     # scale columns
     maxes = df[topics].max().values
-    df[topics] = df[topics].astype(np.float32) / np.std(maxes)
+    df[topics] = df[topics].astype(np.float32) / np.mean(maxes)
     return df, topics
 
 
@@ -90,12 +91,8 @@ def aggregate_by_date(df, level="month"):
     return dfgb
 
 
-def compute_figure_height(count_of_plots):
-    # values are selected empirically
-    MIN_HEIGHT = 300
-    MAX_HEIGHT = 900
-    PLOT_HEIGHT = 50
-    return min(MIN_HEIGHT + (count_of_plots * PLOT_HEIGHT), MAX_HEIGHT)
+def compute_figure_height(count_of_plots, min_height=300, max_height=900, plot_height=50):
+    return min(min_height + (count_of_plots * plot_height), max_height)
 
 
 def bump_chart(df, topics):
@@ -108,7 +105,7 @@ def bump_chart(df, topics):
     data = list()
     df_plot = df.loc[:, topics].rank(axis=1, method="max").astype(int)
     df_plot["date"] = df["date"]
-    for idx, topic in enumerate(topics):
+    for topic in topics:
         trace = go.Scatter(
             x=df_plot["date"],
             y=df_plot[topic].values,
