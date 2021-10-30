@@ -20,6 +20,7 @@
 
 7. Создаём [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) в ветку `stage`.
 8. Прилинкуйте соответствующий ISSUE к созданному PR ([как это сделать](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests)).
+9. Чтобы проверить, что всё работает можно использовать предобученные модели и сокращённый датасет. Последние актуальные файлы для этого пока лежат [в релизах](https://github.com/newsviz/newsviz/releases)  
 
 ### CODESTYLE:
 В проекте используются автоматические проверки [pre-commit](https://pre-commit.com/). Они запускаются в [github actions](https://github.com/newsviz/newsviz/actions/) при создании pull request.
@@ -81,7 +82,7 @@ Keep it simple stupid! Все отдельные элементы должны �
 ```
 Разумеется имя и фамилию меняем на свои, если вы там уже есть, то добавляем год (через тире или запятую, в зависимости от того, непрерывный это промежуток времени или нет), если вас там ещё нет, то добавляем новую строчку.
 
-### English version
+## English version
 
 ### Contributing procedure:
 1. Find [ISSUE](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) with a description of the problem and the solution path, or create our own and describe the problem.
@@ -104,6 +105,7 @@ Keep it simple stupid! Все отдельные элементы должны �
 
 7. Create a [Pull Request](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to the `stage` branch.
 8. Link the appropriate ISSUE to the generated PR ([how to do it](https://docs.github.com/en/free-pro-team@latest/github/writing-on-github/basic-writing-and-formatting-syntax#referencing-issues-and-pull-requests)).
+9. In order to check that everything works, one may use pretrained models and truncated dataset. Last actual files are in [releases](https://github.com/newsviz/newsviz/releases)  
 
 ### CODESTYLE:
 Just use [black](https://github.com/psf/black) and read [pep-8](https://www.python.org/dev/peps/pep-0008/).
