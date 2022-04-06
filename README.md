@@ -1,9 +1,9 @@
-<img src="https://raw.githubusercontent.com/newsviz/newsviz.github.io/master/pics/news_viz_logo_eye.svg" alt="LOGO" width="300"/>  
+<img src="https://raw.githubusercontent.com/newsviz/newsviz.github.io/master/pics/news_viz_logo_eye.svg" align="left" alt="LOGO" width="200"/>  
 
-
-Часть инициативы <img src="https://ods.ai/ods/logo/ml4sg.svg" width="30"> ML4SG от [ods.ai](https://ods.ai)
+Часть инициативы <img src="https://ods.ai/ods/logo/ml4sg.svg" width="30"> [ML4SG](https://ods.ai/hubs/ml4sg) от [ODS.ai](https://ods.ai)
 
 [english version](#english-version)
+</br></br></br></br></br></br></br>
 
 ## Что здесь происходит
 Мы делаем инструмент для исследования развития со временем [тем в текстах](http://www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование). Основной целевой набор текстов - русскоязычные новости, но методика и сам инструмент подходят для произвольного набора текстов.
@@ -69,7 +69,7 @@ https://github.com/newsviz/newsviz/wiki
 
 Python 3.6+
 
-## Contributing (Как участвовать в проекте)
+## Как участвовать в проекте (Contributing)
 См. [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.md)
 
 ## Чем вы можете помочь
