@@ -38,7 +38,7 @@ class Preprocessing:
 
     def __post_init__(self, replace_path_stopwords_4_tests):
         """
-        in folder news/stopwords be 2 files: `sw_ru.txt` & `sw_en.txt`
+        in the folder news/stopwords/ sould be 2 files: `sw_ru.txt` & `sw_en.txt`
         for lemmatizer for your language u should download spacy trained pipelines
             $ python -m spacy download ru_core_news_md
             or
@@ -55,7 +55,7 @@ class Preprocessing:
             with open(path_stopwords, "r") as file:
                 self.stopwords = file.read().splitlines()
 
-            logger.info(f"Stop words: {len(self.stopwords)}")
+            logger.info(f"stop words: {len(self.stopwords)}")
 
         except FileNotFoundError:
             logger.error("can't load stopwords file. maybe parameter `language` not correctly\n")
@@ -71,7 +71,7 @@ class Preprocessing:
 
     def clean_text(self, text: str) -> (Optional[str]):
         """
-        clean text, leaving only tokens for clustering
+        for cleaning text from html tags, emails, urls, punctuation, etc., leaving only tokens for clustering
         args:
             text (string)
                 input text
