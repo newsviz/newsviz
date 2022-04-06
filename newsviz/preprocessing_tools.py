@@ -63,7 +63,7 @@ class Preprocessing:
 
         # load lemmatizer
         if self.language == "ru":
-            self.pacy_pipeline = "ru_core_news_md"
+            self.spacy_pipeline = "ru_core_news_md"
         elif self.language == "en":
             self.spacy_pipeline = "en_core_web_md"
 
