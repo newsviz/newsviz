@@ -63,11 +63,11 @@ class Preprocessing:
 
         # load lemmatizer
         if self.language == "ru":
-            spacy_pipeline = "ru_core_news_md"
+            self.pacy_pipeline = "ru_core_news_md"
         elif self.language == "en":
-            spacy_pipeline = "en_core_web_md"
+            self.spacy_pipeline = "en_core_web_md"
 
-        self.nlp = spacy.load(spacy_pipeline)
+        self.nlp = spacy.load(self.spacy_pipeline)
 
     def clean_text(self, text: str) -> (Optional[str]):
         """
