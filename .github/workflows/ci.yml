@@ -3,7 +3,7 @@ name: ci
 on:
   pull_request:
   push:
-    branches: [ master, stage ]
+    branches: [ master ]
 
 jobs:
   pre_commit:

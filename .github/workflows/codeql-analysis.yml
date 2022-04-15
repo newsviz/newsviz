@@ -1,9 +1,9 @@
 name: codeql
 
 on:
-  push:
-    branches: [master, stage]
   pull_request:
+    branches: [ master ]
+  push:
     branches: [ master ]
   schedule:
     - cron: '0 0 * * 6'
