@@ -4,6 +4,8 @@
 
 Python 3.6+
 
+[CONTRIBUTING.md](./CONTRIBUTING.md)
+
 [english version](#english-version)
 </br></br></br></br></br>
 
@@ -53,10 +55,6 @@ Python 3.6+
 ├── tests
 │    └── preprocesing_tools_tests.py
 ```
-
-## Как участвовать в проекте (Contributing)
-
-См. [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.md)
 
 ## Чем вы можете помочь
 
@@ -121,9 +119,6 @@ The main code documentation [./docs/first_run.md](./docs/first_run.md).
 │    └── preprocesing_tools_tests.py
 ```
 
-## Contributing (How to participate in the project)
-
-See [contributing](https://github.com/newsviz/newsviz/blob/master/CONTRIBUTING.md)
 
 ## How can you help
 
