@@ -4,7 +4,7 @@
 1. Находим [ISSUE](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) с описанием проблемы и пути решения, либо создаём свой и описываем проблему.
 2. [Делаем форк](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo).
 3. Переходим в ветку `stage`
-   
+
    ```
    git checkout stage
    ```
