@@ -47,15 +47,6 @@ Python 3.6+
 │    ├── preprocessing_tools.py -- скрипты препроцессинга
 │    └── topic_model.py -- обёртка для тематической модели
 │
-├── scripts -- запуск с помощью docker
-│    ├── build.sh -- для сборки контейнера
-│    ├── clear.sh -- для удаления всех промежуточных данных, моделей и прочих артефактов. Скачанные данные останутся
-│    ├── download_data.sh -- для скачивания исходных непроцессированных данных
-│    ├── jupyter.sh -- запуск jupyter `make_news_viz_classifier.ipynb`
-│    ├── pipeline.sh -- для препроцессинга данных, обучения моделей и подготовки данных для визуализации
-│    ├── pre-commit.sh -- запуск pre-commit
-│    └── viz.sh -- для запуска контейнера с визуализацией, доступ по ссылке http://0.0.0.0:8080
-│
 ├── templates
 │    └── make_tm.py
 │
@@ -122,15 +113,6 @@ The main code documentation [./docs/first_run.md](./docs/first_run.md).
 │    ├── pipeline.py -- main script with all luigi tasks
 │    ├── preprocessing_tools.py -- preprocessing scripts
 │    └── topic_model.py -- wrapper for topic model
-│
-├── scripts -- run with docker
-│    ├── build.sh -- to build docker container
-│    ├── clear.sh -- to delete all intermediate data, models and other artifacts. Raw data will percist
-│    ├── download_data.sh -- to download raw data
-│    ├── jupyter.sh -- run jupyter `make_news_viz_classifier.ipynb`
-│    ├── pipeline.sh -- to preprocess data, train model and prepare data for visualization
-│    ├── pre-commit.sh -- run pre-commit
-│    └── viz.sh -- to run docker container with visualization, access via http://0.0.0.0:8080
 │
 ├── templates
 │    └── make_tm.py
