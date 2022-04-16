@@ -7,7 +7,7 @@ Python 3.6+
 [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 [english version](#english-version)
-</br></br></br></br></br>
+</br></br>
 
 ## Что здесь происходит
 
