@@ -2,6 +2,8 @@
 
 Часть инициативы <img src="https://ods.ai/ods/logo/ml4sg.svg" width="30"> [ML4SG](https://ods.ai/hubs/ml4sg) от [ODS.ai](https://ods.ai)
 
+Python 3.6+
+
 [english version](#english-version)
 </br></br></br></br></br>
 
@@ -60,10 +62,6 @@
 ├── tests
 │    └── preprocesing_tools_tests.py
 ```
-
-## Requirements
-
-Python 3.6+
 
 ## Как участвовать в проекте (Contributing)
 
@@ -140,10 +138,6 @@ The main code documentation [./docs/first_run.md](./docs/first_run.md).
 ├── tests
 │    └── preprocesing_tools_tests.py
 ```
-
-## Requirements
-
-Python 3.6+
 
 ## Contributing (How to participate in the project)
 
