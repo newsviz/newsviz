@@ -9,8 +9,9 @@
 
 ## Что здесь происходит
 
-Мы делаем инструмент для исследования развития со временем [тем в текстах](http://www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование). Основной целевой набор текстов - русскоязычные новости, но методика и сам инструмент подходят для произвольного набора текстов.
-(Проект переехал [отсюда](https://github.com/ods-ai-ml4sg/proj_news_viz)).
+Мы делаем инструмент для исследования развития со временем [тем в текстах](http://www.machinelearning.ru/wiki/index.php?title=Тематическое_моделирование). Основной целевой набор текстов -- русскоязычные новости, но методика и сам инструмент подходят для произвольного набора текстов.
+
+Проект переехал [отсюда](https://github.com/ods-ai-ml4sg/proj_news_viz).
 
 Концепт такой:
 
@@ -70,17 +71,15 @@
 ## What's going on here
 
 We are making a tool for researching the development of [topics in the texts](http://www.machinelearning.ru/wiki/index.php?title=Thematic_modeling) over the time. The main target set of texts is Russian language news, but the methodology and the tool itself are suitable for an arbitrary set of texts.
-(The project has moved [from here](https://github.com/ods-ai-ml4sg/proj_news_viz))
 
-The concept is this:
+The project has moved [from here](https://github.com/ods-ai-ml4sg/proj_news_viz).
+
+The concept:
 
 ![](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
 
-## Look for answers to all questions here:
-- [wiki](https://github.com/newsviz/newsviz/wiki)
-- and in the folder [./docs/](./docs/)
+## Look for answers to all questions in the [wiki](https://github.com/newsviz/newsviz/wiki)
 
-The main code documentation [./docs/first_run.md](./docs/first_run.md).
 `stage` branch is always more actual, but not stable.
 
 ## Repository structure
@@ -131,7 +130,7 @@ The main code documentation [./docs/first_run.md](./docs/first_run.md).
 
 ## [Contributors](https://github.com/newsviz/newsviz/graphs/contributors)
 
-В алфавитном порядке (in alphabet order):
+В алфавитном порядке (in the alphabet order):
 
  - [@Alf162](https://github.com/Alf162)
  - [@andreymalakhov](https://github.com/andreymalakhov)
