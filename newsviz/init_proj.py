@@ -54,13 +54,13 @@ def init(basedir, projname, lang="ru"):
     with open(confpath, "w") as fp:
         config.write(fp)
 
-    message = "Ready\n"
-    message += f"Place your data in `{rawdir}`: one directory for each source\n"
-    message += f"See or edit expected model names in `{confpath}`\n"
-    message += "If models are ready, you can run full pipeline with command\n"
-    message += f"`PYTHONPATH='.' luigi --module pipeline TopicPredictorTask --conf={confpath} --local-scheduler `"
+    message = "\n\nREADY\n\n"
+    message += f"- Place your data in `{rawdir}`: one directory for each source\n"
+    message += f"- See or edit expected model names in `{confpath}`\n"
+    message += "- If models are ready, you can run full pipeline with command\n"
+    message += f"`PYTHONPATH='.' luigi --module pipeline TopicPredictorTask --conf={confpath} --local-scheduler`"
 
-    return message
+    print(message)
 
 
 if __name__ == "__main__":
@@ -70,6 +70,5 @@ if __name__ == "__main__":
     parser.add_argument("--language", choices=["ru"], default="ru")
 
     args = parser.parse_args()
-    init(basedir=args.basedir, projname=args.projname, lang=args.language)
 
-    print("\nDONE")
+    init(args.basedir, args.projname, args.language)
