@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/newsviz/newsviz.github.io/master/pics/news_viz_logo_eye.svg" align="left" alt="LOGO" width="200"/>
+<img src="https://raw.githubusercontent.com/newsviz/newsviz.github.io/master/pics/news_viz_logo_eye.svg" align="left" alt="LOGO" width="200"/></img>
 
 Часть инициативы <img src="https://ods.ai/ods/logo/ml4sg.svg" width="30"> [ML4SG](https://ods.ai/hubs/ml4sg) от [ODS.ai](https://ods.ai)
 
