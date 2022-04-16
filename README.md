@@ -14,12 +14,8 @@
 
 ![](https://camo.githubusercontent.com/3f306e50fd0b38266da057dde30d010b2d511fe9/68747470733a2f2f692e6962622e636f2f526763736633762f6e6577732d76697a2d636f6e636570742e706e67)
 
-## Ответы на все вопросы первым делом искать тут:
+## Ответы на все вопросы первым делом искать в [wiki](https://github.com/newsviz/newsviz/wiki)
 
-- [wiki](https://github.com/newsviz/newsviz/wiki)
-- и в директории [./docs/](./docs/)
-
-Документация по основному коду –- [./docs/first_run.md](./docs/first_run.md).
 Самая свежая версия всегда в ветке `stage`.
 
 ## Структура репозитория
@@ -27,9 +23,6 @@
 ```bash
 ├── config
 │    └─ config.ini -- директория для конфигов
-│
-├── docs
-│    └─ first_run.md -- как запустить `pipeline.py` и немного о визуализации
 │
 ├── newsviz -- собственно основной код
 │    ├── search
@@ -110,9 +103,6 @@ The main code documentation [./docs/first_run.md](./docs/first_run.md).
 ```bash
 ├── config
 │    └─ config.ini -- directory for configs
-│
-├── docs
-│    └─ first_run.md -- how to run `pipeline.py` & little bit about visualisation
 │
 ├── newsviz -- the actual main code
 │    ├── search
