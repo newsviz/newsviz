@@ -22,8 +22,10 @@ from st_app_functions import make_plot
 from st_app_functions import update_data
 
 # According to https://github.com/streamlit/streamlit/issues/337
-# run it like this:
-# streamlit run st_app.py -- --config_path /path/to/config
+# run it like this from newsviz/ folder:
+# $ streamlit run visualizer/st_app.py
+# or use the path for config like:
+# $ streamlit run visualizer/st_app.py -- --config_path=../config/config.ini
 
 parser = argparse.ArgumentParser(description="Streamlip app")
 parser.add_argument("--config_path", help="path to config", type=str, default="../config/config.ini")
